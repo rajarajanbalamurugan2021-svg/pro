@@ -28,75 +28,109 @@ export type ActiveTab =
   | 'admin_panel';
 
 interface SidebarProps {
-  activeTab: ActiveTab;
-  onTabChange: (tab: ActiveTab) => void;
-  userRole: UserRole;
-  pendingComplaintsCount: number;
-  pendingLeavesCount: number;
+  activeTab?: string;
+  activeModule?: string;
+  onTabChange?: (tab: any) => void;
+  onSelectModule?: (mod: any) => void;
+  onModuleChange?: (mod: any) => void;
+  userRole?: UserRole;
+  pendingComplaintsCount?: number;
+  pendingLeavesCount?: number;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
+  activeModule,
   onTabChange,
-  userRole,
-  pendingComplaintsCount,
-  pendingLeavesCount
+  onSelectModule,
+  onModuleChange,
+  userRole = 'student',
+  pendingComplaintsCount = 0,
+  pendingLeavesCount = 0
 }) => {
+  const currentTab = activeModule || activeTab || 'results';
+
+  const handleSelect = (id: string) => {
+    let mod = id;
+    if (id === 'result_portal') mod = 'results';
+    else if (id === 'reporting_system') mod = 'reporting';
+    else if (id === 'mentor_mentee') mod = 'mentor';
+    else if (id === 'leave_management') mod = 'leave';
+    else if (id === 'lab_attendance') mod = 'attendance';
+    else if (id === 'admin_panel') mod = 'admin';
+
+    if (onSelectModule) onSelectModule(mod);
+    if (onTabChange) onTabChange(mod);
+    if (onModuleChange) onModuleChange(mod);
+  };
+
+  const isTabActive = (itemId: string) => {
+    if (currentTab === itemId) return true;
+    if (itemId === 'result_portal' && (currentTab === 'results' || currentTab === 'overview')) return true;
+    if (itemId === 'overview' && (currentTab === 'overview' || currentTab === 'results')) return true;
+    if (itemId === 'reporting_system' && currentTab === 'reporting') return true;
+    if (itemId === 'mentor_mentee' && currentTab === 'mentor') return true;
+    if (itemId === 'leave_management' && currentTab === 'leave') return true;
+    if (itemId === 'lab_attendance' && currentTab === 'attendance') return true;
+    if (itemId === 'admin_panel' && currentTab === 'admin') return true;
+    return false;
+  };
+
   const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
 
   const navItems = [
     {
-      id: 'overview' as ActiveTab,
+      id: 'overview',
       label: 'Campus Overview',
       icon: LayoutDashboard,
       badge: null
     },
     {
-      id: 'result_portal' as ActiveTab,
+      id: 'result_portal',
       label: '1. Result Portal & GPA',
       icon: Award,
       badge: 'GPA/CGPA'
     },
     {
-      id: 'reporting_system' as ActiveTab,
+      id: 'reporting_system',
       label: '2. Complaint Portal',
       icon: AlertCircle,
       badge: pendingComplaintsCount > 0 ? `${pendingComplaintsCount}` : null,
       badgeColor: 'bg-amber-500 text-white'
     },
     {
-      id: 'lost_found' as ActiveTab,
+      id: 'lost_found',
       label: '3. Lost & Found Hub',
       icon: PackageSearch,
       badge: null
     },
     {
-      id: 'collaboration' as ActiveTab,
+      id: 'collaboration',
       label: '4. Academic Resources',
       icon: BookOpenCheck,
       badge: 'Share Notes'
     },
     {
-      id: 'mentor_mentee' as ActiveTab,
+      id: 'mentor_mentee',
       label: '5. Mentor-Mentee',
       icon: UserCheck2,
       badge: null
     },
     {
-      id: 'community' as ActiveTab,
+      id: 'community',
       label: '6. Community Hub',
       icon: Users,
       badge: 'Forum'
     },
     {
-      id: 'leave_management' as ActiveTab,
+      id: 'leave_management',
       label: '7. Student Leave Portal',
       icon: CalendarDays,
       badge: pendingLeavesCount > 0 ? `${pendingLeavesCount}` : null,
       badgeColor: 'bg-indigo-500 text-white'
     },
     {
-      id: 'lab_attendance' as ActiveTab,
+      id: 'lab_attendance',
       label: '8. Lab Attendance (QR)',
       icon: QrCode,
       badge: 'QR Scan'
@@ -112,11 +146,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id;
+          const isActive = isTabActive(item.id);
           return (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleSelect(item.id)}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
@@ -151,9 +185,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           Administration
         </div>
         <button
-          onClick={() => onTabChange('admin_panel')}
+          onClick={() => handleSelect('admin_panel')}
           className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-            activeTab === 'admin_panel'
+            isTabActive('admin_panel')
               ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
               : 'text-purple-700 dark:text-purple-300 bg-purple-50/50 dark:bg-purple-950/30 hover:bg-purple-100 dark:hover:bg-purple-900/50'
           }`}

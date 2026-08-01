@@ -255,8 +255,12 @@ export default function App() {
         {/* Sidebar */}
         <Sidebar
           activeModule={activeModule}
+          activeTab={activeModule}
           userRole={userRole}
           onSelectModule={(mod) => setActiveModule(mod)}
+          onTabChange={(mod) => setActiveModule(mod)}
+          pendingComplaintsCount={complaints.filter((c) => c.status === 'Pending').length}
+          pendingLeavesCount={leaves.filter((l) => l.status === 'Pending').length}
         />
 
         {/* Dynamic Content Body */}
