@@ -82,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div>
             <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-              Smart<span className="text-blue-600 dark:text-blue-400">Campus</span>
+              CKCET <span className="text-blue-600 dark:text-blue-400">CAMPRO</span>
             </span>
             <span className="hidden sm:inline-block ml-2 text-xs font-medium text-slate-500 dark:text-slate-400">
               ERP v3.2
@@ -116,22 +116,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Sparkles className="h-3.5 w-3.5 animate-pulse" />
             <span className="hidden lg:inline">Campus AI</span>
           </button>
-
-          {/* Quick Role Switcher */}
-          <div className="relative flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-            <UserCheck className="h-4 w-4 ml-1.5 text-slate-500 dark:text-slate-400 hidden sm:inline" />
-            <select
-              value={activeRole}
-              onChange={(e) => onRoleChange(e.target.value as UserRole)}
-              className="bg-transparent text-xs font-semibold text-slate-800 dark:text-slate-200 py-1 px-1.5 focus:outline-none cursor-pointer"
-            >
-              <option value="student" className="dark:bg-slate-900">Role: Student</option>
-              <option value="faculty" className="dark:bg-slate-900">Role: Faculty</option>
-              <option value="mentor" className="dark:bg-slate-900">Role: Mentor</option>
-              <option value="admin" className="dark:bg-slate-900">Role: Admin</option>
-              <option value="super_admin" className="dark:bg-slate-900">Role: Super Admin</option>
-            </select>
-          </div>
 
           {/* Dark Mode Toggle */}
           <button
@@ -233,11 +217,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>{currentUser?.name}</span>
                   <ChevronDown className="h-3 w-3 text-slate-400" />
                 </div>
-                {currentUser?.role && roleLabels[currentUser.role] && (
-                  <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded font-semibold ${roleLabels[currentUser.role].bg} ${roleLabels[currentUser.role].text}`}>
-                    {roleLabels[currentUser.role].label}
-                  </span>
-                )}
               </div>
             </button>
 
@@ -265,12 +244,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="text-slate-400">Department:</span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
                       {currentUser?.department || 'CSE'}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60">
-                    <span className="text-slate-400">Active Role:</span>
-                    <span className="font-semibold text-blue-600 dark:text-blue-400 capitalize">
-                      {currentUser?.role}
                     </span>
                   </div>
                 </div>

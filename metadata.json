@@ -1,5 +1,5 @@
 {
-  "name": "Smart Campus Management System",
+  "name": "CKCET CAMPRO",
   "description": "Comprehensive university ERP platform featuring Result Portal, Complaint Tracking, Lost & Found, Resource Collaboration, Mentor-Mentee Hub, Community Forum, Leave Management, Lab Attendance, and AI Analytics.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

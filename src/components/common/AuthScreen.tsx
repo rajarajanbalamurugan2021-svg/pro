@@ -99,7 +99,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
             <GraduationCap className="h-8 w-8" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            Smart<span className="text-blue-400">Campus</span> Portal
+            CKCET <span className="text-blue-400">CAMPRO</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Enterprise Campus Management System
@@ -342,7 +342,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
               type="submit"
               className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2"
             >
-              <span>{mode === 'login' ? 'Sign In to Campus ERP' : 'Create Account'}</span>
+              <span>{mode === 'login' ? 'Sign In to CKCET CAMPRO' : 'Create Account'}</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </form>

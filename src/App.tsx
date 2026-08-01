@@ -47,7 +47,11 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const [activeModule, setActiveModule] = useState<string>('projects');
   const [userRole, setUserRole] = useState<UserRole>('student');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('ckcet_theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    return 'light';
+  });
 
   // State objects initialized from CampusStorage
   const [users, setUsers] = useState<User[]>([]);
@@ -105,6 +109,7 @@ export default function App() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    localStorage.setItem('ckcet_theme', theme);
   }, [theme]);
 
   // Role switcher handler
