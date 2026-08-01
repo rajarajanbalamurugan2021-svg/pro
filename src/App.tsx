@@ -29,6 +29,7 @@ import {
 } from './data/initialData';
 import { Navbar } from './components/common/Navbar';
 import { Sidebar } from './components/common/Sidebar';
+import { AuthScreen } from './components/common/AuthScreen';
 import { ProjectInnovationHub } from './components/modules/ProjectInnovation/ProjectInnovationHub';
 import { ResultPortal } from './components/modules/ResultPortal/ResultPortal';
 import { ComplaintPortal } from './components/modules/ReportingSystem/ComplaintPortal';
@@ -43,6 +44,7 @@ import { AICampusAssistant } from './components/AICampusAssistant/AICampusAssist
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const [activeModule, setActiveModule] = useState<string>('projects');
   const [userRole, setUserRole] = useState<UserRole>('student');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -110,6 +112,17 @@ export default function App() {
     setUserRole(role);
     const matchedUser = users.find((u) => u.role === role) || users[0] || INITIAL_USERS[0];
     setCurrentUser(matchedUser);
+  };
+
+  // Auth Handlers
+  const handleLogin = (user: User, role: UserRole) => {
+    setCurrentUser(user);
+    setUserRole(role);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
   };
 
   // Theme toggle handler
@@ -263,6 +276,10 @@ export default function App() {
     subjects: []
   };
 
+  if (!isAuthenticated) {
+    return <AuthScreen users={users} onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white transition-colors duration-200">
       
@@ -274,6 +291,7 @@ export default function App() {
         notifications={notifications}
         onRoleChange={handleRoleChange}
         onToggleTheme={handleToggleTheme}
+        onLogout={handleLogout}
         onOpenAiDrawer={() => setIsAiOpen(true)}
       />
 
@@ -287,6 +305,7 @@ export default function App() {
           userRole={userRole}
           onSelectModule={(mod) => setActiveModule(mod)}
           onTabChange={(mod) => setActiveModule(mod)}
+          onLogout={handleLogout}
           pendingComplaintsCount={complaints.filter((c) => c.status === 'Pending').length}
           pendingLeavesCount={leaves.filter((l) => l.status === 'Pending').length}
         />

@@ -13,7 +13,8 @@ import {
   ShieldAlert,
   Sparkles,
   ChevronRight,
-  Rocket
+  Rocket,
+  LogOut
 } from 'lucide-react';
 
 export type ActiveTab =
@@ -34,6 +35,7 @@ interface SidebarProps {
   onTabChange?: (tab: any) => void;
   onSelectModule?: (mod: any) => void;
   onModuleChange?: (mod: any) => void;
+  onLogout?: () => void;
   userRole?: UserRole;
   pendingComplaintsCount?: number;
   pendingLeavesCount?: number;
@@ -45,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onTabChange,
   onSelectModule,
   onModuleChange,
+  onLogout,
   userRole = 'student',
   pendingComplaintsCount = 0,
   pendingLeavesCount = 0
@@ -215,7 +218,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* AI Smart Badge Widget */}
-      <div className="mt-auto pt-6">
+      <div className="mt-auto pt-6 space-y-3">
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 text-xs font-bold transition"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Log Out</span>
+          </button>
+        )}
+
         <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white border border-indigo-900/50 shadow-lg">
           <div className="flex items-center gap-2 mb-1.5">
             <div className="p-1 rounded-lg bg-blue-500/20 text-blue-400">

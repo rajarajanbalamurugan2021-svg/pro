@@ -12,13 +12,18 @@ import {
   ShieldCheck,
   UserCheck,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  LogOut,
+  ChevronDown,
+  Building2,
+  Mail
 } from 'lucide-react';
 
 interface NavbarProps {
   currentUser?: User;
   userRole?: UserRole;
   onRoleChange?: (role: UserRole) => void;
+  onLogout?: () => void;
   darkMode?: boolean;
   theme?: 'light' | 'dark';
   onToggleDarkMode?: () => void;
@@ -36,6 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   userRole = 'student',
   onRoleChange = (_role: UserRole) => {},
+  onLogout = () => {},
   darkMode,
   theme,
   onToggleDarkMode,
@@ -49,6 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchChange = (_q: string) => {}
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const safeNotifications = notifications || [];
   const unreadCount = safeNotifications.filter((n) => !n.read).length;
   const isDark = darkMode ?? (theme === 'dark');
@@ -147,7 +154,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Notifications Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                setShowUserMenu(false);
+              }}
               className="relative p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
             >
               <Bell className="h-5 w-5" />
@@ -194,21 +204,91 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Current User Avatar */}
-          <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-800">
-            <img
-              src={currentUser.avatar}
-              alt={currentUser.name}
-              className="h-9 w-9 rounded-full object-cover ring-2 ring-blue-500/30"
-            />
-            <div className="hidden lg:block text-left">
-              <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                {currentUser.name}
+          {/* Direct Log Out Icon Button (Quick Access) */}
+          <button
+            onClick={onLogout}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 text-red-600 dark:text-red-400 text-xs font-semibold border border-red-200 dark:border-red-900/50 transition"
+            title="Log Out of System"
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            <span className="hidden sm:inline">Log Out</span>
+          </button>
+
+          {/* Current User Profile Dropdown Menu */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setShowUserMenu(!showUserMenu);
+                setShowNotifications(false);
+              }}
+              className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800 hover:opacity-80 transition cursor-pointer"
+            >
+              <img
+                src={currentUser?.avatar}
+                alt={currentUser?.name}
+                className="h-9 w-9 rounded-full object-cover ring-2 ring-blue-500/30"
+              />
+              <div className="hidden lg:block text-left">
+                <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight flex items-center gap-1">
+                  <span>{currentUser?.name}</span>
+                  <ChevronDown className="h-3 w-3 text-slate-400" />
+                </div>
+                {currentUser?.role && roleLabels[currentUser.role] && (
+                  <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded font-semibold ${roleLabels[currentUser.role].bg} ${roleLabels[currentUser.role].text}`}>
+                    {roleLabels[currentUser.role].label}
+                  </span>
+                )}
               </div>
-              <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded font-semibold ${roleLabels[currentUser.role].bg} ${roleLabels[currentUser.role].text}`}>
-                {roleLabels[currentUser.role].label}
-              </span>
-            </div>
+            </button>
+
+            {showUserMenu && (
+              <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-50 p-3">
+                <div className="flex items-center gap-3 p-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <img
+                    src={currentUser?.avatar}
+                    alt={currentUser?.name}
+                    className="h-10 w-10 rounded-full object-cover ring-2 ring-blue-500/30"
+                  />
+                  <div className="overflow-hidden">
+                    <div className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                      {currentUser?.name}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 truncate">
+                      <Mail className="h-3 w-3 shrink-0" />
+                      <span className="truncate">{currentUser?.email}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="py-2 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60">
+                    <span className="text-slate-400">Department:</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
+                      {currentUser?.department || 'CSE'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60">
+                    <span className="text-slate-400">Active Role:</span>
+                    <span className="font-semibold text-blue-600 dark:text-blue-400 capitalize">
+                      {currentUser?.role}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      onLogout();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md shadow-red-500/20 transition"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Log Out</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
         </div>
@@ -216,3 +296,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+
