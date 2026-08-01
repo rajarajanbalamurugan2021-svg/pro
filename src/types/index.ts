@@ -16,6 +16,10 @@ export interface User {
   batch?: string;
   parentEmail?: string;
   parentPhone?: string;
+  skills?: string[];
+  interests?: string[];
+  projectsCompleted?: number;
+  githubProfile?: string;
 }
 
 export interface Department {
@@ -264,3 +268,158 @@ export interface AuditLog {
   timestamp: string;
   ipAddress: string;
 }
+
+export type ProjectStage =
+  | 'Idea Submission'
+  | 'Proposal Upload'
+  | 'Faculty Review'
+  | 'Approval'
+  | 'Team Formation'
+  | 'Development'
+  | 'Testing'
+  | 'Documentation'
+  | 'Final Submission'
+  | 'Evaluation'
+  | 'Completed'
+  | 'Rejected';
+
+export type ProjectStatus =
+  | 'Pending Approval'
+  | 'Approved'
+  | 'Changes Requested'
+  | 'Rejected'
+  | 'Completed';
+
+export interface ProjectMember {
+  userId: string;
+  name: string;
+  role: 'Project Lead' | 'Frontend Dev' | 'Backend Dev' | 'AI Engineer' | 'Researcher' | 'Team Member';
+  skills: string[];
+  avatar: string;
+  email: string;
+  department: string;
+  joinedAt: string;
+}
+
+export interface ProjectDocument {
+  id: string;
+  name: string;
+  type: 'Proposal' | 'Report' | 'Presentation' | 'SourceCode' | 'Document';
+  url: string;
+  uploadedBy: string;
+  uploadedAt: string;
+  size: string;
+}
+
+export interface ProjectMilestone {
+  id: string;
+  title: string;
+  dueDate: string;
+  completed: boolean;
+  completedAt?: string;
+  assignedTo?: string;
+  description: string;
+}
+
+export interface ProjectTask {
+  id: string;
+  title: string;
+  description: string;
+  assignedTo: string;
+  assignedToName: string;
+  status: 'To Do' | 'In Progress' | 'In Review' | 'Completed';
+  priority: 'Low' | 'Medium' | 'High';
+  dueDate: string;
+}
+
+export interface ProjectReview {
+  id: string;
+  facultyId: string;
+  facultyName: string;
+  comments: string;
+  innovationGrade: number; // 0-10
+  technicalGrade: number; // 0-10
+  presentationGrade: number; // 0-10
+  overallScore: number; // 0-100
+  decision: 'Approved' | 'Changes Requested' | 'Rejected';
+  reviewedAt: string;
+}
+
+export interface ProjectChatMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar: string;
+  message: string;
+  timestamp: string;
+  attachmentUrl?: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  abstract: string;
+  category: 'AI & Machine Learning' | 'Web & Mobile Apps' | 'IoT & Robotics' | 'Cybersecurity' | 'Cloud & DevOps' | 'Blockchain & Fintech' | 'Biomedical & Health Tech' | 'Renewable Energy';
+  department: string;
+  tags: string[];
+  requiredSkills: string[];
+  ownerId: string;
+  ownerName: string;
+  facultyMentorId?: string;
+  facultyMentorName?: string;
+  stage: ProjectStage;
+  status: ProjectStatus;
+  innovationScore: number; // 0-100
+  members: ProjectMember[];
+  maxTeamSize: number;
+  documents: ProjectDocument[];
+  milestones: ProjectMilestone[];
+  tasks: ProjectTask[];
+  reviews: ProjectReview[];
+  chatMessages: ProjectChatMessage[];
+  githubRepo?: string;
+  demoUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+  badges: string[];
+  qrCodeData?: string;
+  certificateIssued?: boolean;
+  finalGrade?: 'A+' | 'A' | 'B+' | 'B' | 'Pass';
+  meetingSchedules?: MeetingSchedule[];
+}
+
+export interface TeamInvitation {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  inviterId: string;
+  inviterName: string;
+  inviteeId: string;
+  inviteeName: string;
+  inviteeEmail: string;
+  role: string;
+  status: 'Pending' | 'Accepted' | 'Declined';
+  sentAt: string;
+}
+
+export interface SkillItem {
+  id: string;
+  name: string;
+  category: string;
+  studentsCount: number;
+}
+
+export interface CategoryItem {
+  id: string;
+  name: string;
+  description: string;
+  totalProjects: number;
+}
+
+export interface TechStackItem {
+  id: string;
+  name: string;
+  category: string;
+  popularity: number;
+}
+

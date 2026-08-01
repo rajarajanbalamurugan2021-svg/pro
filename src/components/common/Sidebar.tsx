@@ -12,7 +12,8 @@ import {
   QrCode,
   ShieldAlert,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Rocket
 } from 'lucide-react';
 
 export type ActiveTab =
@@ -52,7 +53,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleSelect = (id: string) => {
     let mod = id;
-    if (id === 'result_portal') mod = 'results';
+    if (id === 'project_innovation') mod = 'projects';
+    else if (id === 'result_portal') mod = 'results';
     else if (id === 'reporting_system') mod = 'reporting';
     else if (id === 'mentor_mentee') mod = 'mentor';
     else if (id === 'leave_management') mod = 'leave';
@@ -66,8 +68,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const isTabActive = (itemId: string) => {
     if (currentTab === itemId) return true;
-    if (itemId === 'result_portal' && (currentTab === 'results' || currentTab === 'overview')) return true;
-    if (itemId === 'overview' && (currentTab === 'overview' || currentTab === 'results')) return true;
+    if (itemId === 'project_innovation' && (currentTab === 'projects' || currentTab === 'project_innovation')) return true;
+    if (itemId === 'result_portal' && (currentTab === 'results')) return true;
+    if (itemId === 'overview' && currentTab === 'overview') return true;
     if (itemId === 'reporting_system' && currentTab === 'reporting') return true;
     if (itemId === 'mentor_mentee' && currentTab === 'mentor') return true;
     if (itemId === 'leave_management' && currentTab === 'leave') return true;
@@ -79,6 +82,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
 
   const navItems = [
+    {
+      id: 'project_innovation',
+      label: '★ Project & Innovation Hub',
+      icon: Rocket,
+      badge: 'New AI',
+      badgeColor: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+    },
     {
       id: 'overview',
       label: 'Campus Overview',

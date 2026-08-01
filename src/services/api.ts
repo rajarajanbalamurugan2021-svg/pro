@@ -11,7 +11,9 @@ import {
   Announcement,
   NotificationItem,
   AuditLog,
-  Department
+  Department,
+  Project,
+  TeamInvitation
 } from '../types';
 import {
   INITIAL_USERS,
@@ -27,7 +29,9 @@ import {
   INITIAL_NOTIFICATIONS,
   INITIAL_AUDIT_LOGS,
   INITIAL_ATTENDANCE,
-  INITIAL_MENTOR_ASSIGNMENTS
+  INITIAL_MENTOR_ASSIGNMENTS,
+  INITIAL_PROJECTS,
+  INITIAL_TEAM_INVITATIONS
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
@@ -120,6 +124,22 @@ export class CampusStorage {
 
   static saveMeetings(meetings: MeetingSchedule[]) {
     setStored(STORAGE_KEYS.MEETINGS, meetings);
+  }
+
+  static getProjects(): Project[] {
+    return getStored('smart_campus_projects', INITIAL_PROJECTS);
+  }
+
+  static saveProjects(projects: Project[]) {
+    setStored('smart_campus_projects', projects);
+  }
+
+  static getInvitations(): TeamInvitation[] {
+    return getStored('smart_campus_invitations', INITIAL_TEAM_INVITATIONS);
+  }
+
+  static saveInvitations(invitations: TeamInvitation[]) {
+    setStored('smart_campus_invitations', invitations);
   }
 
   static getLeaveRequests(): LeaveRequest[] {

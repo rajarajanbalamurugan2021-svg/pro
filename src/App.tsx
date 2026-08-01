@@ -13,12 +13,23 @@ import {
   LeaveRequest,
   StudentAttendanceSummary,
   AuditLog,
-  NotificationItem
+  NotificationItem,
+  Project,
+  SkillItem,
+  CategoryItem,
+  TechStackItem,
+  TeamInvitation
 } from './types';
 import { CampusStorage } from './services/api';
-import { INITIAL_USERS } from './data/initialData';
+import {
+  INITIAL_USERS,
+  INITIAL_SKILLS,
+  INITIAL_CATEGORIES,
+  INITIAL_TECH_STACKS
+} from './data/initialData';
 import { Navbar } from './components/common/Navbar';
 import { Sidebar } from './components/common/Sidebar';
+import { ProjectInnovationHub } from './components/modules/ProjectInnovation/ProjectInnovationHub';
 import { ResultPortal } from './components/modules/ResultPortal/ResultPortal';
 import { ComplaintPortal } from './components/modules/ReportingSystem/ComplaintPortal';
 import { LostFoundSystem } from './components/modules/LostFound/LostFoundSystem';
@@ -32,7 +43,7 @@ import { AICampusAssistant } from './components/AICampusAssistant/AICampusAssist
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [activeModule, setActiveModule] = useState<string>('results');
+  const [activeModule, setActiveModule] = useState<string>('projects');
   const [userRole, setUserRole] = useState<UserRole>('student');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -42,6 +53,11 @@ export default function App() {
     const loadedUsers = CampusStorage.getUsers();
     return loadedUsers && loadedUsers.length > 0 ? loadedUsers[0] : INITIAL_USERS[0];
   });
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([]);
+  const [skills] = useState<SkillItem[]>(INITIAL_SKILLS);
+  const [categories] = useState<CategoryItem[]>(INITIAL_CATEGORIES);
+  const [techStacks] = useState<TechStackItem[]>(INITIAL_TECH_STACKS);
   const [studentResults, setStudentResults] = useState<StudentResult[]>([]);
   const [complaints, setComplaints] = useState<Complaint[]>([]);
   const [lostFoundItems, setLostFoundItems] = useState<LostFoundItem[]>([]);
@@ -65,6 +81,8 @@ export default function App() {
     if (u && u.length > 0 && !currentUser) {
       setCurrentUser(u[0]);
     }
+    setProjects(CampusStorage.getProjects());
+    setInvitations(CampusStorage.getInvitations());
     setStudentResults(CampusStorage.getResults());
     setComplaints(CampusStorage.getComplaints());
     setLostFoundItems(CampusStorage.getLostFound());
@@ -100,6 +118,16 @@ export default function App() {
   };
 
   // Handlers for modules
+  const handleUpdateProjects = (updated: Project[]) => {
+    setProjects(updated);
+    CampusStorage.saveProjects(updated);
+  };
+
+  const handleUpdateInvitations = (updated: TeamInvitation[]) => {
+    setInvitations(updated);
+    CampusStorage.saveInvitations(updated);
+  };
+
   const handleAddComplaint = (newComp: Complaint) => {
     const updated = [newComp, ...complaints];
     setComplaints(updated);
@@ -265,6 +293,22 @@ export default function App() {
 
         {/* Dynamic Content Body */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+          {(activeModule === 'projects' || activeModule === 'overview' || activeModule === 'project_innovation') && (
+            <ProjectInnovationHub
+              userRole={userRole}
+              currentUser={currentUser}
+              projects={projects}
+              users={users}
+              skills={skills}
+              categories={categories}
+              techStacks={techStacks}
+              invitations={invitations}
+              onUpdateProjects={handleUpdateProjects}
+              onUpdateInvitations={handleUpdateInvitations}
+              onRoleSwitch={handleRoleChange}
+            />
+          )}
+
           {activeModule === 'results' && (
             <ResultPortal
               results={studentResults}

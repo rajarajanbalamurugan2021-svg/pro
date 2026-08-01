@@ -14,7 +14,12 @@ import {
   CommunityPost,
   Announcement,
   NotificationItem,
-  AuditLog
+  AuditLog,
+  Project,
+  SkillItem,
+  CategoryItem,
+  TechStackItem,
+  TeamInvitation
 } from '../types';
 
 export const INITIAL_USERS: User[] = [
@@ -76,7 +81,11 @@ export const INITIAL_USERS: User[] = [
     section: 'A',
     batch: '2023-2027',
     parentEmail: 'parent.rivera@gmail.com',
-    parentPhone: '+1 (555) 012-9876'
+    parentPhone: '+1 (555) 012-9876',
+    skills: ['React.js', 'Node.js', 'Python', 'TensorFlow', 'TypeScript', 'Tailwind CSS'],
+    interests: ['Artificial Intelligence', 'Computer Vision', 'Full Stack Development'],
+    projectsCompleted: 3,
+    githubProfile: 'https://github.com/alexrivera-dev'
   },
   {
     id: 'u-student-2',
@@ -92,7 +101,11 @@ export const INITIAL_USERS: User[] = [
     section: 'A',
     batch: '2023-2027',
     parentEmail: 'patel.family@gmail.com',
-    parentPhone: '+1 (555) 013-7722'
+    parentPhone: '+1 (555) 013-7722',
+    skills: ['IoT', 'Embedded C++', 'Raspberry Pi', 'Node.js', 'MQTT', 'Circuit Design'],
+    interests: ['Hardware Prototyping', 'Smart Microgrids', 'Robotics'],
+    projectsCompleted: 2,
+    githubProfile: 'https://github.com/sophiapatel-iot'
   },
   {
     id: 'u-mentor-1',
@@ -427,3 +440,268 @@ export const INITIAL_AUDIT_LOGS: AuditLog[] = [
   { id: 'log-2', action: 'USER_ROLE_UPDATED', performedBy: 'Marcus Sterling', userRole: 'Admin', target: 'Dr. James Oakley (Assigned Mentor)', timestamp: '2026-07-30 09:15:22', ipAddress: '192.168.1.10' },
   { id: 'log-3', action: 'LEAVE_APPROVED', performedBy: 'Dr. Sarah Lin', userRole: 'Faculty', target: 'Leave #LV-098 (Medical)', timestamp: '2026-07-29 11:45:00', ipAddress: '192.168.1.108' }
 ];
+
+export const INITIAL_PROJECTS: Project[] = [
+  {
+    id: 'proj-101',
+    title: 'Autonomous Campus AI Guard & Vision System',
+    abstract: 'Edge-computed computer vision pipeline using YOLOv8 and TensorFlow for real-time unauthorized entry detection, lab safety compliance monitoring, and automated emergency alert dispatches across university premises.',
+    category: 'AI & Machine Learning',
+    department: 'Computer Science & Engineering',
+    tags: ['AI Vision', 'TensorFlow', 'YOLOv8', 'Edge Computing', 'React', 'OpenCV'],
+    requiredSkills: ['Python', 'OpenCV', 'React.js', 'TensorFlow', 'Tailwind CSS', 'FastAPI'],
+    ownerId: 'u-student-1',
+    ownerName: 'Alex Rivera',
+    facultyMentorId: 'u-faculty-1',
+    facultyMentorName: 'Prof. Robert Thorne',
+    stage: 'Development',
+    status: 'Approved',
+    innovationScore: 92,
+    maxTeamSize: 4,
+    githubRepo: 'https://github.com/alexrivera-dev/campus-ai-vision-guard',
+    demoUrl: 'https://campus-vision-demo.university.edu',
+    createdAt: '2026-06-15',
+    updatedAt: '2026-07-28',
+    badges: ['Faculty Pick', 'Top Innovator', 'High Impact'],
+    qrCodeData: 'https://university.edu/projects/proj-101',
+    members: [
+      {
+        userId: 'u-student-1',
+        name: 'Alex Rivera',
+        role: 'Project Lead',
+        skills: ['React.js', 'Node.js', 'Python', 'TensorFlow'],
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+        email: 'alex.rivera@student.edu',
+        department: 'Computer Science & Engineering',
+        joinedAt: '2026-06-15'
+      },
+      {
+        userId: 'u-student-2',
+        name: 'Sophia Patel',
+        role: 'AI Engineer',
+        skills: ['IoT', 'Embedded C++', 'Python'],
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        email: 'sophia.p@student.edu',
+        department: 'Computer Science & Engineering',
+        joinedAt: '2026-06-18'
+      }
+    ],
+    documents: [
+      {
+        id: 'doc-1',
+        name: 'Project_Proposal_Campus_AI_Guard.pdf',
+        type: 'Proposal',
+        url: '#',
+        uploadedBy: 'Alex Rivera',
+        uploadedAt: '2026-06-20',
+        size: '2.4 MB'
+      },
+      {
+        id: 'doc-2',
+        name: 'System_Architecture_Diagram.png',
+        type: 'Document',
+        url: '#',
+        uploadedBy: 'Sophia Patel',
+        uploadedAt: '2026-07-02',
+        size: '1.1 MB'
+      },
+      {
+        id: 'doc-3',
+        name: 'MidTerm_Progress_Presentation.pptx',
+        type: 'Presentation',
+        url: '#',
+        uploadedBy: 'Alex Rivera',
+        uploadedAt: '2026-07-22',
+        size: '5.8 MB'
+      }
+    ],
+    milestones: [
+      { id: 'm-1', title: 'Requirement Analysis & Dataset Collection', dueDate: '2026-06-25', completed: true, completedAt: '2026-06-24', assignedTo: 'Alex Rivera', description: 'Gathered 5,000 anonymized campus security frames.' },
+      { id: 'm-2', title: 'YOLOv8 Model Training & Optimization', dueDate: '2026-07-10', completed: true, completedAt: '2026-07-09', assignedTo: 'Sophia Patel', description: 'Achieved 94.2% mAP@0.5 on lab safety violations.' },
+      { id: 'm-3', title: 'Full Stack Dashboard & WebSocket Stream', dueDate: '2026-07-25', completed: true, completedAt: '2026-07-25', assignedTo: 'Alex Rivera', description: 'Integrated live feed rendering & emergency dispatches.' },
+      { id: 'm-4', title: 'Final Field Testing & Faculty Review', dueDate: '2026-08-10', completed: false, assignedTo: 'Alex Rivera', description: 'Deploying edge cameras in Robotics Lab for pilot run.' }
+    ],
+    tasks: [
+      { id: 't-1', title: 'Optimize Frame Processing Rate on Jetson Nano', description: 'Reduce inference latency below 40ms per frame.', assignedTo: 'u-student-2', assignedToName: 'Sophia Patel', status: 'In Progress', priority: 'High', dueDate: '2026-08-02' },
+      { id: 't-2', title: 'Export REST API documentation endpoints', description: 'Swagger / OpenAPI JSON specification.', assignedTo: 'u-student-1', assignedToName: 'Alex Rivera', status: 'Completed', priority: 'Medium', dueDate: '2026-07-27' }
+    ],
+    reviews: [
+      {
+        id: 'rev-1',
+        facultyId: 'u-faculty-1',
+        facultyName: 'Prof. Robert Thorne',
+        comments: 'Outstanding proposal with solid methodology. Edge processing approach is well suited for real-time safety compliance.',
+        innovationGrade: 9,
+        technicalGrade: 9,
+        presentationGrade: 9,
+        overallScore: 90,
+        decision: 'Approved',
+        reviewedAt: '2026-06-22'
+      }
+    ],
+    chatMessages: [
+      { id: 'chat-1', senderId: 'u-student-1', senderName: 'Alex Rivera', senderAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80', message: 'Hey team, I uploaded the latest model metrics into the documents folder.', timestamp: '10:30 AM' },
+      { id: 'chat-2', senderId: 'u-student-2', senderName: 'Sophia Patel', senderAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', message: 'Awesome! The edge inference tests on Jetson Nano are looking very promising.', timestamp: '10:42 AM' }
+    ]
+  },
+  {
+    id: 'proj-102',
+    title: 'Smart IoT Microgrid Energy Optimizer',
+    abstract: 'An automated energy forecasting and dynamic load balancing system using MQTT protocol and reinforcement learning to reduce peak power costs across university hostel blocks and laboratories.',
+    category: 'Renewable Energy',
+    department: 'Electrical & Electronics Engineering',
+    tags: ['IoT', 'Microgrid', 'Solar Energy', 'MQTT', 'Python', 'Machine Learning'],
+    requiredSkills: ['Embedded C++', 'IoT', 'MQTT', 'Python', 'React', 'Circuit Design'],
+    ownerId: 'u-student-2',
+    ownerName: 'Sophia Patel',
+    facultyMentorId: 'u-faculty-2',
+    facultyMentorName: 'Dr. Sarah Lin',
+    stage: 'Faculty Review',
+    status: 'Pending Approval',
+    innovationScore: 89,
+    maxTeamSize: 3,
+    githubRepo: 'https://github.com/sophiapatel-iot/smart-microgrid',
+    createdAt: '2026-07-10',
+    updatedAt: '2026-07-30',
+    badges: ['Green Tech', 'Emerging Idea'],
+    qrCodeData: 'https://university.edu/projects/proj-102',
+    members: [
+      {
+        userId: 'u-student-2',
+        name: 'Sophia Patel',
+        role: 'Project Lead',
+        skills: ['IoT', 'Embedded C++', 'Raspberry Pi'],
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        email: 'sophia.p@student.edu',
+        department: 'Computer Science & Engineering',
+        joinedAt: '2026-07-10'
+      }
+    ],
+    documents: [
+      {
+        id: 'doc-201',
+        name: 'Microgrid_Optimizer_Proposal.pdf',
+        type: 'Proposal',
+        url: '#',
+        uploadedBy: 'Sophia Patel',
+        uploadedAt: '2026-07-12',
+        size: '3.1 MB'
+      }
+    ],
+    milestones: [
+      { id: 'm-201', title: 'Faculty Proposal Submission', dueDate: '2026-07-15', completed: true, completedAt: '2026-07-12', assignedTo: 'Sophia Patel', description: 'Submitted detailed proposal to Dr. Sarah Lin.' },
+      { id: 'm-202', title: 'Sensor Hardware Node Fabrication', dueDate: '2026-08-05', completed: false, description: 'Assembling ESP32 current and voltage sensing modules.' }
+    ],
+    tasks: [],
+    reviews: [],
+    chatMessages: []
+  },
+  {
+    id: 'proj-103',
+    title: 'Decentralized Academic Credential Verification Protocol',
+    abstract: 'Zero-knowledge cryptography based blockchain registry ensuring tamper-proof degree certificates, mark sheets, and transcript verification with instant zero-cost verification for global employers.',
+    category: 'Blockchain & Fintech',
+    department: 'Information Technology',
+    tags: ['Blockchain', 'Ethereum', 'Solidity', 'Zero Knowledge', 'Web3', 'React'],
+    requiredSkills: ['Solidity', 'Web3.js', 'React.js', 'Cryptography', 'Node.js'],
+    ownerId: 'u-student-1',
+    ownerName: 'Alex Rivera',
+    facultyMentorId: 'u-faculty-1',
+    facultyMentorName: 'Prof. Robert Thorne',
+    stage: 'Completed',
+    status: 'Completed',
+    innovationScore: 96,
+    maxTeamSize: 4,
+    githubRepo: 'https://github.com/alexrivera-dev/zk-degree-verify',
+    demoUrl: 'https://degree-verify.university.edu',
+    createdAt: '2026-03-01',
+    updatedAt: '2026-07-15',
+    badges: ['Top Innovator', 'Best Project 2026', 'Faculty Pick'],
+    qrCodeData: 'https://university.edu/projects/proj-103',
+    certificateIssued: true,
+    finalGrade: 'A+',
+    members: [
+      {
+        userId: 'u-student-1',
+        name: 'Alex Rivera',
+        role: 'Project Lead',
+        skills: ['React.js', 'Node.js', 'Solidity'],
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+        email: 'alex.rivera@student.edu',
+        department: 'Computer Science & Engineering',
+        joinedAt: '2026-03-01'
+      }
+    ],
+    documents: [
+      { id: 'doc-301', name: 'Final_Thesis_Report.pdf', type: 'Report', url: '#', uploadedBy: 'Alex Rivera', uploadedAt: '2026-07-10', size: '8.4 MB' },
+      { id: 'doc-302', name: 'Presentation_Deck.pptx', type: 'Presentation', url: '#', uploadedBy: 'Alex Rivera', uploadedAt: '2026-07-12', size: '6.2 MB' }
+    ],
+    milestones: [
+      { id: 'm-301', title: 'Smart Contract Deployment on Testnet', dueDate: '2026-04-10', completed: true, completedAt: '2026-04-08', description: 'Deployed and verified Solidity contracts.' },
+      { id: 'm-302', title: 'Faculty Defense & Final Demonstration', dueDate: '2026-07-15', completed: true, completedAt: '2026-07-15', description: 'Awarded Grade A+ by Department Committee.' }
+    ],
+    tasks: [],
+    reviews: [
+      {
+        id: 'rev-301',
+        facultyId: 'u-faculty-1',
+        facultyName: 'Prof. Robert Thorne',
+        comments: 'Exceptional execution and publication-quality research on zero-knowledge verification.',
+        innovationGrade: 10,
+        technicalGrade: 10,
+        presentationGrade: 9,
+        overallScore: 97,
+        decision: 'Approved',
+        reviewedAt: '2026-07-15'
+      }
+    ],
+    chatMessages: []
+  }
+];
+
+export const INITIAL_SKILLS: SkillItem[] = [
+  { id: 'sk-1', name: 'React.js', category: 'Frontend', studentsCount: 42 },
+  { id: 'sk-2', name: 'TypeScript', category: 'Frontend', studentsCount: 38 },
+  { id: 'sk-3', name: 'Node.js', category: 'Backend', studentsCount: 35 },
+  { id: 'sk-4', name: 'Python', category: 'Data Science', studentsCount: 50 },
+  { id: 'sk-5', name: 'TensorFlow', category: 'AI & ML', studentsCount: 22 },
+  { id: 'sk-6', name: 'IoT', category: 'Hardware', studentsCount: 18 },
+  { id: 'sk-7', name: 'Solidity', category: 'Blockchain', studentsCount: 12 },
+  { id: 'sk-8', name: 'Cybersecurity', category: 'Security', studentsCount: 25 },
+  { id: 'sk-9', name: 'Embedded C++', category: 'Hardware', studentsCount: 16 },
+  { id: 'sk-10', name: 'Tailwind CSS', category: 'UI/UX', studentsCount: 45 }
+];
+
+export const INITIAL_CATEGORIES: CategoryItem[] = [
+  { id: 'cat-1', name: 'AI & Machine Learning', description: 'Computer Vision, Natural Language Processing, Neural Networks, Generative AI.', totalProjects: 14 },
+  { id: 'cat-2', name: 'Web & Mobile Apps', description: 'Full stack platforms, PWA, Android, iOS, Cloud microservices.', totalProjects: 22 },
+  { id: 'cat-3', name: 'IoT & Robotics', description: 'Embedded systems, autonomous rovers, smart sensors, home automation.', totalProjects: 9 },
+  { id: 'cat-4', name: 'Blockchain & Fintech', description: 'Smart contracts, Web3, decentralized finance, cryptographic security.', totalProjects: 7 },
+  { id: 'cat-5', name: 'Renewable Energy', description: 'Smart solar grids, energy forecasting, green technology innovation.', totalProjects: 6 },
+  { id: 'cat-6', name: 'Cybersecurity', description: 'Network security, penetration testing, threat detection, zero trust.', totalProjects: 8 }
+];
+
+export const INITIAL_TECH_STACKS: TechStackItem[] = [
+  { id: 'ts-1', name: 'React + Node + TypeScript', category: 'Full Stack', popularity: 95 },
+  { id: 'ts-2', name: 'Python + PyTorch + FastAPI', category: 'AI Stack', popularity: 88 },
+  { id: 'ts-3', name: 'ESP32 + MQTT + C++', category: 'IoT Stack', popularity: 74 },
+  { id: 'ts-4', name: 'Solidity + Hardhat + Web3.js', category: 'Blockchain', popularity: 65 },
+  { id: 'ts-5', name: 'Docker + Kubernetes + Go', category: 'DevOps', popularity: 78 }
+];
+
+export const INITIAL_TEAM_INVITATIONS: TeamInvitation[] = [
+  {
+    id: 'inv-1',
+    projectId: 'proj-101',
+    projectTitle: 'Autonomous Campus AI Guard & Vision System',
+    inviterId: 'u-student-1',
+    inviterName: 'Alex Rivera',
+    inviteeId: 'u-student-2',
+    inviteeName: 'Sophia Patel',
+    inviteeEmail: 'sophia.p@student.edu',
+    role: 'AI Engineer',
+    status: 'Accepted',
+    sentAt: '2026-06-18'
+  }
+];
+
