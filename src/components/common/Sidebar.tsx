@@ -27,6 +27,7 @@ export type ActiveTab =
   | 'community'
   | 'leave_management'
   | 'lab_attendance'
+  | 'placement_system'
   | 'admin_panel';
 
 interface SidebarProps {
@@ -62,6 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     else if (id === 'mentor_mentee') mod = 'mentor';
     else if (id === 'leave_management') mod = 'leave';
     else if (id === 'lab_attendance') mod = 'attendance';
+    else if (id === 'placement_system') mod = 'placement';
     else if (id === 'admin_panel') mod = 'admin';
 
     if (onSelectModule) onSelectModule(mod);
@@ -78,6 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (itemId === 'mentor_mentee' && currentTab === 'mentor') return true;
     if (itemId === 'leave_management' && currentTab === 'leave') return true;
     if (itemId === 'lab_attendance' && currentTab === 'attendance') return true;
+    if (itemId === 'placement_system' && (currentTab === 'placement' || currentTab === 'placement_system')) return true;
     if (itemId === 'admin_panel' && currentTab === 'admin') return true;
     return false;
   };
@@ -85,6 +88,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
 
   const navItems = [
+    {
+      id: 'placement_system',
+      label: '9. AI Placements Hub',
+      icon: Sparkles,
+      badge: 'AI Match',
+      badgeColor: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white'
+    },
     {
       id: 'project_innovation',
       label: '★ Project & Innovation Hub',

@@ -20,7 +20,7 @@ import {
   TechStackItem,
   TeamInvitation
 } from './types';
-import { CampusStorage } from './services/api';
+import { CampusStorage, subscribeToRealtimeCollection } from './services/api';
 import {
   INITIAL_USERS,
   INITIAL_SKILLS,
@@ -39,13 +39,14 @@ import { MentorMenteePortal } from './components/modules/MentorMentee/MentorMent
 import { CommunityHub } from './components/modules/Community/CommunityHub';
 import { LeaveManagement } from './components/modules/LeaveManagement/LeaveManagement';
 import { LabAttendance } from './components/modules/LabAttendance/LabAttendance';
+import { PlacementSystem } from './components/modules/PlacementSystem/PlacementSystem';
 import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
 import { AICampusAssistant } from './components/AICampusAssistant/AICampusAssistant';
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
-  const [activeModule, setActiveModule] = useState<string>('projects');
+  const [activeModule, setActiveModule] = useState<string>('placement');
   const [userRole, setUserRole] = useState<UserRole>('student');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('ckcet_theme');
@@ -80,7 +81,7 @@ export default function App() {
   // AI Drawer state
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  // Initialize Data on mount
+  // Initialize Data & Setup Real-time Multi-device Firestore Listeners
   useEffect(() => {
     const u = CampusStorage.getUsers();
     setUsers(u);
@@ -100,6 +101,37 @@ export default function App() {
     setLeaves(CampusStorage.getLeaveRequests());
     setAuditLogs(CampusStorage.getAuditLogs());
     setNotifications(CampusStorage.getNotifications());
+
+    // Subscribe to live Firestore changes across devices
+    const unsubProjects = subscribeToRealtimeCollection<Project[]>('smart_campus_projects', (data) => setProjects(data));
+    const unsubInvitations = subscribeToRealtimeCollection<TeamInvitation[]>('smart_campus_invitations', (data) => setInvitations(data));
+    const unsubResults = subscribeToRealtimeCollection<StudentResult[]>('smart_campus_results', (data) => setStudentResults(data));
+    const unsubComplaints = subscribeToRealtimeCollection<Complaint[]>('smart_campus_complaints', (data) => setComplaints(data));
+    const unsubLostFound = subscribeToRealtimeCollection<LostFoundItem[]>('smart_campus_lost_found', (data) => setLostFoundItems(data));
+    const unsubResources = subscribeToRealtimeCollection<Resource[]>('smart_campus_resources', (data) => setResources(data));
+    const unsubMeetings = subscribeToRealtimeCollection<MeetingSchedule[]>('smart_campus_meetings', (data) => setMeetings(data));
+    const unsubPosts = subscribeToRealtimeCollection<CommunityPost[]>('smart_campus_posts', (data) => setPosts(data));
+    const unsubAnnouncements = subscribeToRealtimeCollection<Announcement[]>('smart_campus_announcements', (data) => setAnnouncements(data));
+    const unsubLeaves = subscribeToRealtimeCollection<LeaveRequest[]>('smart_campus_leave', (data) => setLeaves(data));
+    const unsubNotifications = subscribeToRealtimeCollection<NotificationItem[]>('smart_campus_notifications', (data) => setNotifications(data));
+    const unsubAuditLogs = subscribeToRealtimeCollection<AuditLog[]>('smart_campus_logs', (data) => setAuditLogs(data));
+    const unsubUsers = subscribeToRealtimeCollection<User[]>('smart_campus_users', (data) => setUsers(data));
+
+    return () => {
+      unsubProjects();
+      unsubInvitations();
+      unsubResults();
+      unsubComplaints();
+      unsubLostFound();
+      unsubResources();
+      unsubMeetings();
+      unsubPosts();
+      unsubAnnouncements();
+      unsubLeaves();
+      unsubNotifications();
+      unsubAuditLogs();
+      unsubUsers();
+    };
   }, []);
 
   // Sync dark class on root html
@@ -414,6 +446,18 @@ export default function App() {
             <LabAttendance
               attendanceData={labAttendance}
               userRole={userRole}
+            />
+          )}
+
+          {(activeModule === 'placement' || activeModule === 'placement_system') && (
+            <PlacementSystem
+              user={currentUser}
+              onUpdateUser={(updatedUser) => {
+                setCurrentUser(updatedUser);
+                const updatedUsers = users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+                setUsers(updatedUsers);
+                CampusStorage.saveUsers(updatedUsers);
+              }}
             />
           )}
 

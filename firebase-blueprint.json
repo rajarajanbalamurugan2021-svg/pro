@@ -1,0 +1,217 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "Registered students, faculty, mentors, and administrators.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "department": { "type": "string" },
+        "phone": { "type": "string" },
+        "avatar": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "departments": {
+      "title": "Departments",
+      "description": "Academic departments in CKCET.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "head": { "type": "string text" },
+        "totalStudents": { "type": "number" },
+        "totalFaculty": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    },
+    "results": {
+      "title": "Results",
+      "description": "Student semester examination performance records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "registerNo": { "type": "string" },
+        "department": { "type": "string" },
+        "semester": { "type": "number" },
+        "cgpa": { "type": "number text" },
+        "status": { "type": "string" },
+        "subjects": { "type": "array" }
+      },
+      "required": ["id", "studentId", "semester"]
+    },
+    "complaints": {
+      "title": "Complaints",
+      "description": "Student and faculty campus issue tickets.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string text" },
+        "status": { "type": "string" },
+        "priority": { "type": "string" },
+        "submittedBy": { "type": "string" },
+        "submittedByRole": { "type": "string" },
+        "submittedAt": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "aiPriority": { "type": "string" },
+        "aiCategory": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "status"]
+    },
+    "lost_found": {
+      "title": "Lost & Found Items",
+      "description": "Lost and found items reported on campus.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string text" },
+        "location": { "type": "string" },
+        "date": { "type": "string" },
+        "contactName": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "status": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["id", "title", "type", "status"]
+    },
+    "resources": {
+      "title": "Shared Resources",
+      "description": "Study notes, lab manuals, and syllabus files.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "department": { "type": "string" },
+        "semester": { "type": "number" },
+        "type": { "type": "string" },
+        "uploadedBy": { "type": "string text" },
+        "uploadedAt": { "type": "string" },
+        "fileSize": { "type": "string" },
+        "downloads": { "type": "number" },
+        "likes": { "type": "number" },
+        "downloadUrl": { "type": "string" }
+      },
+      "required": ["id", "title", "subject"]
+    },
+    "projects": {
+      "title": "Innovation Projects",
+      "description": "Student innovation and research projects.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "abstract": { "type": "string text" },
+        "category": { "type": "string" },
+        "status": { "type": "string" },
+        "leadStudent": { "type": "string" },
+        "leadEmail": { "type": "string" },
+        "department": { "type": "string" },
+        "mentor": { "type": "string" },
+        "teamMembers": { "type": "array" },
+        "openRoles": { "type": "array" },
+        "techStack": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "stars": { "type": "number" }
+      },
+      "required": ["id", "title", "category"]
+    },
+    "community_posts": {
+      "title": "Community Posts",
+      "description": "Forum discussions and campus Q&A posts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "author": { "type": "string" },
+        "authorRole": { "type": "string" },
+        "avatar": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string text" },
+        "category": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "likes": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "tags": { "type": "array" },
+        "isPinned": { "type": "boolean" },
+        "comments": { "type": "array" }
+      },
+      "required": ["id", "author", "content"]
+    },
+    "announcements": {
+      "title": "Announcements",
+      "description": "Official campus notices and alerts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string text" },
+        "date": { "type": "string" },
+        "author": { "type": "string" },
+        "category": { "type": "string" },
+        "priority": { "type": "string" },
+        "targetDepartment": { "type": "string" }
+      },
+      "required": ["id", "title", "content"]
+    },
+    "leave_requests": {
+      "title": "Leave Requests",
+      "description": "Student leave applications and approvals.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "registerNo": { "type": "string" },
+        "department": { "type": "string" },
+        "reason": { "type": "string text" },
+        "fromDate": { "type": "string" },
+        "toDate": { "type": "string" },
+        "type": { "type": "string" },
+        "status": { "type": "string" },
+        "appliedOn": { "type": "string" },
+        "remarks": { "type": "string" }
+      },
+      "required": ["id", "studentName", "reason", "status"]
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Real-time user system notifications.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string text" },
+        "title": { "type": "string text" },
+        "message": { "type": "string text" },
+        "timestamp": { "type": "string text" },
+        "read": { "type": "boolean" },
+        "type": { "type": "string text" }
+      },
+      "required": ["id", "title", "message"]
+    },
+    "audit_logs": {
+      "title": "Audit Logs",
+      "description": "System administrative access and modification logs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string text" },
+        "action": { "type": "string text" },
+        "performedBy": { "type": "string text" },
+        "userRole": { "type": "string text" },
+        "target": { "type": "string text" },
+        "timestamp": { "type": "string text" },
+        "ipAddress": { "type": "string text" }
+      },
+      "required": ["id", "action", "performedBy"]
+    }
+  }
+}

@@ -376,6 +376,260 @@ For each candidate, calculate matchPercentage (0-100), list matchedSkills, and p
   }
 });
 
+// AI Placement Profile & Skill Gap Analyzer API
+app.post('/api/ai/analyze-placement-profile', async (req, res) => {
+  try {
+    const { studentProfile, targetRole } = req.body || {};
+
+    if (!ai) {
+      return res.json({
+        overallReadinessScore: 86,
+        missingSkills: ['System Design', 'Docker', 'Kubernetes', 'Redis Caching'],
+        requiredCertifications: ['AWS Certified Developer Associate', 'Meta Front-End Developer Specialization'],
+        recommendedCourses: [
+          { name: 'Distributed Systems & Microservices', provider: 'Coursera (DeepLearning.AI)', link: '#' },
+          { name: 'Advanced Data Structures & Algorithms', provider: 'LeetCode / GeeksforGeeks', link: '#' }
+        ],
+        practicePlatforms: ['LeetCode (Target 150 Medium/Hard)', 'HackerRank (5 Star Problem Solving)', 'CodeChef'],
+        suggestedMiniProjects: [
+          'Full Stack E-commerce Microservice with Redis & RabbitMQ',
+          'Real-time Collaborative Whiteboard using WebSockets & WebRTC'
+        ]
+      });
+    }
+
+    const prompt = `Analyze this student profile for target placement/internship role: "${targetRole || 'Software Development Engineer'}".
+Student details: ${JSON.stringify(studentProfile)}.
+
+Provide a JSON response:
+overallReadinessScore: number 0-100
+missingSkills: array of strings
+requiredCertifications: array of strings
+recommendedCourses: array of objects { name, provider, link }
+practicePlatforms: array of strings
+suggestedMiniProjects: array of strings`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.6-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            overallReadinessScore: { type: Type.NUMBER },
+            missingSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+            requiredCertifications: { type: Type.ARRAY, items: { type: Type.STRING } },
+            recommendedCourses: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  name: { type: Type.STRING },
+                  provider: { type: Type.STRING },
+                  link: { type: Type.STRING }
+                },
+                required: ['name', 'provider', 'link']
+              }
+            },
+            practicePlatforms: { type: Type.ARRAY, items: { type: Type.STRING } },
+            suggestedMiniProjects: { type: Type.ARRAY, items: { type: Type.STRING } }
+          },
+          required: ['overallReadinessScore', 'missingSkills', 'requiredCertifications', 'recommendedCourses', 'practicePlatforms', 'suggestedMiniProjects']
+        }
+      }
+    });
+
+    res.json(JSON.parse(response.text || '{}'));
+  } catch (error: any) {
+    console.error('Error in /api/ai/analyze-placement-profile:', error);
+    res.json({
+      overallReadinessScore: 80,
+      missingSkills: ['System Architecture', 'Cloud Deployment'],
+      requiredCertifications: ['Cloud Developer Certificate'],
+      recommendedCourses: [{ name: 'Full Stack Masterclass', provider: 'Udemy', link: '#' }],
+      practicePlatforms: ['LeetCode', 'HackerRank'],
+      suggestedMiniProjects: ['Cloud Microservice API']
+    });
+  }
+});
+
+// AI Resume Analyzer & ATS Keyword Optimizer API
+app.post('/api/ai/score-resume', async (req, res) => {
+  try {
+    const { resumeText, targetJobDescription } = req.body || {};
+
+    if (!ai) {
+      return res.json({
+        score: 84,
+        detectedSections: ['Contact Information', 'Education', 'Technical Skills', 'Projects', 'Certifications'],
+        missingSections: ['Quantifiable Impact Metrics', 'Open Source Contributions', 'Extracurricular Leadership'],
+        keyStrengths: [
+          'Strong foundational stack (React, Node, Python, TypeScript)',
+          'Clear project descriptions with live GitHub links'
+        ],
+        suggestedImprovements: [
+          'Quantify accomplishments (e.g., "Improved query response speed by 40%")',
+          'Include ATS keywords matching target SDE job descriptions (REST APIs, CI/CD, Unit Testing)'
+        ],
+        atsKeywords: {
+          present: ['React.js', 'Python', 'Data Structures', 'Git', 'TypeScript', 'SQL'],
+          missing: ['Docker', 'AWS', 'Microservices', 'GraphQL', 'CI/CD Pipelines']
+        },
+        summary: 'Solid engineering resume. Adding measurable metrics and cloud exposure will boost ATS match score above 90%.'
+      });
+    }
+
+    const prompt = `Analyze this student resume text against target job description (if any):
+Resume Content: ${resumeText || 'Standard CSE Student Resume with React, Python, Node.js experience'}
+Job Description: ${targetJobDescription || 'Software Engineering Role requiring Data Structures, Full Stack Development, REST APIs, SQL, and Cloud'}
+
+Return JSON:
+score: number 0-100
+detectedSections: array of strings
+missingSections: array of strings
+keyStrengths: array of strings
+suggestedImprovements: array of strings
+atsKeywords: object { present: array of strings, missing: array of strings }
+summary: short 2-sentence summary string`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.6-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            score: { type: Type.NUMBER },
+            detectedSections: { type: Type.ARRAY, items: { type: Type.STRING } },
+            missingSections: { type: Type.ARRAY, items: { type: Type.STRING } },
+            keyStrengths: { type: Type.ARRAY, items: { type: Type.STRING } },
+            suggestedImprovements: { type: Type.ARRAY, items: { type: Type.STRING } },
+            atsKeywords: {
+              type: Type.OBJECT,
+              properties: {
+                present: { type: Type.ARRAY, items: { type: Type.STRING } },
+                missing: { type: Type.ARRAY, items: { type: Type.STRING } }
+              },
+              required: ['present', 'missing']
+            },
+            summary: { type: Type.STRING }
+          },
+          required: ['score', 'detectedSections', 'missingSections', 'keyStrengths', 'suggestedImprovements', 'atsKeywords', 'summary']
+        }
+      }
+    });
+
+    res.json(JSON.parse(response.text || '{}'));
+  } catch (error: any) {
+    console.error('Error in /api/ai/score-resume:', error);
+    res.json({
+      score: 82,
+      detectedSections: ['Education', 'Skills', 'Projects'],
+      missingSections: ['Work Experience'],
+      keyStrengths: ['Good tech stack alignment'],
+      suggestedImprovements: ['Add bullet points with quantifiable results'],
+      atsKeywords: { present: ['React', 'Python'], missing: ['System Design'] },
+      summary: 'Well structured resume.'
+    });
+  }
+});
+
+// AI Career Recommendation & Personalized Roadmap API
+app.post('/api/ai/career-roadmap', async (req, res) => {
+  try {
+    const { profile, careerGoal } = req.body || {};
+
+    if (!ai) {
+      return res.json({
+        recommendedRole: careerGoal || 'Full Stack AI Engineer',
+        predictedSalaryRange: '₹8.5 LPA - ₹18 LPA',
+        futureDemand: 'High Growth',
+        industryTrends: [
+          'Explosive demand for engineers who combine Web Development with Generative AI / LLM integration.',
+          'Shift towards Cloud Native microservices, Vector Databases, and Agentic Workflows.',
+          'Increased recruiter focus on open-source contributions and production-grade side projects.'
+        ],
+        roadmapMilestones: [
+          {
+            phase: 'Phase 1 (Months 1-2)',
+            title: 'Advanced Data Structures & Core System Fundamentals',
+            duration: '8 Weeks',
+            skillsToMaster: ['Trees & Graphs', 'Dynamic Programming', 'SQL Indexing', 'Operating System Basics']
+          },
+          {
+            phase: 'Phase 2 (Months 3-4)',
+            title: 'Full-Stack Architecture & Cloud API Integration',
+            duration: '8 Weeks',
+            skillsToMaster: ['React 19 / Next.js', 'Express Microservices', 'Tailwind CSS', 'Docker Containers']
+          },
+          {
+            phase: 'Phase 3 (Months 5-6)',
+            title: 'AI Integration & High-Scale Project Portfolio',
+            duration: '8 Weeks',
+            skillsToMaster: ['Gemini / OpenAI API SDK', 'Vector Databases (Pinecone/Milvus)', 'System Design Patterns', 'ATS Resume Tuning']
+          }
+        ]
+      });
+    }
+
+    const prompt = `Generate a personalized AI Career Recommendation and Step-by-Step Learning Roadmap for student profile:
+Profile: ${JSON.stringify(profile)}. Target Goal: ${careerGoal || 'Software Engineer'}.
+
+Return JSON:
+recommendedRole: string
+predictedSalaryRange: string
+futureDemand: string ("High Growth" | "Stable" | "Emerging Tech")
+industryTrends: array of strings
+roadmapMilestones: array of objects { phase, title, duration, skillsToMaster (array) }`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.6-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            recommendedRole: { type: Type.STRING },
+            predictedSalaryRange: { type: Type.STRING },
+            futureDemand: { type: Type.STRING },
+            industryTrends: { type: Type.ARRAY, items: { type: Type.STRING } },
+            roadmapMilestones: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  phase: { type: Type.STRING },
+                  title: { type: Type.STRING },
+                  duration: { type: Type.STRING },
+                  skillsToMaster: { type: Type.ARRAY, items: { type: Type.STRING } }
+                },
+                required: ['phase', 'title', 'duration', 'skillsToMaster']
+              }
+            }
+          },
+          required: ['recommendedRole', 'predictedSalaryRange', 'futureDemand', 'industryTrends', 'roadmapMilestones']
+        }
+      }
+    });
+
+    res.json(JSON.parse(response.text || '{}'));
+  } catch (error: any) {
+    console.error('Error in /api/ai/career-roadmap:', error);
+    res.json({
+      recommendedRole: req.body.careerGoal || 'Software Developer',
+      predictedSalaryRange: '₹7.5 LPA - ₹14 LPA',
+      futureDemand: 'High Growth',
+      industryTrends: ['High demand for JavaScript, Python, and Cloud skills.'],
+      roadmapMilestones: [
+        { phase: 'Phase 1', title: 'Data Structures', duration: '4 Weeks', skillsToMaster: ['Arrays', 'Strings'] }
+      ]
+    });
+  }
+});
+
 // Vite & Static file handling
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {

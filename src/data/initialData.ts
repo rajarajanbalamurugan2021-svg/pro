@@ -19,7 +19,10 @@ import {
   SkillItem,
   CategoryItem,
   TechStackItem,
-  TeamInvitation
+  TeamInvitation,
+  PlacementOpportunity,
+  PlacementApplication,
+  InterviewQuestion
 } from '../types';
 
 export const INITIAL_USERS: User[] = [
@@ -43,6 +46,27 @@ export const INITIAL_USERS: User[] = [
     department: 'Academic Registrar',
     employeeId: 'EMP012',
     phone: '+1 (555) 018-9922',
+    status: 'active'
+  },
+  {
+    id: 'u-po-1',
+    name: 'Prof. S. Rajesh Kumar',
+    email: 'placement@ckcet.ac.in',
+    role: 'placement_officer',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+    department: 'Training & Placement Cell',
+    employeeId: 'TPO001',
+    phone: '+91 98401 23456',
+    status: 'active'
+  },
+  {
+    id: 'u-recruiter-1',
+    name: 'Priya Sharma (Zoho Corp)',
+    email: 'priya.recruiter@zoho.com',
+    role: 'recruiter',
+    avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&auto=format&fit=crop&q=80',
+    department: 'Talent Acquisition',
+    phone: '+91 99620 11223',
     status: 'active'
   },
   {
@@ -704,4 +728,276 @@ export const INITIAL_TEAM_INVITATIONS: TeamInvitation[] = [
     sentAt: '2026-06-18'
   }
 ];
+
+export const INITIAL_OPPORTUNITIES: PlacementOpportunity[] = [
+  {
+    id: 'opp-1',
+    type: 'Full-Time Placement',
+    companyName: 'Zoho Corporation',
+    companyLogo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Software Development Engineer (SDE-1)',
+    departmentEligibility: ['Computer Science & Engineering', 'Information Technology', 'Electronics & Communication Engineering'],
+    category: 'Dream',
+    location: 'Chennai / Tenkasi (Hybrid)',
+    stipendOrPackage: '₹8.5 LPA',
+    packageNumber: 8.5,
+    duration: 'Full-Time Permanent',
+    minCGPA: 7.5,
+    requiredSkills: ['Java', 'Python', 'Data Structures & Algorithms', 'DBMS', 'React.js'],
+    jobDescription: 'Build high-scale enterprise cloud services, collaborative applications, and robust microservices.',
+    responsibilities: [
+      'Design, implement, and maintain distributed cloud microservices.',
+      'Optimize SQL and NoSQL database query execution speed.',
+      'Collaborate with UI/UX designers to implement modern web applications.'
+    ],
+    perks: ['Free Food & Snacks', 'Health Insurance', 'Cab Facility', 'Learning Allowance'],
+    applicationDeadline: '2026-08-25',
+    driveDate: '2026-09-02',
+    status: 'Open',
+    recruiterId: 'u-recruiter-1',
+    recruiterEmail: 'priya.recruiter@zoho.com',
+    applicantsCount: 42
+  },
+  {
+    id: 'opp-2',
+    type: 'Internship',
+    companyName: 'Google India',
+    companyLogo: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Software Engineering Intern (Summer 2027)',
+    departmentEligibility: ['Computer Science & Engineering', 'Information Technology', 'Artificial Intelligence & Data Science'],
+    category: 'Dream',
+    location: 'Bengaluru / Hyderabad',
+    stipendOrPackage: '₹1,20,000 / month',
+    packageNumber: 14.4,
+    duration: '3 Months Internship',
+    minCGPA: 8.5,
+    requiredSkills: ['C++', 'Python', 'Algorithms', 'System Design Basics', 'Git'],
+    jobDescription: 'Solve challenging computer science problems, work on core infrastructure, and contribute to production codebases.',
+    responsibilities: [
+      'Develop algorithms and features for global Google Cloud infrastructure.',
+      'Perform unit testing and automated integration checks.',
+      'Present internship project outcomes to Google Tech Leads.'
+    ],
+    perks: ['PPO Opportunity', 'Relocation Stipend', 'Mentorship by Senior Googlers', 'Free Gourmet Dining'],
+    applicationDeadline: '2026-08-30',
+    driveDate: '2026-09-10',
+    status: 'Open',
+    recruiterId: 'u-recruiter-2',
+    recruiterEmail: 'university-hiring@google.com',
+    applicantsCount: 88
+  },
+  {
+    id: 'opp-3',
+    type: 'Full-Time Placement',
+    companyName: 'TATA Consultancy Services (TCS Digital)',
+    companyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Digital Innovator Engineer',
+    departmentEligibility: ['Computer Science & Engineering', 'Information Technology', 'Electrical & Electronics Engineering', 'Mechanical Engineering'],
+    category: 'IT & Software',
+    location: 'Pan India (Chennai / Bengaluru / Pune)',
+    stipendOrPackage: '₹7.0 LPA',
+    packageNumber: 7.0,
+    duration: 'Full-Time Permanent',
+    minCGPA: 6.5,
+    requiredSkills: ['Python', 'SQL', 'Web Development', 'Cloud Concepts', 'Aptitude & Verbal'],
+    jobDescription: 'Work on cutting-edge digital transformation projects for Fortune 500 clients worldwide.',
+    responsibilities: [
+      'Implement API gateways and cloud backend routines.',
+      'Participate in agile sprint retrospective meetings and user story delivery.',
+      'Assist in cloud deployment pipelines.'
+    ],
+    perks: ['Fast-track Promotion', 'Onsite Mobility Opportunities', 'TCS Elevate Incentives'],
+    applicationDeadline: '2026-09-05',
+    driveDate: '2026-09-15',
+    status: 'Open',
+    recruiterId: 'u-po-1',
+    recruiterEmail: 'campus.hiring@tcs.com',
+    applicantsCount: 130
+  },
+  {
+    id: 'opp-4',
+    type: 'Internship',
+    companyName: 'Robert Bosch Engineering',
+    companyLogo: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Embedded Systems & IoT Trainee',
+    departmentEligibility: ['Electrical & Electronics Engineering', 'Electronics & Communication Engineering', 'Mechanical Engineering'],
+    category: 'Core',
+    location: 'Coimbatore / Bengaluru',
+    stipendOrPackage: '₹35,000 / month',
+    packageNumber: 4.2,
+    duration: '6 Months',
+    minCGPA: 7.0,
+    requiredSkills: ['Embedded C', 'Microcontrollers (ESP32 / STM32)', 'RTOS', 'MATLAB', 'CAN Protocol'],
+    jobDescription: 'Design automotive electronics software controllers and Smart Mobility IoT telemetry systems.',
+    responsibilities: [
+      'Program ARM Cortex microcontrollers and sensor interfaces.',
+      'Conduct hardware-in-the-loop (HIL) testing.',
+      'Document schematic circuit diagrams and firmware specs.'
+    ],
+    perks: ['Pre-Placement Offer (PPO)', 'Bosch Academy Certification', 'Transport Allowance'],
+    applicationDeadline: '2026-08-20',
+    driveDate: '2026-08-28',
+    status: 'Open',
+    recruiterId: 'u-po-1',
+    recruiterEmail: 'careers@bosch.in',
+    applicantsCount: 35
+  },
+  {
+    id: 'opp-5',
+    type: 'Full-Time Placement',
+    companyName: 'Larsen & Toubro (L&T Construction)',
+    companyLogo: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Graduate Engineer Trainee (GET - Core)',
+    departmentEligibility: ['Civil Engineering', 'Mechanical Engineering', 'Electrical & Electronics Engineering'],
+    category: 'Core',
+    location: 'Chennai / Mumbai / Site Projects',
+    stipendOrPackage: '₹6.5 LPA',
+    packageNumber: 6.5,
+    duration: 'Full-Time Permanent',
+    minCGPA: 7.0,
+    requiredSkills: ['AutoCAD', 'Revit', 'Structural Analysis', 'Project Planning', 'Construction Management'],
+    jobDescription: 'Execution of mega infrastructure projects including bridges, smart cities, and power grids.',
+    responsibilities: [
+      'Inspect site quality, concrete structural integrity, and safety compliance.',
+      'Prepare bill of quantities (BOQ) and project scheduling estimation.',
+      'Coordinate with structural consultants and sub-contractors.'
+    ],
+    perks: ['Site Accommodation', 'Health & Accident Cover', 'L&T Leadership Academy Training'],
+    applicationDeadline: '2026-09-12',
+    driveDate: '2026-09-22',
+    status: 'Open',
+    recruiterId: 'u-po-1',
+    recruiterEmail: 'campus@lntecc.com',
+    applicantsCount: 28
+  },
+  {
+    id: 'opp-6',
+    type: 'Off-Campus Drive',
+    companyName: 'Freshworks Inc.',
+    companyLogo: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&auto=format&fit=crop&q=80',
+    roleTitle: 'Product Operations & Customer Success Engineer',
+    departmentEligibility: ['Computer Science & Engineering', 'Information Technology', 'Electronics & Communication Engineering', 'Mechanical Engineering', 'Civil Engineering'],
+    category: 'Startup',
+    location: 'Chennai',
+    stipendOrPackage: '₹9.0 LPA',
+    packageNumber: 9.0,
+    duration: 'Full-Time Permanent',
+    minCGPA: 6.0,
+    requiredSkills: ['JavaScript', 'API Testing', 'Communication Skills', 'Troubleshooting', 'SQL'],
+    jobDescription: 'Assist global SaaS enterprise clients with technical API integration and platform customization.',
+    responsibilities: [
+      'Solve client API webhooks and integration issues.',
+      'Write developer documentation and product feature guides.',
+      'Collaborate with Product Managers on bug escalation.'
+    ],
+    perks: ['Stock Options (RSUs)', 'Wellness Budget', 'Flexible Work Hours'],
+    applicationDeadline: '2026-09-18',
+    driveDate: '2026-09-28',
+    status: 'Upcoming',
+    recruiterId: 'u-recruiter-1',
+    recruiterEmail: 'freshers@freshworks.com',
+    applicantsCount: 15
+  }
+];
+
+export const INITIAL_APPLICATIONS: PlacementApplication[] = [
+  {
+    id: 'app-101',
+    opportunityId: 'opp-1',
+    opportunityTitle: 'Software Development Engineer (SDE-1)',
+    companyName: 'Zoho Corporation',
+    type: 'Full-Time Placement',
+    studentId: 'u-student-1',
+    studentName: 'Alex Rivera',
+    studentEmail: 'alex.rivera@student.edu',
+    studentRoll: 'CS2023001',
+    department: 'Computer Science & Engineering',
+    cgpa: 8.8,
+    resumeUrl: 'https://ckcet.ac.in/resumes/CS2023001_AlexRivera.pdf',
+    matchingScore: 92,
+    status: 'Interview Scheduled',
+    appliedAt: '2026-08-01',
+    interviewDate: '2026-08-10 at 10:00 AM',
+    interviewLocation: 'Zoho Campus, Estancia IT Park / Online Video Round',
+    notes: 'Shortlisted after Online Coding Round (3/3 problems passed).'
+  },
+  {
+    id: 'app-102',
+    opportunityId: 'opp-2',
+    opportunityTitle: 'Software Engineering Intern (Summer 2027)',
+    companyName: 'Google India',
+    type: 'Internship',
+    studentId: 'u-student-1',
+    studentName: 'Alex Rivera',
+    studentEmail: 'alex.rivera@student.edu',
+    studentRoll: 'CS2023001',
+    department: 'Computer Science & Engineering',
+    cgpa: 8.8,
+    resumeUrl: 'https://ckcet.ac.in/resumes/CS2023001_AlexRivera.pdf',
+    matchingScore: 89,
+    status: 'Under Review',
+    appliedAt: '2026-08-02'
+  },
+  {
+    id: 'app-103',
+    opportunityId: 'opp-1',
+    opportunityTitle: 'Software Development Engineer (SDE-1)',
+    companyName: 'Zoho Corporation',
+    type: 'Full-Time Placement',
+    studentId: 'u-student-2',
+    studentName: 'Sophia Patel',
+    studentEmail: 'sophia.p@student.edu',
+    studentRoll: 'CS2023002',
+    department: 'Computer Science & Engineering',
+    cgpa: 9.2,
+    resumeUrl: 'https://ckcet.ac.in/resumes/CS2023002_SophiaPatel.pdf',
+    matchingScore: 96,
+    status: 'Shortlisted',
+    appliedAt: '2026-08-01'
+  }
+];
+
+export const INITIAL_INTERVIEW_QUESTIONS: InterviewQuestion[] = [
+  {
+    id: 'iq-1',
+    category: 'Technical',
+    question: 'How do you detect a cycle in a linked list and find its starting node?',
+    answerHint: 'Use Floyd’s Cycle Detection Algorithm (Two Pointers: Slow and Fast). When they meet, reset one pointer to head and move both 1 step at a time.',
+    difficulty: 'Medium',
+    company: 'Google / Zoho'
+  },
+  {
+    id: 'iq-2',
+    category: 'Technical',
+    question: 'Explain the difference between Process and Thread, and describe how deadlocks occur.',
+    answerHint: 'Processes have independent memory space, while threads share memory space of parent process. Deadlocks require 4 Coffman conditions: Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait.',
+    difficulty: 'Medium',
+    company: 'TCS / Bosch'
+  },
+  {
+    id: 'iq-3',
+    category: 'HR',
+    question: 'Tell me about a time you faced a conflict in a team project and how you resolved it.',
+    answerHint: 'Use the STAR method (Situation, Task, Action, Result). Focus on active listening, objective data-driven decision making, and maintaining team harmony.',
+    difficulty: 'Easy',
+    company: 'General HR'
+  },
+  {
+    id: 'iq-4',
+    category: 'Coding Challenge',
+    question: 'Write a function to find the Longest Substring Without Repeating Characters.',
+    answerHint: 'Use Sliding Window technique with a Hash Set or Map tracking character last seen indices. Time Complexity: O(N), Space Complexity: O(min(N, M)).',
+    difficulty: 'Hard',
+    company: 'Zoho / Amazon'
+  },
+  {
+    id: 'iq-5',
+    category: 'Aptitude',
+    question: 'A train 150 meters long passes a telegraph post in 12 seconds. What is the speed of the train in km/hr?',
+    answerHint: 'Speed = Distance / Time = 150 / 12 = 12.5 m/s. In km/hr = 12.5 * (18 / 5) = 45 km/hr.',
+    difficulty: 'Easy',
+    company: 'Campus Drive Aptitude'
+  }
+];
+
 

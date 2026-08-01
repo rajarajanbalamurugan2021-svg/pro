@@ -1,4 +1,4 @@
-export type UserRole = 'super_admin' | 'admin' | 'faculty' | 'student' | 'mentor';
+export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor';
 
 export interface User {
   id: string;
@@ -422,4 +422,115 @@ export interface TechStackItem {
   category: string;
   popularity: number;
 }
+
+export type OpportunityType = 'Internship' | 'Full-Time Placement' | 'PPO (Pre-Placement Offer)' | 'Off-Campus Drive' | 'Government' | 'Startup';
+export type CompanyCategory = 'Core' | 'IT & Software' | 'Dream' | 'Mass Recruiter' | 'Government' | 'Startup';
+
+export interface PlacementOpportunity {
+  id: string;
+  type: OpportunityType;
+  companyName: string;
+  companyLogo?: string;
+  roleTitle: string;
+  departmentEligibility: string[];
+  category: CompanyCategory;
+  location: string;
+  stipendOrPackage: string;
+  packageNumber: number; // For package stats (LPA or Monthly stipend in k)
+  duration: string;
+  minCGPA: number;
+  requiredSkills: string[];
+  jobDescription: string;
+  responsibilities: string[];
+  perks: string[];
+  applicationDeadline: string;
+  driveDate: string;
+  status: 'Open' | 'Closed' | 'Upcoming' | 'Completed';
+  recruiterId: string;
+  recruiterEmail: string;
+  applicantsCount: number;
+}
+
+export type ApplicationStatus = 'Applied' | 'Under Review' | 'Shortlisted' | 'Interview Scheduled' | 'Selected' | 'Rejected';
+
+export interface PlacementApplication {
+  id: string;
+  opportunityId: string;
+  opportunityTitle: string;
+  companyName: string;
+  type: OpportunityType;
+  studentId: string;
+  studentName: string;
+  studentEmail: string;
+  studentRoll: string;
+  department: string;
+  cgpa: number;
+  resumeUrl: string;
+  matchingScore: number; // 0-100%
+  status: ApplicationStatus;
+  appliedAt: string;
+  interviewDate?: string;
+  interviewLocation?: string;
+  notes?: string;
+}
+
+export interface StudentProfileExtra {
+  studentId: string;
+  internalMarks: number;
+  softSkills: string[];
+  certifications: string[];
+  projectsList: string[];
+  internshipExperience: string;
+  resumeUrl: string;
+  portfolio: {
+    github?: string;
+    linkedin?: string;
+    website?: string;
+  };
+  achievements: {
+    hackathons: string[];
+    workshops: string[];
+    awards: string[];
+  };
+  preferredRoles: string[];
+  preferredLocations: string[];
+  careerInterests: string[];
+}
+
+export interface SkillGapAnalysis {
+  missingSkills: string[];
+  requiredCertifications: string[];
+  recommendedCourses: { name: string; provider: string; link: string }[];
+  practicePlatforms: string[];
+  suggestedMiniProjects: string[];
+  overallReadinessScore: number;
+}
+
+export interface ResumeAnalysisResult {
+  score: number;
+  detectedSections: string[];
+  missingSections: string[];
+  keyStrengths: string[];
+  suggestedImprovements: string[];
+  atsKeywords: { present: string[]; missing: string[] };
+  summary: string;
+}
+
+export interface InterviewQuestion {
+  id: string;
+  category: 'Technical' | 'HR' | 'Aptitude' | 'Coding Challenge';
+  question: string;
+  answerHint: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  company?: string;
+}
+
+export interface CareerRoadmap {
+  recommendedRole: string;
+  predictedSalaryRange: string;
+  futureDemand: 'High Growth' | 'Stable' | 'Emerging Tech';
+  industryTrends: string[];
+  roadmapMilestones: { phase: string; title: string; duration: string; skillsToMaster: string[] }[];
+}
+
 

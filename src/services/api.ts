@@ -13,7 +13,10 @@ import {
   AuditLog,
   Department,
   Project,
-  TeamInvitation
+  TeamInvitation,
+  PlacementOpportunity,
+  PlacementApplication,
+  InterviewQuestion
 } from '../types';
 import {
   INITIAL_USERS,
@@ -31,8 +34,13 @@ import {
   INITIAL_ATTENDANCE,
   INITIAL_MENTOR_ASSIGNMENTS,
   INITIAL_PROJECTS,
-  INITIAL_TEAM_INVITATIONS
+  INITIAL_TEAM_INVITATIONS,
+  INITIAL_OPPORTUNITIES,
+  INITIAL_APPLICATIONS,
+  INITIAL_INTERVIEW_QUESTIONS
 } from '../data/initialData';
+import { db } from '../lib/firebase';
+import { doc, setDoc, onSnapshot } from 'firebase/firestore';
 
 const STORAGE_KEYS = {
   USERS: 'smart_campus_users',
@@ -48,7 +56,12 @@ const STORAGE_KEYS = {
   NOTIFICATIONS: 'smart_campus_notifications',
   LOGS: 'smart_campus_logs',
   ACTIVE_USER: 'smart_campus_active_user',
-  THEME: 'smart_campus_theme'
+  THEME: 'smart_campus_theme',
+  PROJECTS: 'smart_campus_projects',
+  INVITATIONS: 'smart_campus_invitations',
+  OPPORTUNITIES: 'smart_campus_opportunities',
+  APPLICATIONS: 'smart_campus_applications',
+  INTERVIEW_QUESTIONS: 'smart_campus_interview_questions'
 };
 
 function getStored<T>(key: string, defaultValue: T): T {
@@ -64,9 +77,35 @@ function getStored<T>(key: string, defaultValue: T): T {
 function setStored<T>(key: string, value: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
+    // Asynchronously push to Cloud Firestore for real-time multi-device sync
+    if (db) {
+      setDoc(doc(db, 'ckcet_campro', key), { data: value, updatedAt: Date.now() }, { merge: true })
+        .catch((err) => console.warn(`Firestore sync error for ${key}:`, err));
+    }
   } catch (err) {
     console.error(`Error saving ${key} to storage:`, err);
   }
+}
+
+export function subscribeToRealtimeCollection<T>(key: string, callback: (data: T) => void) {
+  if (!db) return () => {};
+  return onSnapshot(
+    doc(db, 'ckcet_campro', key),
+    (snapshot) => {
+      if (snapshot.exists()) {
+        const val = snapshot.data();
+        if (val && Array.isArray(val.data)) {
+          try {
+            localStorage.setItem(key, JSON.stringify(val.data));
+          } catch (_) {}
+          callback(val.data as T);
+        }
+      }
+    },
+    (error) => {
+      console.warn(`Firestore subscription notice for ${key}:`, error);
+    }
+  );
 }
 
 export class CampusStorage {
@@ -127,19 +166,19 @@ export class CampusStorage {
   }
 
   static getProjects(): Project[] {
-    return getStored('smart_campus_projects', INITIAL_PROJECTS);
+    return getStored(STORAGE_KEYS.PROJECTS, INITIAL_PROJECTS);
   }
 
   static saveProjects(projects: Project[]) {
-    setStored('smart_campus_projects', projects);
+    setStored(STORAGE_KEYS.PROJECTS, projects);
   }
 
   static getInvitations(): TeamInvitation[] {
-    return getStored('smart_campus_invitations', INITIAL_TEAM_INVITATIONS);
+    return getStored(STORAGE_KEYS.INVITATIONS, INITIAL_TEAM_INVITATIONS);
   }
 
   static saveInvitations(invitations: TeamInvitation[]) {
-    setStored('smart_campus_invitations', invitations);
+    setStored(STORAGE_KEYS.INVITATIONS, invitations);
   }
 
   static getLeaveRequests(): LeaveRequest[] {
@@ -209,6 +248,46 @@ export class CampusStorage {
     setStored(STORAGE_KEYS.LOGS, updated);
   }
 
+  static getOpportunities(): PlacementOpportunity[] {
+    return getStored(STORAGE_KEYS.OPPORTUNITIES, INITIAL_OPPORTUNITIES);
+  }
+
+  static getPlacementOpportunities(): PlacementOpportunity[] {
+    return this.getOpportunities();
+  }
+
+  static saveOpportunities(opportunities: PlacementOpportunity[]) {
+    setStored(STORAGE_KEYS.OPPORTUNITIES, opportunities);
+  }
+
+  static savePlacementOpportunities(opportunities: PlacementOpportunity[]) {
+    this.saveOpportunities(opportunities);
+  }
+
+  static getApplications(): PlacementApplication[] {
+    return getStored(STORAGE_KEYS.APPLICATIONS, INITIAL_APPLICATIONS);
+  }
+
+  static getPlacementApplications(): PlacementApplication[] {
+    return this.getApplications();
+  }
+
+  static saveApplications(applications: PlacementApplication[]) {
+    setStored(STORAGE_KEYS.APPLICATIONS, applications);
+  }
+
+  static savePlacementApplications(applications: PlacementApplication[]) {
+    this.saveApplications(applications);
+  }
+
+  static getInterviewQuestions(): InterviewQuestion[] {
+    return getStored(STORAGE_KEYS.INTERVIEW_QUESTIONS, INITIAL_INTERVIEW_QUESTIONS);
+  }
+
+  static saveInterviewQuestions(questions: InterviewQuestion[]) {
+    setStored(STORAGE_KEYS.INTERVIEW_QUESTIONS, questions);
+  }
+
   static resetToDefaults() {
     localStorage.clear();
     setStored(STORAGE_KEYS.USERS, INITIAL_USERS);
@@ -223,6 +302,11 @@ export class CampusStorage {
     setStored(STORAGE_KEYS.ANNOUNCEMENTS, INITIAL_ANNOUNCEMENTS);
     setStored(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS);
     setStored(STORAGE_KEYS.LOGS, INITIAL_AUDIT_LOGS);
+    setStored(STORAGE_KEYS.PROJECTS, INITIAL_PROJECTS);
+    setStored(STORAGE_KEYS.INVITATIONS, INITIAL_TEAM_INVITATIONS);
+    setStored(STORAGE_KEYS.OPPORTUNITIES, INITIAL_OPPORTUNITIES);
+    setStored(STORAGE_KEYS.APPLICATIONS, INITIAL_APPLICATIONS);
+    setStored(STORAGE_KEYS.INTERVIEW_QUESTIONS, INITIAL_INTERVIEW_QUESTIONS);
   }
 }
 
