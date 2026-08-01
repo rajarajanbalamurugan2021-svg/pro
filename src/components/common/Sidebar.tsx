@@ -89,74 +89,74 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const navItems = [
     {
-      id: 'placement_system',
-      label: '9. AI Placements Hub',
-      icon: Sparkles,
-      badge: 'AI Match',
-      badgeColor: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white'
-    },
-    {
-      id: 'project_innovation',
-      label: '★ Project & Innovation Hub',
-      icon: Rocket,
-      badge: 'New AI',
-      badgeColor: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-    },
-    {
       id: 'overview',
       label: 'Campus Overview',
       icon: LayoutDashboard,
       badge: null
     },
     {
+      id: 'placement_system',
+      label: '1. AI Placements Hub',
+      icon: Sparkles,
+      badge: 'AI Match',
+      badgeColor: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white'
+    },
+    {
+      id: 'project_innovation',
+      label: '2. Project & Innovation Hub',
+      icon: Rocket,
+      badge: 'New AI',
+      badgeColor: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+    },
+    {
       id: 'result_portal',
-      label: '1. Result Portal & GPA',
+      label: '3. Result Portal & GPA',
       icon: Award,
       badge: 'GPA/CGPA'
     },
     {
+      id: 'lab_attendance',
+      label: '4. Lab Attendance (QR)',
+      icon: QrCode,
+      badge: 'QR Scan'
+    },
+    {
+      id: 'leave_management',
+      label: '5. Student Leave Portal',
+      icon: CalendarDays,
+      badge: pendingLeavesCount > 0 ? `${pendingLeavesCount}` : null,
+      badgeColor: 'bg-indigo-500 text-white'
+    },
+    {
+      id: 'mentor_mentee',
+      label: '6. Mentor-Mentee',
+      icon: UserCheck2,
+      badge: null
+    },
+    {
+      id: 'collaboration',
+      label: '7. Academic Resources',
+      icon: BookOpenCheck,
+      badge: 'Share Notes'
+    },
+    {
       id: 'reporting_system',
-      label: '2. Complaint Portal',
+      label: '8. Complaint Portal',
       icon: AlertCircle,
       badge: pendingComplaintsCount > 0 ? `${pendingComplaintsCount}` : null,
       badgeColor: 'bg-amber-500 text-white'
     },
     {
       id: 'lost_found',
-      label: '3. Lost & Found Hub',
+      label: '9. Lost & Found Hub',
       icon: PackageSearch,
       badge: null
     },
     {
-      id: 'collaboration',
-      label: '4. Academic Resources',
-      icon: BookOpenCheck,
-      badge: 'Share Notes'
-    },
-    {
-      id: 'mentor_mentee',
-      label: '5. Mentor-Mentee',
-      icon: UserCheck2,
-      badge: null
-    },
-    {
       id: 'community',
-      label: '6. Community Hub',
+      label: '10. Community Hub',
       icon: Users,
       badge: 'Forum'
-    },
-    {
-      id: 'leave_management',
-      label: '7. Student Leave Portal',
-      icon: CalendarDays,
-      badge: pendingLeavesCount > 0 ? `${pendingLeavesCount}` : null,
-      badgeColor: 'bg-indigo-500 text-white'
-    },
-    {
-      id: 'lab_attendance',
-      label: '8. Lab Attendance (QR)',
-      icon: QrCode,
-      badge: 'QR Scan'
     }
   ];
 
