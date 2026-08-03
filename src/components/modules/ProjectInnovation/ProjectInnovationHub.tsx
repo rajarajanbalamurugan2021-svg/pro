@@ -40,6 +40,9 @@ import { FacultyReviewModal } from './FacultyReviewModal';
 import { ProjectCertificateModal } from './ProjectCertificateModal';
 import { SystemSchemaModal } from './SystemSchemaModal';
 import { ProjectDetailModal } from './ProjectDetailModal';
+import { AdminManagementPanel } from './AdminManagementPanel';
+import { AIGuidanceAssistantPanel } from './AIGuidanceAssistantPanel';
+import { ProjectWorkspacePanel } from './ProjectWorkspacePanel';
 
 interface ProjectInnovationHubProps {
   userRole: UserRole;
@@ -362,7 +365,7 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
         <div className="flex flex-wrap items-center gap-1">
           <button
             onClick={() => setViewTab('browse')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               viewTab === 'browse'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -372,36 +375,58 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
           </button>
 
           <button
-            onClick={() => setViewTab('my_projects')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              viewTab === 'my_projects'
+            onClick={() => setViewTab('workspace')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              viewTab === 'workspace'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
-            <FolderPlus className="h-4 w-4" /> My Team Projects ({myProjects.length})
+            <FolderPlus className="h-4 w-4" /> Project Workspace
           </button>
 
           <button
             onClick={() => setViewTab('faculty_queue')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               viewTab === 'faculty_queue'
                 ? 'bg-amber-500 text-white shadow-md shadow-amber-500/20'
                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
-            <ShieldCheck className="h-4 w-4" /> Faculty Review Station ({pendingFacultyQueue.length})
+            <ShieldCheck className="h-4 w-4" /> Faculty Review ({pendingFacultyQueue.length})
           </button>
 
           <button
-            onClick={() => setViewTab('leaderboard')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              viewTab === 'leaderboard'
+            onClick={() => setViewTab('admin_panel')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              viewTab === 'admin_panel'
                 ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
-            <Flame className="h-4 w-4 text-amber-400" /> Innovation Leaderboard
+            <Users className="h-4 w-4" /> Admin Management
+          </button>
+
+          <button
+            onClick={() => setViewTab('ai_guidance')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              viewTab === 'ai_guidance'
+                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Brain className="h-4 w-4 text-amber-300" /> AI Guidance
+          </button>
+
+          <button
+            onClick={() => setViewTab('leaderboard')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              viewTab === 'leaderboard'
+                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Flame className="h-4 w-4 text-amber-400" /> Leaderboard
           </button>
         </div>
 
@@ -496,45 +521,35 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
         </div>
       )}
 
-      {/* Tab View 2: My Projects Workspace */}
-      {viewTab === 'my_projects' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-slate-900 dark:text-white">
-              My Active Projects & Collaborations ({myProjects.length})
-            </h2>
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold flex items-center gap-1.5"
-            >
-              <Plus className="h-4 w-4" /> Post New Idea
-            </button>
-          </div>
+      {/* Tab View 2: Workspace & Collaboration */}
+      {viewTab === 'workspace' && (
+        <ProjectWorkspacePanel
+          projects={myProjects.length > 0 ? myProjects : projects}
+          currentUser={{ id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar }}
+          onUpdateProject={handleUpdateSingleProject}
+        />
+      )}
 
-          {myProjects.length === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 space-y-3">
-              <FolderPlus className="h-10 w-10 text-slate-400 mx-auto" />
-              <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">You have no active projects yet</h3>
-              <p className="text-xs text-slate-500">
-                Post your project idea or join an open project team to start collaborating!
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {myProjects.map((proj) => (
-                <ProjectCard
-                  key={proj.id}
-                  project={proj}
-                  currentUserRole={userRole}
-                  currentUserId={currentUser.id}
-                  onViewDetails={(p) => setActiveProjectForDetail(p)}
-                  onFacultyReview={(p) => setActiveProjectForFacultyReview(p)}
-                  onGenerateCertificate={(p) => setActiveProjectForCertificate(p)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+      {/* Tab View 3: Admin Management Panel */}
+      {viewTab === 'admin_panel' && (
+        <AdminManagementPanel
+          users={users}
+          projects={projects}
+          departments={departmentsList}
+          onUpdateUsers={(updatedUsers) => {
+            // Handled via state update
+          }}
+          onUpdateProjects={onUpdateProjects}
+        />
+      )}
+
+      {/* Tab View 4: AI Guidance & Assistant */}
+      {viewTab === 'ai_guidance' && (
+        <AIGuidanceAssistantPanel
+          projects={projects}
+          users={users}
+          currentUser={currentUser}
+        />
       )}
 
       {/* Tab View 3: Faculty Review Station */}
