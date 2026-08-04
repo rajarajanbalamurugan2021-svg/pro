@@ -41,7 +41,8 @@ import { LeaveManagement } from './components/modules/LeaveManagement/LeaveManag
 import { LabAttendance } from './components/modules/LabAttendance/LabAttendance';
 import { PlacementSystem } from './components/modules/PlacementSystem/PlacementSystem';
 import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
-import { AICampusAssistant } from './components/AICampusAssistant/AICampusAssistant';
+import { AIChatbot } from './components/common/AIChatbot';
+import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
@@ -77,9 +78,25 @@ export default function App() {
   const [labAttendance, setLabAttendance] = useState<StudentAttendanceSummary>(CampusStorage.getLabAttendance());
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [toasts, setToasts] = useState<ToastNotification[]>([]);
 
-  // AI Drawer state
+  // AI Chatbot state
   const [isAiOpen, setIsAiOpen] = useState(false);
+
+  // Helper function to trigger a Toast notification
+  const addToast = (toastData: Omit<ToastNotification, 'id' | 'timestamp'>) => {
+    const newToast: ToastNotification = {
+      ...toastData,
+      id: `toast-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setToasts((prev) => [newToast, ...prev].slice(0, 5));
+
+    // Auto dismiss after 6 seconds
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== newToast.id));
+    }, 6000);
+  };
 
   // Initialize Data & Setup Real-time Multi-device Firestore Listeners
   useEffect(() => {
@@ -182,6 +199,30 @@ export default function App() {
     const updated = [newComp, ...complaints];
     setComplaints(updated);
     CampusStorage.saveComplaints(updated);
+
+    // Trigger visual Toast alert for relevant roles (admin, super_admin, faculty)
+    addToast({
+      title: '🚨 New Complaint Filed',
+      message: `${newComp.title} (${newComp.category}) — Submitted by ${newComp.studentName}`,
+      type: 'complaint',
+      targetRoles: ['admin', 'super_admin', 'faculty'],
+      actionModule: 'complaints',
+      actionLabel: 'View Complaints'
+    });
+
+    // Add persistent system notification
+    const newNotif: NotificationItem = {
+      id: `notif-${Date.now()}`,
+      title: 'New Grievance Registered',
+      message: `${newComp.studentName} filed: "${newComp.title}" (${newComp.category})`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      type: 'warning',
+      read: false,
+      linkModule: 'complaints'
+    };
+    const updatedNotifs = [newNotif, ...notifications];
+    setNotifications(updatedNotifs);
+    CampusStorage.saveNotifications(updatedNotifs);
   };
 
   const handleUpdateComplaintStatus = (id: string, status: Complaint['status']) => {
@@ -289,6 +330,30 @@ export default function App() {
     const updated = [lv, ...leaves];
     setLeaves(updated);
     CampusStorage.saveLeaveRequests(updated);
+
+    // Trigger visual Toast alert for relevant roles (admin, super_admin, faculty, mentor)
+    addToast({
+      title: '📝 New Leave Application Submitted',
+      message: `${lv.studentName} applied for ${lv.type} (${lv.startDate} to ${lv.endDate})`,
+      type: 'leave',
+      targetRoles: ['admin', 'super_admin', 'faculty', 'mentor'],
+      actionModule: 'leave',
+      actionLabel: 'Review Leave'
+    });
+
+    // Add persistent system notification
+    const newNotif: NotificationItem = {
+      id: `notif-${Date.now()}`,
+      title: 'New Leave Request',
+      message: `${lv.studentName} requested ${lv.type} (${lv.startDate} - ${lv.endDate})`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      type: 'info',
+      read: false,
+      linkModule: 'leave'
+    };
+    const updatedNotifs = [newNotif, ...notifications];
+    setNotifications(updatedNotifs);
+    CampusStorage.saveNotifications(updatedNotifs);
   };
 
   const handleApproveRejectLeave = (id: string, status: 'Approved' | 'Rejected') => {
@@ -498,22 +563,20 @@ export default function App() {
         </main>
       </div>
 
-      {/* Floating AI Assistant Trigger Button */}
-      {!isAiOpen && (
-        <button
-          onClick={() => setIsAiOpen(true)}
-          className="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl shadow-purple-500/25 hover:scale-105 active:scale-95 transition flex items-center gap-2 font-bold text-xs"
-        >
-          <Sparkles className="h-5 w-5 animate-pulse" />
-          <span className="hidden sm:inline">Ask AI Campus Assistant</span>
-        </button>
-      )}
+      {/* Toast Notifications System */}
+      <ToastContainer
+        toasts={toasts}
+        userRole={userRole}
+        onDismiss={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))}
+        onNavigateModule={(mod) => setActiveModule(mod)}
+      />
 
-      {/* AI Campus Assistant Drawer */}
-      <AICampusAssistant
+      {/* Reusable Floating AI Chatbot Component */}
+      <AIChatbot
+        currentUser={currentUser}
         isOpen={isAiOpen}
         onClose={() => setIsAiOpen(false)}
-        currentUser={currentUser}
+        onOpen={() => setIsAiOpen(true)}
       />
 
     </div>
