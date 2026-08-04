@@ -55,6 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const currentTab = activeModule || activeTab || 'results';
 
+  const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
+
   const handleSelect = (id: string) => {
     let mod = id;
     if (id === 'project_innovation') mod = 'projects';
@@ -65,6 +67,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
     else if (id === 'lab_attendance') mod = 'attendance';
     else if (id === 'placement_system') mod = 'placement';
     else if (id === 'admin_panel') mod = 'admin';
+
+    if (mod === 'admin' && !isAdminOrSuper) {
+      alert("Access Restricted: Campus Admin Control is strictly accessible to Admins and Super Admins.");
+      return;
+    }
 
     if (onSelectModule) onSelectModule(mod);
     if (onTabChange) onTabChange(mod);
@@ -84,8 +91,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (itemId === 'admin_panel' && currentTab === 'admin') return true;
     return false;
   };
-
-  const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
 
   const navItems = [
     {
@@ -202,30 +207,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </div>
 
-      {/* Admin Panel Section */}
-      <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-1">
-        <div className="px-3 py-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-          Administration
-        </div>
-        <button
-          onClick={() => handleSelect('admin_panel')}
-          className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-            isTabActive('admin_panel')
-              ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
-              : 'text-purple-700 dark:text-purple-300 bg-purple-50/50 dark:bg-purple-950/30 hover:bg-purple-100 dark:hover:bg-purple-900/50'
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <ShieldAlert className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-            <span>Campus Admin Control</span>
+      {/* Admin Panel Section - Only accessible to Admin and Super Admin */}
+      {isAdminOrSuper && (
+        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-1">
+          <div className="px-3 py-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+            Administration
           </div>
-          {isAdminOrSuper && (
+          <button
+            onClick={() => handleSelect('admin_panel')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+              isTabActive('admin_panel')
+                ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
+                : 'text-purple-700 dark:text-purple-300 bg-purple-50/50 dark:bg-purple-950/30 hover:bg-purple-100 dark:hover:bg-purple-900/50'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <ShieldAlert className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <span>Campus Admin Control</span>
+            </div>
             <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
               FULL
             </span>
-          )}
-        </button>
-      </div>
+          </button>
+        </div>
+      )}
 
       {/* AI Smart Badge Widget */}
       <div className="mt-auto pt-6 space-y-3">

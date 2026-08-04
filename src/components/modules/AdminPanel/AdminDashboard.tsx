@@ -19,6 +19,7 @@ import {
 import { CampusStorage } from '../../../services/api';
 
 interface AdminDashboardProps {
+  userRole?: UserRole;
   users: User[];
   complaints: Complaint[];
   leaves: LeaveRequest[];
@@ -29,6 +30,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
+  userRole,
   users,
   complaints,
   leaves,
@@ -37,6 +39,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onUpdateUsers,
   onResetDatabase
 }) => {
+  const isAdminOrSuper = !userRole || userRole === 'admin' || userRole === 'super_admin';
+
+  if (!isAdminOrSuper) {
+    return (
+      <div className="p-8 max-w-xl mx-auto my-12 rounded-3xl bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 shadow-2xl text-center space-y-4">
+        <div className="h-16 w-16 mx-auto rounded-full bg-red-100 dark:bg-red-950/80 flex items-center justify-center text-red-600 dark:text-red-400">
+          <ShieldAlert className="h-8 w-8" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+          Access Restricted
+        </h2>
+        <p className="text-xs text-slate-600 dark:text-slate-300">
+          Campus Admin Control requires Administrator or Super Admin privileges.
+        </p>
+      </div>
+    );
+  }
   const [activeTab, setActiveTab] = useState<'metrics' | 'users' | 'database_backup'>('metrics');
   const [showAddUserModal, setShowAddUserModal] = useState(false);
 

@@ -462,15 +462,38 @@ export default function App() {
           )}
 
           {activeModule === 'admin' && (
-            <AdminDashboard
-              users={users}
-              complaints={complaints}
-              leaves={leaves}
-              resources={resources}
-              auditLogs={auditLogs}
-              onUpdateUsers={setUsers}
-              onResetDatabase={() => {}}
-            />
+            (userRole === 'admin' || userRole === 'super_admin') ? (
+              <AdminDashboard
+                userRole={userRole}
+                users={users}
+                complaints={complaints}
+                leaves={leaves}
+                resources={resources}
+                auditLogs={auditLogs}
+                onUpdateUsers={setUsers}
+                onResetDatabase={() => {}}
+              />
+            ) : (
+              <div className="p-8 max-w-2xl mx-auto my-12 rounded-3xl bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 shadow-2xl text-center space-y-4">
+                <div className="h-16 w-16 mx-auto rounded-full bg-red-100 dark:bg-red-950/80 flex items-center justify-center text-red-600 dark:text-red-400 ring-8 ring-red-50 dark:ring-red-950/30">
+                  <Shield className="h-8 w-8" />
+                </div>
+                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  Access Restricted: Campus Admin Control
+                </h2>
+                <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
+                  Campus Admin Control is strictly restricted to <span className="font-bold text-purple-600 dark:text-purple-400">Admins</span> and <span className="font-bold text-purple-600 dark:text-purple-400">Super Admins</span>. Your current account role (<span className="font-semibold text-slate-900 dark:text-white capitalize">{userRole.replace('_', ' ')}</span>) does not have authorization to access system administrative settings.
+                </p>
+                <div className="pt-3">
+                  <button
+                    onClick={() => setActiveModule('placement')}
+                    className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-500/20 transition"
+                  >
+                    Return to Campus Dashboard
+                  </button>
+                </div>
+              </div>
+            )
           )}
         </main>
       </div>

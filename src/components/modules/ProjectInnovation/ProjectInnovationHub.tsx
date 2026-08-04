@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Project,
   User,
@@ -73,6 +73,14 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
 }) => {
   // Navigation View Tab: 'browse' | 'my_projects' | 'faculty_queue' | 'admin_panel' | 'leaderboard'
   const [viewTab, setViewTab] = useState<string>('browse');
+
+  const isAdminOrSuper = userRole === 'admin' || userRole === 'super_admin';
+
+  useEffect(() => {
+    if (viewTab === 'admin_panel' && !isAdminOrSuper) {
+      setViewTab('browse');
+    }
+  }, [viewTab, userRole, isAdminOrSuper]);
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -396,16 +404,18 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
             <ShieldCheck className="h-4 w-4" /> Faculty Review ({pendingFacultyQueue.length})
           </button>
 
-          <button
-            onClick={() => setViewTab('admin_panel')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              viewTab === 'admin_panel'
-                ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            <Users className="h-4 w-4" /> Admin Management
-          </button>
+          {isAdminOrSuper && (
+            <button
+              onClick={() => setViewTab('admin_panel')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                viewTab === 'admin_panel'
+                  ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Users className="h-4 w-4" /> Admin Management
+            </button>
+          )}
 
           <button
             onClick={() => setViewTab('ai_guidance')}
@@ -532,15 +542,29 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
 
       {/* Tab View 3: Admin Management Panel */}
       {viewTab === 'admin_panel' && (
-        <AdminManagementPanel
-          users={users}
-          projects={projects}
-          departments={departmentsList}
-          onUpdateUsers={(updatedUsers) => {
-            // Handled via state update
-          }}
-          onUpdateProjects={onUpdateProjects}
-        />
+        isAdminOrSuper ? (
+          <AdminManagementPanel
+            users={users}
+            projects={projects}
+            departments={departmentsList}
+            onUpdateUsers={(updatedUsers) => {
+              // Handled via state update
+            }}
+            onUpdateProjects={onUpdateProjects}
+          />
+        ) : (
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 text-center space-y-3">
+            <div className="h-12 w-12 mx-auto rounded-full bg-red-100 dark:bg-red-950/80 flex items-center justify-center text-red-600 dark:text-red-400">
+              <AlertCircle className="h-6 w-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              Access Restricted
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+              Admin Management features are strictly restricted to campus Administrators and Super Admins.
+            </p>
+          </div>
+        )
       )}
 
       {/* Tab View 4: AI Guidance & Assistant */}
