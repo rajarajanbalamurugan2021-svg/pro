@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, UserRole } from '../../types';
 import { INITIAL_USERS } from '../../data/initialData';
+import { Logo } from './Logo';
 import {
   GraduationCap,
   Lock,
@@ -94,15 +95,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
       <div className="w-full max-w-md bg-slate-800/90 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative z-10">
         
         {/* Header Branding */}
-        <div className="text-center mb-6">
-          <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden shadow-xl shadow-blue-500/20 ring-4 ring-blue-500/20 bg-slate-900 mb-3">
-            <img
-              src="/logo.png"
-              alt="CKCET CAMPRO Logo"
-              className="h-full w-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          </div>
+        <div className="text-center mb-6 flex flex-col items-center">
+          <Logo size="xl" showText={false} className="mb-3" />
           <h1 className="text-2xl font-black text-white tracking-tight">
             CKCET <span className="text-blue-400">CAMPRO</span>
           </h1>
