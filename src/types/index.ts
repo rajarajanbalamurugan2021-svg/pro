@@ -1,4 +1,19 @@
-export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor';
+export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor' | 'maintenance_staff' | 'department_head';
+
+export interface ComplaintCategoryItem {
+  id: string;
+  name: string;
+  description: string;
+  iconName?: string;
+  isCustom?: boolean;
+}
+
+export interface ComplaintTimelineEntry {
+  status: string;
+  updatedBy: string;
+  timestamp: string;
+  note?: string;
+}
 
 export interface User {
   id: string;
@@ -112,18 +127,31 @@ export interface Complaint {
   id: string;
   title: string;
   description: string;
-  category: 'Infrastructure' | 'Hostel' | 'Academic' | 'IT & Wi-Fi' | 'Library' | 'Transport' | 'Other';
+  category: string;
   priority: 'Low' | 'Medium' | 'High' | 'Critical';
-  status: 'Pending' | 'In Progress' | 'Resolved' | 'Rejected';
+  status: 'Pending' | 'New Complaint' | 'Assigned' | 'In Progress' | 'Waiting for Parts' | 'Completed' | 'Approved' | 'Resolved' | 'Rejected' | 'Reopened';
   reportedBy: string;
   studentName: string;
+  studentId?: string;
   department: string;
+  year?: string;
+  blockName?: string;
+  floor?: string;
+  roomNumber?: string;
   assignedTo?: string;
-  assignedFacultyName?: string;
+  assignedStaffName?: string;
+  assignedStaffPhone?: string;
   imageUrl?: string;
+  imageUrls?: string[];
+  completionImages?: string[];
+  maintenanceNotes?: string;
   createdAt: string;
   updatedAt: string;
+  resolvedAt?: string;
   aiSuggestedDepartment?: string;
+  rating?: number;
+  feedback?: string;
+  timeline?: ComplaintTimelineEntry[];
 }
 
 export interface LostFoundItem {

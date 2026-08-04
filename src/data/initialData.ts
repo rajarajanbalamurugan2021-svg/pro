@@ -217,35 +217,53 @@ export const INITIAL_ATTENDANCE: StudentAttendanceSummary = {
 
 export const INITIAL_COMPLAINTS: Complaint[] = [
   {
-    id: 'comp-101',
+    id: 'CMP-2026-101',
     title: 'High-speed Wi-Fi dropping intermittently in CSE Lab 3',
     description: 'The wireless access point in CSE Lab 3 disconnects every 15 minutes during practical sessions, causing loss of unsaved code.',
-    category: 'IT & Wi-Fi',
+    category: 'Internet/WiFi Issues',
     priority: 'High',
     status: 'In Progress',
     reportedBy: 'u-student-1',
     studentName: 'Alex Rivera',
+    studentId: 'CS2023001',
     department: 'Computer Science & Engineering',
-    assignedTo: 'u-faculty-1',
-    assignedFacultyName: 'Prof. Robert Thorne',
+    blockName: 'Science & Tech Block',
+    floor: '2nd Floor',
+    roomNumber: 'CSE Lab 3',
+    assignedTo: 'u-staff-2',
+    assignedStaffName: 'David Miller (IT Networks)',
+    assignedStaffPhone: '+1 (555) 018-4455',
     imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80',
+    imageUrls: ['https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80'],
     createdAt: '2026-07-28 10:15 AM',
     updatedAt: '2026-07-29 02:30 PM',
-    aiSuggestedDepartment: 'IT Infrastructure & Network Cell'
+    aiSuggestedDepartment: 'IT Infrastructure & Network Cell',
+    timeline: [
+      { status: 'New Complaint Registered', updatedBy: 'Alex Rivera', timestamp: '2026-07-28 10:15 AM' },
+      { status: 'Assigned to David Miller', updatedBy: 'Dr. Robert Thorne', timestamp: '2026-07-28 11:30 AM' },
+      { status: 'In Progress', updatedBy: 'David Miller', timestamp: '2026-07-29 02:30 PM', note: 'Replacing wireless AP module.' }
+    ]
   },
   {
-    id: 'comp-102',
+    id: 'CMP-2026-102',
     title: 'Water dispenser cooling unit malfunctioning in Block B',
     description: 'The drinking water cooler on the second floor of Block B is dispensing warm water and making loud motor sounds.',
-    category: 'Infrastructure',
+    category: 'Water Leakage',
     priority: 'Medium',
-    status: 'Pending',
+    status: 'New Complaint',
     reportedBy: 'u-student-2',
     studentName: 'Sophia Patel',
+    studentId: 'CS2023002',
     department: 'Computer Science & Engineering',
+    blockName: 'Main Academic Block',
+    floor: '2nd Floor',
+    roomNumber: 'Corridor 2B',
     createdAt: '2026-07-30 09:00 AM',
     updatedAt: '2026-07-30 09:00 AM',
-    aiSuggestedDepartment: 'Estate Maintenance Team'
+    aiSuggestedDepartment: 'Estate Maintenance Team',
+    timeline: [
+      { status: 'New Complaint Registered', updatedBy: 'Sophia Patel', timestamp: '2026-07-30 09:00 AM' }
+    ]
   }
 ];
 

@@ -70,7 +70,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     student: { label: 'Student', bg: 'bg-emerald-100 dark:bg-emerald-950/80', text: 'text-emerald-700 dark:text-emerald-300' },
     mentor: { label: 'Mentor', bg: 'bg-amber-100 dark:bg-amber-950/80', text: 'text-amber-700 dark:text-amber-300' },
     placement_officer: { label: 'Placement Officer', bg: 'bg-amber-100 dark:bg-amber-950/80', text: 'text-amber-700 dark:text-amber-300' },
-    recruiter: { label: 'Recruiter', bg: 'bg-purple-100 dark:bg-purple-950/80', text: 'text-purple-700 dark:text-purple-300' }
+    recruiter: { label: 'Recruiter', bg: 'bg-purple-100 dark:bg-purple-950/80', text: 'text-purple-700 dark:text-purple-300' },
+    maintenance_staff: { label: 'Maintenance Staff', bg: 'bg-amber-100 dark:bg-amber-950/80', text: 'text-amber-700 dark:text-amber-300' },
+    department_head: { label: 'Department Head', bg: 'bg-emerald-100 dark:bg-emerald-950/80', text: 'text-emerald-700 dark:text-emerald-300' }
   };
 
   return (

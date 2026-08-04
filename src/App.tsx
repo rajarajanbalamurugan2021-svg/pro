@@ -445,8 +445,11 @@ export default function App() {
               userRole={userRole}
               currentUserId={currentUser?.id || 'usr-1'}
               currentUserName={currentUser?.name || 'User'}
+              currentUser={currentUser}
+              users={users}
               onAddComplaint={handleAddComplaint}
               onUpdateComplaintStatus={handleUpdateComplaintStatus}
+              onAddToast={addToast}
             />
           )}
 
