@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, UserRole, NotificationItem } from '../../types';
+import { Logo } from './Logo';
 import {
   GraduationCap,
   Bell,
@@ -79,25 +80,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6">
         
-        {/* Left Section: Brand Logo */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl overflow-hidden shadow-md shadow-blue-500/20 ring-2 ring-blue-500/20 bg-slate-900 shrink-0">
-            <img
-              src="/logo.png"
-              alt="CKCET CAMPRO Logo"
-              className="h-full w-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div>
-            <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-              CKCET <span className="text-blue-600 dark:text-blue-400">CAMPRO</span>
-            </span>
-            <span className="hidden sm:inline-block text-xs font-semibold text-slate-500 dark:text-slate-400">
-              Enterprise Campus ERP v3.2
-            </span>
-          </div>
-        </div>
+        {/* Left Section: Brand Logo (Pure Vector SVG) */}
+        <Logo size="md" />
 
         {/* Middle Section: Global Search Bar */}
         <div className="hidden md:flex flex-1 max-w-md mx-6">
