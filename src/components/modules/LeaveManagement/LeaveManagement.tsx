@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import { LeaveRequest, UserRole } from '../../../types';
-import {
-  CalendarDays,
-  Plus,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  BellRing,
-  UserCheck,
-  Calendar,
-  AlertCircle
+import React, { useState, useEffect } from 'react';
+import { LeaveRequest, UserRole, User, LeaveTypeConfig, AcademicHoliday, LeavePolicyConfig } from '../../../types';
+import { CampusStorage } from '../../../services/api';
+import { StudentLeaveDashboard } from './StudentLeaveDashboard';
+import { ClassAdvisorLeaveDashboard } from './ClassAdvisorLeaveDashboard';
+import { HODLeaveDashboard } from './HODLeaveDashboard';
+import { AdminLeavePolicyPanel } from './AdminLeavePolicyPanel';
+import { ApplyLeaveModal } from './ApplyLeaveModal';
+import { LeaveDetailModal } from './LeaveDetailModal';
+import { LeaveReportsExporter } from './LeaveReportsExporter';
+import { 
+  CalendarDays, 
+  UserCheck, 
+  ShieldCheck, 
+  Settings, 
+  User as UserIcon, 
+  Sparkles, 
+  FileSpreadsheet,
+  CheckCircle2
 } from 'lucide-react';
 
 interface LeaveManagementProps {
@@ -17,6 +24,7 @@ interface LeaveManagementProps {
   userRole: UserRole;
   currentUserId: string;
   currentUserName: string;
+  currentUser?: User;
   onApplyLeave: (leave: LeaveRequest) => void;
   onApproveRejectLeave: (id: string, status: 'Approved' | 'Rejected', notes?: string) => void;
 }
@@ -26,229 +34,313 @@ export const LeaveManagement: React.FC<LeaveManagementProps> = ({
   userRole,
   currentUserId,
   currentUserName,
+  currentUser: propUser,
   onApplyLeave,
   onApproveRejectLeave
 }) => {
-  const [showApplyModal, setShowApplyModal] = useState(false);
-
-  // Form State
-  const [reason, setReason] = useState('');
-  const [startDate, setStartDate] = useState('2026-08-10');
-  const [endDate, setEndDate] = useState('2026-08-12');
-  const [leaveType, setLeaveType] = useState<LeaveRequest['type']>('Duty');
-
-  const handleApply = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!reason) return;
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const days = Math.max(1, Math.ceil((end.getTime() - start.getTime()) / (1000 * 3600 * 24)) + 1);
-
-    const newLeave: LeaveRequest = {
-      id: `lv-${Date.now()}`,
-      studentId: currentUserId,
-      studentName: currentUserName,
-      rollNumber: 'CS2023001',
-      department: 'Computer Science & Engineering',
-      reason,
-      startDate,
-      endDate,
-      daysCount: days,
-      type: leaveType,
-      status: 'Pending',
-      parentNotified: true,
-      appliedOn: new Date().toISOString().split('T')[0]
-    };
-
-    onApplyLeave(newLeave);
-    setShowApplyModal(false);
-    setReason('');
+  // Synthesize current user if not passed
+  const currentUser: User = propUser || {
+    id: currentUserId,
+    name: currentUserName,
+    email: `${currentUserName.toLowerCase().replace(/\s+/g, '.')}@ckcet.edu`,
+    role: userRole,
+    department: 'Computer Science & Engineering',
+    phone: '+1 (555) 012-3456',
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+    status: 'Active'
   };
 
-  const statusBadges: Record<LeaveRequest['status'], { bg: string; icon: any }> = {
-    'Pending': { bg: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300', icon: Clock },
-    'Approved': { bg: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300', icon: CheckCircle2 },
-    'Rejected': { bg: 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300', icon: XCircle }
+  // State for Leave Types, Holidays, and Policy Config
+  const [leaveTypes, setLeaveTypes] = useState<LeaveTypeConfig[]>([]);
+  const [holidays, setHolidays] = useState<AcademicHoliday[]>([]);
+  const [policy, setPolicy] = useState<LeavePolicyConfig>({
+    hodApprovalThresholdDays: 3,
+    maxLeaveDaysPerSemester: 15,
+    enableParentSMS: true,
+    autoApproveOnDutyEvent: false,
+    academicYear: '2026-2027'
+  });
+
+  // Role override tab state (allows easy view-switching for testing and role previews)
+  const [activeRoleView, setActiveRoleView] = useState<'STUDENT' | 'ADVISOR' | 'HOD' | 'ADMIN'>(() => {
+    if (userRole === 'admin' || userRole === 'super_admin') return 'ADMIN';
+    if (userRole === 'department_head') return 'HOD';
+    if (userRole === 'faculty' || userRole === 'mentor') return 'ADVISOR';
+    return 'STUDENT';
+  });
+
+  // Modal states
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState<boolean>(false);
+  const [selectedLeave, setSelectedLeave] = useState<LeaveRequest | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
+  const [isExporterOpen, setIsExporterOpen] = useState<boolean>(false);
+
+  // Load leave configuration from CampusStorage on mount
+  useEffect(() => {
+    setLeaveTypes(CampusStorage.getLeaveTypes());
+    setHolidays(CampusStorage.getHolidays());
+    setPolicy(CampusStorage.getLeavePolicy());
+  }, []);
+
+  // Sync state helpers
+  const handleSaveLeaveTypes = (types: LeaveTypeConfig[]) => {
+    setLeaveTypes(types);
+    CampusStorage.saveLeaveTypes(types);
+  };
+
+  const handleSaveHolidays = (hols: AcademicHoliday[]) => {
+    setHolidays(hols);
+    CampusStorage.saveHolidays(hols);
+  };
+
+  const handleSavePolicy = (pol: LeavePolicyConfig) => {
+    setPolicy(pol);
+    CampusStorage.saveLeavePolicy(pol);
+  };
+
+  // Save new leave application (Draft or Submitted)
+  const handleSaveLeave = (newLeave: LeaveRequest, isDraft: boolean) => {
+    onApplyLeave(newLeave);
+    CampusStorage.addAuditLog(
+      isDraft ? 'Saved Leave Draft' : 'Submitted Leave Request',
+      currentUserName,
+      userRole,
+      newLeave.applicationId || newLeave.id
+    );
+  };
+
+  // Update leave status (Approve, Reject, Request Info)
+  const handleUpdateLeaveStatus = (
+    leaveId: string, 
+    newStatus: LeaveRequest['status'], 
+    remarks?: string, 
+    actionRole?: string
+  ) => {
+    // Call parent handler
+    if (newStatus === 'Approved' || newStatus === 'Rejected') {
+      onApproveRejectLeave(leaveId, newStatus, remarks);
+    }
+
+    // Update local state & storage for rich workflow features
+    const now = new Date();
+    const formattedTimestamp = now.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    const updatedLeaves = leaves.map(l => {
+      if (l.id === leaveId) {
+        const timeline = l.timeline || [];
+        const newTimelineEntry = {
+          status: newStatus === 'Approved' ? `Approved by ${actionRole || 'Authority'}` : newStatus === 'Rejected' ? `Rejected by ${actionRole || 'Authority'}` : newStatus,
+          actorName: currentUserName,
+          actorRole: actionRole || userRole,
+          timestamp: formattedTimestamp,
+          note: remarks
+        };
+
+        return {
+          ...l,
+          status: newStatus,
+          lastUpdated: formattedTimestamp,
+          approvedDate: newStatus === 'Approved' ? formattedTimestamp : l.approvedDate,
+          advisorRemarks: actionRole === 'Class Advisor' ? remarks : l.advisorRemarks,
+          hodRemarks: actionRole === 'HOD' ? remarks : l.hodRemarks,
+          timeline: [...timeline, newTimelineEntry]
+        };
+      }
+      return l;
+    });
+
+    CampusStorage.saveLeaveRequests(updatedLeaves);
+    CampusStorage.addAuditLog(
+      `Updated Leave Status to ${newStatus}`,
+      currentUserName,
+      userRole,
+      leaveId
+    );
+  };
+
+  // Handle Delete / Cancel Request
+  const handleDeleteOrCancelLeave = (leaveId: string) => {
+    const updated = leaves.filter(l => l.id !== leaveId);
+    CampusStorage.saveLeaveRequests(updated);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
       
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 text-white shadow-lg shadow-indigo-500/10">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-200">
-            <CalendarDays className="h-4 w-4" /> Student Absence & Duty Leave Portal
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
-            Student Leave Management System
-          </h1>
-          <p className="text-sm text-indigo-100 mt-1 max-w-xl">
-            Submit medical, duty, or personal leave requests, verify faculty approvals, and trigger parent SMS/email alerts.
-          </p>
-        </div>
-
-        <button
-          onClick={() => setShowApplyModal(true)}
-          className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-indigo-800 text-xs font-extrabold hover:bg-indigo-50 transition shadow-md"
-        >
-          <Plus className="h-4 w-4" /> Apply for Leave
-        </button>
-      </div>
-
-      {/* Leave Requests Table / Cards */}
-      <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
-        <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-indigo-500" /> Leave Application Records & History
-        </h2>
-
-        <div className="space-y-3">
-          {leaves.map((lv) => {
-            const Badge = statusBadges[lv.status];
-            const Icon = Badge.icon;
-            return (
-              <div
-                key={lv.id}
-                className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-slate-900 dark:text-white">{lv.studentName}</span>
-                    <span className="text-[10px] text-slate-400 font-mono">({lv.rollNumber})</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                      {lv.type}
-                    </span>
-                  </div>
-
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${Badge.bg}`}>
-                    <Icon className="h-3 w-3" /> {lv.status}
-                  </span>
-                </div>
-
-                <p className="text-xs text-slate-600 dark:text-slate-300">{lv.reason}</p>
-
-                <div className="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-200/60 dark:border-slate-800">
-                  <div className="flex items-center gap-4">
-                    <span>Dates: <strong className="text-slate-800 dark:text-slate-200">{lv.startDate} to {lv.endDate} ({lv.daysCount} days)</strong></span>
-                    {lv.parentNotified && (
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                        <BellRing className="h-3 w-3" /> Parent Notified via SMS
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Faculty Actions */}
-                  {lv.status === 'Pending' && (userRole === 'faculty' || userRole === 'admin' || userRole === 'super_admin') && (
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => onApproveRejectLeave(lv.id, 'Approved')}
-                        className="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition"
-                      >
-                        Approve Leave
-                      </button>
-                      <button
-                        onClick={() => onApproveRejectLeave(lv.id, 'Rejected')}
-                        className="px-3 py-1 rounded-lg bg-rose-600 text-white font-bold text-xs hover:bg-rose-700 transition"
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* APPLY LEAVE MODAL */}
-      {showApplyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <CalendarDays className="h-5 w-5 text-indigo-600" /> Apply for Student Leave
-              </h3>
-              <button onClick={() => setShowApplyModal(false)} className="text-slate-400 hover:text-slate-600 text-sm font-bold">
-                ✕
-              </button>
+      {/* Top Main Module Header with Role View Switcher */}
+      <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          <div className="flex items-center space-x-3">
+            <div className="p-3 bg-sky-500/20 text-sky-400 rounded-2xl ring-1 ring-sky-500/30">
+              <CalendarDays className="w-7 h-7" />
             </div>
-
-            <form onSubmit={handleApply} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Leave Type</label>
-                <select
-                  value={leaveType}
-                  onChange={(e) => setLeaveType(e.target.value as any)}
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2.5 text-slate-900 dark:text-white"
-                >
-                  <option value="Duty">On-Duty / Academic Event</option>
-                  <option value="Medical">Medical Leave</option>
-                  <option value="Personal">Personal Reason</option>
-                  <option value="Emergency">Family Emergency</option>
-                </select>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-sky-400">CKCET CAMPRO Enterprise ERP</span>
+                <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full">
+                  Real-time Firestore Sync
+                </span>
               </div>
+              <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+                Leave Management & Attendance Exemption System
+              </h1>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Start Date</label>
-                  <input
-                    type="date"
-                    required
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2.5 text-slate-900 dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">End Date</label>
-                  <input
-                    type="date"
-                    required
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2.5 text-slate-900 dark:text-white"
-                  />
-                </div>
-              </div>
+          <button
+            onClick={() => setIsExporterOpen(true)}
+            className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all border border-white/10 flex items-center space-x-2 self-start md:self-auto"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+            <span>Reports & Analytics</span>
+          </button>
+        </div>
 
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reason for Absence *</label>
-                <textarea
-                  required
-                  rows={3}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  placeholder="Provide complete explanation for leave request..."
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2.5 text-slate-900 dark:text-white"
-                />
-              </div>
+        {/* Role Portal View Selector */}
+        <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="text-xs text-slate-400 font-medium">
+            Active Portal Perspective:
+          </div>
 
-              <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-blue-800 dark:text-blue-300 flex items-center gap-2">
-                <BellRing className="h-4 w-4 shrink-0" />
-                <span>An automatic notification SMS & email will be sent to your registered parent contact.</span>
-              </div>
+          <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 sm:pb-0">
+            <button
+              onClick={() => setActiveRoleView('STUDENT')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+                activeRoleView === 'STUDENT'
+                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <UserIcon className="w-3.5 h-3.5" />
+              <span>Student Portal</span>
+            </button>
 
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowApplyModal(false)}
-                  className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition"
-                >
-                  Submit Application
-                </button>
-              </div>
-            </form>
+            <button
+              onClick={() => setActiveRoleView('ADVISOR')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+                activeRoleView === 'ADVISOR'
+                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5" />
+              <span>Class Advisor Portal</span>
+            </button>
+
+            <button
+              onClick={() => setActiveRoleView('HOD')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+                activeRoleView === 'HOD'
+                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>HOD Portal</span>
+            </button>
+
+            <button
+              onClick={() => setActiveRoleView('ADMIN')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+                activeRoleView === 'ADMIN'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Settings className="w-3.5 h-3.5" />
+              <span>Admin Policies</span>
+            </button>
           </div>
         </div>
+
+      </div>
+
+      {/* RENDER ACTIVE ROLE VIEW */}
+      {activeRoleView === 'STUDENT' && (
+        <StudentLeaveDashboard
+          currentUser={currentUser}
+          leaves={leaves}
+          leaveTypes={leaveTypes}
+          onOpenApplyModal={() => setIsApplyModalOpen(true)}
+          onSelectLeave={(l) => {
+            setSelectedLeave(l);
+            setIsDetailModalOpen(true);
+          }}
+          onDeleteOrCancelLeave={handleDeleteOrCancelLeave}
+        />
       )}
+
+      {activeRoleView === 'ADVISOR' && (
+        <ClassAdvisorLeaveDashboard
+          currentUser={currentUser}
+          leaves={leaves}
+          onSelectLeave={(l) => {
+            setSelectedLeave(l);
+            setIsDetailModalOpen(true);
+          }}
+          onUpdateLeaveStatus={handleUpdateLeaveStatus}
+        />
+      )}
+
+      {activeRoleView === 'HOD' && (
+        <HODLeaveDashboard
+          currentUser={currentUser}
+          leaves={leaves}
+          onSelectLeave={(l) => {
+            setSelectedLeave(l);
+            setIsDetailModalOpen(true);
+          }}
+          onUpdateLeaveStatus={handleUpdateLeaveStatus}
+        />
+      )}
+
+      {activeRoleView === 'ADMIN' && (
+        <AdminLeavePolicyPanel
+          leaveTypes={leaveTypes}
+          holidays={holidays}
+          policy={policy}
+          allLeaves={leaves}
+          onSaveLeaveTypes={handleSaveLeaveTypes}
+          onSaveHolidays={handleSaveHolidays}
+          onSavePolicy={handleSavePolicy}
+          onOpenReportExporter={() => setIsExporterOpen(true)}
+        />
+      )}
+
+      {/* MODALS */}
+      <ApplyLeaveModal
+        isOpen={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        currentUser={currentUser}
+        leaveTypes={leaveTypes}
+        existingLeaves={leaves}
+        onSaveLeave={handleSaveLeave}
+      />
+
+      <LeaveDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedLeave(null);
+        }}
+        leave={selectedLeave}
+        currentUser={currentUser}
+        onUpdateLeaveStatus={handleUpdateLeaveStatus}
+        onDeleteOrCancelLeave={handleDeleteOrCancelLeave}
+      />
+
+      <LeaveReportsExporter
+        isOpen={isExporterOpen}
+        onClose={() => setIsExporterOpen(false)}
+        leaves={leaves}
+      />
 
     </div>
   );

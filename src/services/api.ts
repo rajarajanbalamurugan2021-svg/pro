@@ -7,6 +7,9 @@ import {
   MeetingSchedule,
   MentorAssignment,
   LeaveRequest,
+  LeaveTypeConfig,
+  AcademicHoliday,
+  LeavePolicyConfig,
   CommunityPost,
   Announcement,
   NotificationItem,
@@ -27,6 +30,9 @@ import {
   INITIAL_RESOURCES,
   INITIAL_MEETINGS,
   INITIAL_LEAVE_REQUESTS,
+  DEFAULT_LEAVE_TYPES,
+  DEFAULT_HOLIDAYS,
+  DEFAULT_LEAVE_POLICY,
   INITIAL_COMMUNITY_POSTS,
   INITIAL_ANNOUNCEMENTS,
   INITIAL_NOTIFICATIONS,
@@ -51,6 +57,9 @@ const STORAGE_KEYS = {
   RESOURCES: 'smart_campus_resources',
   MEETINGS: 'smart_campus_meetings',
   LEAVE: 'smart_campus_leave',
+  LEAVE_TYPES: 'smart_campus_leave_types',
+  HOLIDAYS: 'smart_campus_holidays',
+  LEAVE_POLICY: 'smart_campus_leave_policy',
   POSTS: 'smart_campus_posts',
   ANNOUNCEMENTS: 'smart_campus_announcements',
   NOTIFICATIONS: 'smart_campus_notifications',
@@ -187,6 +196,30 @@ export class CampusStorage {
 
   static saveLeaveRequests(leaves: LeaveRequest[]) {
     setStored(STORAGE_KEYS.LEAVE, leaves);
+  }
+
+  static getLeaveTypes(): LeaveTypeConfig[] {
+    return getStored(STORAGE_KEYS.LEAVE_TYPES, DEFAULT_LEAVE_TYPES);
+  }
+
+  static saveLeaveTypes(types: LeaveTypeConfig[]) {
+    setStored(STORAGE_KEYS.LEAVE_TYPES, types);
+  }
+
+  static getHolidays(): AcademicHoliday[] {
+    return getStored(STORAGE_KEYS.HOLIDAYS, DEFAULT_HOLIDAYS);
+  }
+
+  static saveHolidays(holidays: AcademicHoliday[]) {
+    setStored(STORAGE_KEYS.HOLIDAYS, holidays);
+  }
+
+  static getLeavePolicy(): LeavePolicyConfig {
+    return getStored(STORAGE_KEYS.LEAVE_POLICY, DEFAULT_LEAVE_POLICY);
+  }
+
+  static saveLeavePolicy(policy: LeavePolicyConfig) {
+    setStored(STORAGE_KEYS.LEAVE_POLICY, policy);
   }
 
   static getPosts(): CommunityPost[] {

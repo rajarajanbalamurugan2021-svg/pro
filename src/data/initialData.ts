@@ -11,6 +11,9 @@ import {
   MentorAssignment,
   MeetingSchedule,
   LeaveRequest,
+  LeaveTypeConfig,
+  AcademicHoliday,
+  LeavePolicyConfig,
   CommunityPost,
   Announcement,
   NotificationItem,
@@ -401,21 +404,205 @@ export const INITIAL_MEETINGS: MeetingSchedule[] = [
   }
 ];
 
+export const DEFAULT_LEAVE_TYPES: LeaveTypeConfig[] = [
+  { id: 'lt-1', leaveTypeId: 'LT-MED', leaveTypeName: 'Medical Leave', name: 'Medical Leave', maxDays: 10, requiresHODApproval: true, hodThresholdDays: 3, category: 'Medical', description: 'Illness, hospitalization, or medical procedure requiring rest', active: true },
+  { id: 'lt-2', leaveTypeId: 'LT-CAS', leaveTypeName: 'Casual Leave', name: 'Casual Leave', maxDays: 6, requiresHODApproval: false, hodThresholdDays: 3, category: 'Personal', description: 'Short personal absence or family commitments', active: true },
+  { id: 'lt-3', leaveTypeId: 'LT-EMG', leaveTypeName: 'Emergency Leave', name: 'Emergency Leave', maxDays: 5, requiresHODApproval: true, hodThresholdDays: 2, category: 'Personal', description: 'Unforeseen personal or family emergency', active: true },
+  { id: 'lt-4', leaveTypeId: 'LT-OD', leaveTypeName: 'On Duty Leave', name: 'On Duty Leave', maxDays: 15, requiresHODApproval: true, hodThresholdDays: 4, category: 'Academic', description: 'Representing university at workshops, competitions, seminars', active: true },
+  { id: 'lt-5', leaveTypeId: 'LT-SPT', leaveTypeName: 'Sports Leave', name: 'Sports Leave', maxDays: 14, requiresHODApproval: true, hodThresholdDays: 3, category: 'Co-curricular', description: 'Participation in inter-college or national sports tournaments', active: true },
+  { id: 'lt-6', leaveTypeId: 'LT-CUL', leaveTypeName: 'Cultural Event Leave', name: 'Cultural Event Leave', maxDays: 7, requiresHODApproval: true, hodThresholdDays: 3, category: 'Co-curricular', description: 'Inter-college symposiums, arts, and cultural competitions', active: true },
+  { id: 'lt-7', leaveTypeId: 'LT-INT', leaveTypeName: 'Internship Leave', name: 'Internship Leave', maxDays: 30, requiresHODApproval: true, hodThresholdDays: 5, category: 'Academic', description: 'Approved industry internship or off-campus training', active: true },
+  { id: 'lt-8', leaveTypeId: 'LT-IV', leaveTypeName: 'Industrial Visit Leave', name: 'Industrial Visit Leave', maxDays: 5, requiresHODApproval: true, hodThresholdDays: 2, category: 'Academic', description: 'Department-sponsored industrial exposure visit', active: true },
+  { id: 'lt-9', leaveTypeId: 'LT-PER', leaveTypeName: 'Personal Leave', name: 'Personal Leave', maxDays: 4, requiresHODApproval: false, hodThresholdDays: 2, category: 'Personal', description: 'Planned personal absence with prior notice', active: true },
+  { id: 'lt-10', leaveTypeId: 'LT-EXM', leaveTypeName: 'Semester Examination Leave', name: 'Semester Examination Leave', maxDays: 10, requiresHODApproval: true, hodThresholdDays: 3, category: 'Academic', description: 'Competitive external exams, GATE, GRE, or competitive interviews', active: true }
+];
+
+export const DEFAULT_HOLIDAYS: AcademicHoliday[] = [
+  { id: 'hol-1', name: 'Independence Day', date: '2026-08-15', type: 'Public Holiday', description: 'National Holiday' },
+  { id: 'hol-2', name: 'Ganesh Chaturthi', date: '2026-09-14', type: 'Public Holiday', description: 'Regional Festival' },
+  { id: 'hol-3', name: 'Gandhi Jayanti', date: '2026-10-02', type: 'Public Holiday', description: 'National Holiday' },
+  { id: 'hol-4', name: 'Deepavali Break', date: '2026-10-28', endDate: '2026-11-01', type: 'University Festival', description: 'Campus Holiday Break' },
+  { id: 'hol-5', name: 'Mid-Semester Examinations', date: '2026-09-20', endDate: '2026-09-26', type: 'Exam Period', description: 'Internal Assessment Exams' }
+];
+
+export const DEFAULT_LEAVE_POLICY: LeavePolicyConfig = {
+  hodApprovalThresholdDays: 3,
+  maxLeaveDaysPerSemester: 15,
+  enableParentSMS: true,
+  autoApproveOnDutyEvent: false,
+  academicYear: '2026-2027'
+};
+
 export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
   {
     id: 'lv-101',
+    applicationId: 'LV-2026-001',
     studentId: 'u-student-1',
     studentName: 'Alex Rivera',
     rollNumber: 'CS2023001',
     department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    section: 'A',
     reason: 'Attending Inter-University Hackathon Final Stage at National Tech Expo.',
     startDate: '2026-08-10',
     endDate: '2026-08-12',
+    fromDate: '2026-08-10',
+    toDate: '2026-08-12',
     daysCount: 3,
-    type: 'Duty',
-    status: 'Pending',
+    totalDays: 3,
+    type: 'On Duty Leave',
+    status: 'Advisor Review',
     parentNotified: true,
-    appliedOn: '2026-07-31'
+    appliedOn: '2026-07-31',
+    submittedDate: '2026-07-31 09:30 AM',
+    lastUpdated: '2026-07-31 10:15 AM',
+    emergencyContact: '+1 (555) 012-3456',
+    parentContact: '+1 (555) 019-8877',
+    advisorName: 'Dr. Robert Thorne',
+    supportingDocuments: [
+      { id: 'doc-1', name: 'Hackathon_Invitation_Letter.pdf', size: '1.2 MB', type: 'pdf', url: 'https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=600&auto=format&fit=crop&q=80' }
+    ],
+    attendanceImpact: -1.2,
+    timeline: [
+      { status: 'Draft Saved', actorName: 'Alex Rivera', actorRole: 'Student', timestamp: '2026-07-31 09:00 AM' },
+      { status: 'Submitted Request', actorName: 'Alex Rivera', actorRole: 'Student', timestamp: '2026-07-31 09:30 AM', note: 'Supporting document attached.' },
+      { status: 'Advisor Review in Progress', actorName: 'Dr. Robert Thorne', actorRole: 'Class Advisor', timestamp: '2026-07-31 10:15 AM' }
+    ]
+  },
+  {
+    id: 'lv-102',
+    applicationId: 'LV-2026-002',
+    studentId: 'u-student-2',
+    studentName: 'Sophia Patel',
+    rollNumber: 'CS2023002',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    section: 'B',
+    reason: 'High fever and viral infection recommended for 4 days bed rest by doctor.',
+    startDate: '2026-08-12',
+    endDate: '2026-08-15',
+    fromDate: '2026-08-12',
+    toDate: '2026-08-15',
+    daysCount: 4,
+    totalDays: 4,
+    type: 'Medical Leave',
+    status: 'HOD Approval',
+    parentNotified: true,
+    appliedOn: '2026-08-01',
+    submittedDate: '2026-08-01 11:00 AM',
+    lastUpdated: '2026-08-02 02:00 PM',
+    emergencyContact: '+1 (555) 014-9988',
+    parentContact: '+1 (555) 014-7766',
+    advisorName: 'Dr. Sarah Lin',
+    advisorRemarks: 'Verified doctor certificate. Long leave forwarded to HOD for final sign-off.',
+    hodName: 'Dr. Robert Thorne',
+    supportingDocuments: [
+      { id: 'doc-2', name: 'Medical_Certificate_Hospital.pdf', size: '2.4 MB', type: 'pdf', url: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=600&auto=format&fit=crop&q=80' }
+    ],
+    attendanceImpact: -1.8,
+    timeline: [
+      { status: 'Submitted Request', actorName: 'Sophia Patel', actorRole: 'Student', timestamp: '2026-08-01 11:00 AM' },
+      { status: 'Approved by Advisor', actorName: 'Dr. Sarah Lin', actorRole: 'Class Advisor', timestamp: '2026-08-02 02:00 PM', note: 'Forwarded to HOD (>3 days).' }
+    ]
+  },
+  {
+    id: 'lv-103',
+    applicationId: 'LV-2026-003',
+    studentId: 'u-student-1',
+    studentName: 'Alex Rivera',
+    rollNumber: 'CS2023001',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    section: 'A',
+    reason: 'Attending elder sister wedding ceremony in hometown.',
+    startDate: '2026-07-20',
+    endDate: '2026-07-22',
+    fromDate: '2026-07-20',
+    toDate: '2026-07-22',
+    daysCount: 3,
+    totalDays: 3,
+    type: 'Casual Leave',
+    status: 'Approved',
+    parentNotified: true,
+    appliedOn: '2026-07-15',
+    submittedDate: '2026-07-15 08:00 AM',
+    approvedDate: '2026-07-16 04:30 PM',
+    lastUpdated: '2026-07-16 04:30 PM',
+    emergencyContact: '+1 (555) 012-3456',
+    parentContact: '+1 (555) 019-8877',
+    advisorName: 'Dr. Robert Thorne',
+    advisorRemarks: 'Parent confirmed via call. Approved.',
+    hodName: 'Dr. Robert Thorne',
+    hodRemarks: 'Approved.',
+    attendanceImpact: -1.0,
+    timeline: [
+      { status: 'Submitted Request', actorName: 'Alex Rivera', actorRole: 'Student', timestamp: '2026-07-15 08:00 AM' },
+      { status: 'Approved by Advisor', actorName: 'Dr. Robert Thorne', actorRole: 'Class Advisor', timestamp: '2026-07-16 02:00 PM' },
+      { status: 'Approved by HOD', actorName: 'Dr. Robert Thorne', actorRole: 'HOD', timestamp: '2026-07-16 04:30 PM' }
+    ]
+  },
+  {
+    id: 'lv-104',
+    applicationId: 'LV-2026-004',
+    studentId: 'u-student-2',
+    studentName: 'Sophia Patel',
+    rollNumber: 'CS2023002',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    section: 'B',
+    reason: 'Off-campus 1-month AI Research Internship at Microsoft R&D.',
+    startDate: '2026-09-01',
+    endDate: '2026-09-20',
+    fromDate: '2026-09-01',
+    toDate: '2026-09-20',
+    daysCount: 20,
+    totalDays: 20,
+    type: 'Internship Leave',
+    status: 'Approved',
+    parentNotified: true,
+    appliedOn: '2026-07-25',
+    submittedDate: '2026-07-25 10:00 AM',
+    approvedDate: '2026-07-27 11:15 AM',
+    lastUpdated: '2026-07-27 11:15 AM',
+    advisorName: 'Dr. Sarah Lin',
+    advisorRemarks: 'Prestigious internship. Highly recommended.',
+    hodName: 'Dr. Robert Thorne',
+    hodRemarks: 'Granted special academic duty exemption.',
+    supportingDocuments: [
+      { id: 'doc-3', name: 'Microsoft_Offer_Letter.pdf', size: '3.1 MB', type: 'pdf', url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80' }
+    ],
+    attendanceImpact: 0,
+    timeline: [
+      { status: 'Submitted Request', actorName: 'Sophia Patel', actorRole: 'Student', timestamp: '2026-07-25 10:00 AM' },
+      { status: 'Approved by Advisor', actorName: 'Dr. Sarah Lin', actorRole: 'Class Advisor', timestamp: '2026-07-26 09:00 AM' },
+      { status: 'Approved by HOD', actorName: 'Dr. Robert Thorne', actorRole: 'HOD', timestamp: '2026-07-27 11:15 AM' }
+    ]
+  },
+  {
+    id: 'lv-105',
+    applicationId: 'LV-2026-005',
+    studentId: 'u-student-1',
+    studentName: 'Alex Rivera',
+    rollNumber: 'CS2023001',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    section: 'A',
+    reason: 'Draft application for upcoming Sports Meet preparation.',
+    startDate: '2026-08-25',
+    endDate: '2026-08-27',
+    fromDate: '2026-08-25',
+    toDate: '2026-08-27',
+    daysCount: 3,
+    totalDays: 3,
+    type: 'Sports Leave',
+    status: 'Draft',
+    parentNotified: false,
+    appliedOn: '2026-08-03',
+    submittedDate: '2026-08-03 04:00 PM',
+    lastUpdated: '2026-08-03 04:00 PM',
+    timeline: [
+      { status: 'Draft Saved', actorName: 'Alex Rivera', actorRole: 'Student', timestamp: '2026-08-03 04:00 PM' }
+    ]
   }
 ];
 

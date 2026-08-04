@@ -228,21 +228,89 @@ export interface MeetingSchedule {
   feedback?: string;
 }
 
+export interface SupportingDocument {
+  id: string;
+  name: string;
+  size?: string;
+  type?: string;
+  url: string;
+}
+
+export interface LeaveTimelineEntry {
+  status: string;
+  actorName: string;
+  actorRole: string;
+  timestamp: string;
+  note?: string;
+}
+
 export interface LeaveRequest {
   id: string;
+  applicationId?: string;
   studentId: string;
   studentName: string;
   rollNumber: string;
   department: string;
+  year?: string;
+  section?: string;
   reason: string;
-  startDate: string;
-  endDate: string;
-  daysCount: number;
-  type: 'Medical' | 'Personal' | 'Duty' | 'Emergency';
-  status: 'Pending' | 'Approved' | 'Rejected';
-  facultyNotes?: string;
+  startDate: string; // From Date
+  endDate: string;   // To Date
+  fromDate?: string;
+  toDate?: string;
+  daysCount: number; // Number of Leave Days
+  totalDays?: number;
+  type: string;      // Medical, Casual, Emergency, On Duty, Sports, Cultural Event, Internship, Industrial Visit, Personal, Semester Examination, or custom
+  status: 'Draft' | 'Submitted' | 'Pending' | 'Advisor Review' | 'Approved by Advisor' | 'HOD Approval' | 'Approved' | 'Rejected' | 'Completed' | 'Info Requested';
   parentNotified: boolean;
   appliedOn: string;
+  submittedDate?: string;
+  approvedDate?: string;
+  lastUpdated?: string;
+  supportingDocuments?: SupportingDocument[];
+  documentUrls?: string[];
+  emergencyContact?: string;
+  parentContact?: string;
+  advisorId?: string;
+  advisorName?: string;
+  advisorRemarks?: string;
+  facultyNotes?: string;
+  hodId?: string;
+  hodName?: string;
+  hodRemarks?: string;
+  requestedInfoNote?: string;
+  attendanceImpact?: number;
+  timeline?: LeaveTimelineEntry[];
+}
+
+export interface LeaveTypeConfig {
+  id: string;
+  leaveTypeId?: string;
+  leaveTypeName: string;
+  name?: string;
+  maxDays: number;
+  requiresHODApproval: boolean;
+  hodThresholdDays?: number;
+  category?: 'Academic' | 'Medical' | 'Personal' | 'Co-curricular';
+  description?: string;
+  active?: boolean;
+}
+
+export interface AcademicHoliday {
+  id: string;
+  name: string;
+  date: string;
+  endDate?: string;
+  type: 'Public Holiday' | 'University Festival' | 'Vacation' | 'Exam Period';
+  description?: string;
+}
+
+export interface LeavePolicyConfig {
+  hodApprovalThresholdDays: number;
+  maxLeaveDaysPerSemester: number;
+  enableParentSMS: boolean;
+  autoApproveOnDutyEvent: boolean;
+  academicYear: string;
 }
 
 export interface CommunityPost {

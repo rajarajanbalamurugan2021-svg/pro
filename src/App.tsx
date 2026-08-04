@@ -505,6 +505,7 @@ export default function App() {
               userRole={userRole}
               currentUserId={currentUser?.id || 'usr-1'}
               currentUserName={currentUser?.name || 'User'}
+              currentUser={currentUser}
               onApplyLeave={handleApplyLeave}
               onApproveRejectLeave={handleApproveRejectLeave}
             />
