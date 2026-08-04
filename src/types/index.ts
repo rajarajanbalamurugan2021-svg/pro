@@ -17,6 +17,7 @@ export interface ComplaintTimelineEntry {
 
 export interface User {
   id: string;
+  uid?: string;
   name: string;
   email: string;
   role: UserRole;
@@ -26,6 +27,9 @@ export interface User {
   employeeId?: string;
   phone: string;
   status: 'active' | 'inactive' | 'suspended';
+  accountStatus?: 'Active' | 'Inactive';
+  createdAt?: string;
+  lastLogin?: string;
   semester?: number;
   section?: string;
   batch?: string;
@@ -628,5 +632,48 @@ export interface CareerRoadmap {
   industryTrends: string[];
   roadmapMilestones: { phase: string; title: string; duration: string; skillsToMaster: string[] }[];
 }
+
+export interface AcademicYear {
+  id: string;
+  year: string; // e.g. "2025-2026"
+  isCurrent: boolean;
+  semesters: number[];
+  status: 'Active' | 'Archived' | 'Upcoming';
+}
+
+export interface ResultLockStatus {
+  semester: number;
+  department: string;
+  academicYear: string;
+  isLocked: boolean;
+  lockedBy?: string;
+  lockedAt?: string;
+}
+
+export interface GradeRule {
+  grade: 'O' | 'A+' | 'A' | 'B+' | 'B' | 'C' | 'F';
+  minMark: number;
+  maxMark: number;
+  gradePoint: number;
+  description: string;
+}
+
+export interface AttendanceSubjectRecord {
+  id: string;
+  studentId: string;
+  registerNumber: string;
+  studentName: string;
+  department: string;
+  semester: number;
+  section: string;
+  courseCode: string;
+  courseName: string;
+  totalClasses: number;
+  attendedClasses: number;
+  percentage: number;
+  status: 'Eligible' | 'Shortage';
+  lastUpdated: string;
+}
+
 
 
