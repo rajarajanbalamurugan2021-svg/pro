@@ -95,10 +95,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
         
         {/* Header Branding */}
         <div className="text-center mb-6">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 mb-3">
-            <GraduationCap className="h-8 w-8" />
+          <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden shadow-xl shadow-blue-500/20 ring-4 ring-blue-500/20 bg-slate-900 mb-3">
+            <img
+              src="/logo.png"
+              alt="CKCET CAMPRO Logo"
+              className="h-full w-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-2xl font-black text-white tracking-tight">
             CKCET <span className="text-blue-400">CAMPRO</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">

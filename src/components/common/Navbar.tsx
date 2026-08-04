@@ -81,15 +81,20 @@ export const Navbar: React.FC<NavbarProps> = ({
         
         {/* Left Section: Brand Logo */}
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md shadow-blue-500/20">
-            <GraduationCap className="h-6 w-6" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl overflow-hidden shadow-md shadow-blue-500/20 ring-2 ring-blue-500/20 bg-slate-900 shrink-0">
+            <img
+              src="/logo.png"
+              alt="CKCET CAMPRO Logo"
+              className="h-full w-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <div>
-            <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+            <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
               CKCET <span className="text-blue-600 dark:text-blue-400">CAMPRO</span>
             </span>
-            <span className="hidden sm:inline-block ml-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-              ERP v3.2
+            <span className="hidden sm:inline-block text-xs font-semibold text-slate-500 dark:text-slate-400">
+              Enterprise Campus ERP v3.2
             </span>
           </div>
         </div>
