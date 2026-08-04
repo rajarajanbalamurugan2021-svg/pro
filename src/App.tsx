@@ -414,7 +414,7 @@ export default function App() {
 
         {/* Dynamic Content Body */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
-          {(activeModule === 'projects' || activeModule === 'overview' || activeModule === 'project_innovation') && (
+          {(activeModule === 'projects' || activeModule === 'project_innovation') && (
             <ProjectInnovationHub
               userRole={userRole}
               currentUser={currentUser}
@@ -436,10 +436,51 @@ export default function App() {
               result={currentStudentResult}
               userRole={userRole}
               onUpdateResults={setStudentResults}
+              defaultTab="student_view"
             />
           )}
 
-          {activeModule === 'reporting' && (
+          {activeModule === 'attendance' && (
+            <ResultPortal
+              results={studentResults}
+              result={currentStudentResult}
+              userRole={userRole}
+              onUpdateResults={setStudentResults}
+              defaultTab="attendance"
+            />
+          )}
+
+          {activeModule === 'marks' && (
+            <ResultPortal
+              results={studentResults}
+              result={currentStudentResult}
+              userRole={userRole}
+              onUpdateResults={setStudentResults}
+              defaultTab="faculty_marks"
+            />
+          )}
+
+          {activeModule === 'gpa_calculator' && (
+            <ResultPortal
+              results={studentResults}
+              result={currentStudentResult}
+              userRole={userRole}
+              onUpdateResults={setStudentResults}
+              defaultTab="calculator"
+            />
+          )}
+
+          {(activeModule === 'reports' || activeModule === 'analytics') && (
+            <ResultPortal
+              results={studentResults}
+              result={currentStudentResult}
+              userRole={userRole}
+              onUpdateResults={setStudentResults}
+              defaultTab="analytics"
+            />
+          )}
+
+          {(activeModule === 'reporting' || activeModule === 'complaints') && (
             <ComplaintPortal
               complaints={complaints}
               userRole={userRole}
@@ -463,7 +504,7 @@ export default function App() {
             />
           )}
 
-          {activeModule === 'collaboration' && (
+          {(activeModule === 'collaboration' || activeModule === 'downloads') && (
             <CollaborationHub
               resources={resources}
               userRole={userRole}
@@ -485,7 +526,7 @@ export default function App() {
             />
           )}
 
-          {activeModule === 'community' && (
+          {(activeModule === 'community' || activeModule === 'announcements') && (
             <CommunityHub
               posts={posts}
               announcements={announcements}
@@ -511,14 +552,7 @@ export default function App() {
             />
           )}
 
-          {activeModule === 'attendance' && (
-            <LabAttendance
-              attendanceData={labAttendance}
-              userRole={userRole}
-            />
-          )}
-
-          {(activeModule === 'placement' || activeModule === 'placement_system') && (
+          {(activeModule === 'placement' || activeModule === 'placement_system' || activeModule === 'my_profile') && (
             <PlacementSystem
               user={currentUser}
               onUpdateUser={(updatedUser) => {
@@ -530,7 +564,15 @@ export default function App() {
             />
           )}
 
-          {activeModule === 'admin' && (
+          {(activeModule === 'admin' ||
+            activeModule === 'user_management' ||
+            activeModule === 'students' ||
+            activeModule === 'my_students' ||
+            activeModule === 'faculty' ||
+            activeModule === 'departments' ||
+            activeModule === 'courses' ||
+            activeModule === 'system_settings' ||
+            activeModule === 'audit_logs') && (
             (userRole === 'admin' || userRole === 'super_admin') ? (
               <AdminDashboard
                 userRole={userRole}
@@ -541,6 +583,21 @@ export default function App() {
                 auditLogs={auditLogs}
                 onUpdateUsers={setUsers}
                 onResetDatabase={() => {}}
+                initialTab={
+                  activeModule === 'user_management' || activeModule === 'students' || activeModule === 'my_students'
+                    ? 'students'
+                    : activeModule === 'faculty'
+                    ? 'faculty'
+                    : activeModule === 'departments'
+                    ? 'departments'
+                    : activeModule === 'courses'
+                    ? 'courses'
+                    : activeModule === 'system_settings'
+                    ? 'system_settings'
+                    : activeModule === 'audit_logs'
+                    ? 'audit_logs'
+                    : 'metrics'
+                }
               />
             ) : (
               <div className="p-8 max-w-2xl mx-auto my-12 rounded-3xl bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 shadow-2xl text-center space-y-4">
@@ -562,6 +619,32 @@ export default function App() {
                   </button>
                 </div>
               </div>
+            )
+          )}
+
+          {(activeModule === 'dashboard' || activeModule === 'overview') && (
+            (userRole === 'admin' || userRole === 'super_admin') ? (
+              <AdminDashboard
+                userRole={userRole}
+                users={users}
+                complaints={complaints}
+                leaves={leaves}
+                resources={resources}
+                auditLogs={auditLogs}
+                onUpdateUsers={setUsers}
+                onResetDatabase={() => {}}
+                initialTab="metrics"
+              />
+            ) : (
+              <PlacementSystem
+                user={currentUser}
+                onUpdateUser={(updatedUser) => {
+                  setCurrentUser(updatedUser);
+                  const updatedUsers = users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+                  setUsers(updatedUsers);
+                  CampusStorage.saveUsers(updatedUsers);
+                }}
+              />
             )
           )}
         </main>

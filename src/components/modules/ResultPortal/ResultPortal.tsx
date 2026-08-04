@@ -36,6 +36,7 @@ interface ResultPortalProps {
   userRole: UserRole;
   onUpdateResults?: (results: StudentResult[]) => void;
   attendanceData?: StudentAttendanceSummary;
+  defaultTab?: string;
 }
 
 export const ResultPortal: React.FC<ResultPortalProps> = ({
@@ -43,7 +44,8 @@ export const ResultPortal: React.FC<ResultPortalProps> = ({
   result,
   userRole: initialRole,
   onUpdateResults,
-  attendanceData
+  attendanceData,
+  defaultTab
 }) => {
   const normRole = normalizeRole(initialRole);
   const isStudent = normRole === 'student';
@@ -54,9 +56,35 @@ export const ResultPortal: React.FC<ResultPortalProps> = ({
   const [currentResultList, setCurrentResultList] = useState<StudentResult[]>(allResults);
   const [selectedResult, setSelectedResult] = useState<StudentResult>(allResults[0] || {} as StudentResult);
 
+  const getInitialTab = () => {
+    if (defaultTab && ['student_view', 'attendance', 'faculty_marks', 'admin_control', 'analytics', 'calculator'].includes(defaultTab)) {
+      return defaultTab as any;
+    }
+    if (defaultTab === 'marks') return 'faculty_marks';
+    if (defaultTab === 'gpa_calculator') return 'calculator';
+    if (defaultTab === 'reports' || defaultTab === 'analytics') return 'analytics';
+    if (isFaculty) return 'faculty_marks';
+    if (isAdminOrSuper) return 'admin_control';
+    return 'student_view';
+  };
+
   const [activeTab, setActiveTab] = useState<
     'student_view' | 'attendance' | 'faculty_marks' | 'admin_control' | 'analytics' | 'calculator'
-  >('student_view');
+  >(getInitialTab);
+
+  React.useEffect(() => {
+    if (defaultTab) {
+      if (['student_view', 'attendance', 'faculty_marks', 'admin_control', 'analytics', 'calculator'].includes(defaultTab)) {
+        setActiveTab(defaultTab as any);
+      } else if (defaultTab === 'marks') {
+        setActiveTab('faculty_marks');
+      } else if (defaultTab === 'gpa_calculator') {
+        setActiveTab('calculator');
+      } else if (defaultTab === 'reports' || defaultTab === 'analytics') {
+        setActiveTab('analytics');
+      }
+    }
+  }, [defaultTab]);
 
   const [isResultLocked, setIsResultLocked] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
