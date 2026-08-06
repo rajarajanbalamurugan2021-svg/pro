@@ -46,7 +46,19 @@ import {
   INITIAL_INTERVIEW_QUESTIONS
 } from '../data/initialData';
 import { db } from '../lib/firebase';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+  deleteDoc,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+  addDoc,
+  updateDoc
+} from 'firebase/firestore';
 
 const STORAGE_KEYS = {
   USERS: 'smart_campus_users',
@@ -73,6 +85,22 @@ const STORAGE_KEYS = {
   INTERVIEW_QUESTIONS: 'smart_campus_interview_questions'
 };
 
+// Firestore Collection Names Mapping
+export const FIRESTORE_COLLECTIONS = {
+  USERS: 'users',
+  PROJECTS: 'projects',
+  COMPLAINTS: 'complaints',
+  LEAVE_REQUESTS: 'leaveRequests',
+  NOTIFICATIONS: 'notifications',
+  DEPARTMENTS: 'departments',
+  RESULTS: 'student_results',
+  POSTS: 'communityPosts',
+  TEAMS: 'teams',
+  PLACEMENTS: 'placements',
+  INTERNSHIPS: 'internships',
+  AUDIT_LOGS: 'audit_logs'
+};
+
 function getStored<T>(key: string, defaultValue: T): T {
   try {
     const item = localStorage.getItem(key);
@@ -88,14 +116,41 @@ function setStored<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
     // Asynchronously push to Cloud Firestore for real-time multi-device sync
     if (db) {
+      // 1. Single document store sync
       setDoc(doc(db, 'ckcet_campro', key), { data: value, updatedAt: Date.now() }, { merge: true })
         .catch((err) => console.warn(`Firestore sync error for ${key}:`, err));
+
+      // 2. Map key to dedicated Firestore collection for granular CRUD
+      const collectionMapping: Record<string, string> = {
+        'smart_campus_users': FIRESTORE_COLLECTIONS.USERS,
+        'smart_campus_depts': FIRESTORE_COLLECTIONS.DEPARTMENTS,
+        'smart_campus_results': FIRESTORE_COLLECTIONS.RESULTS,
+        'smart_campus_complaints': FIRESTORE_COLLECTIONS.COMPLAINTS,
+        'smart_campus_leave': FIRESTORE_COLLECTIONS.LEAVE_REQUESTS,
+        'smart_campus_posts': FIRESTORE_COLLECTIONS.POSTS,
+        'smart_campus_notifications': FIRESTORE_COLLECTIONS.NOTIFICATIONS,
+        'smart_campus_projects': FIRESTORE_COLLECTIONS.PROJECTS,
+        'smart_campus_invitations': FIRESTORE_COLLECTIONS.TEAMS,
+        'smart_campus_opportunities': FIRESTORE_COLLECTIONS.PLACEMENTS,
+        'smart_campus_applications': FIRESTORE_COLLECTIONS.INTERNSHIPS,
+        'smart_campus_logs': FIRESTORE_COLLECTIONS.AUDIT_LOGS
+      };
+
+      const targetCol = collectionMapping[key];
+      if (targetCol && Array.isArray(value)) {
+        value.forEach((item: any, idx: number) => {
+          const docId = item.id || item.leaveId || item.complaintId || item.projectId || item.userId || `item_${idx}`;
+          setDoc(doc(db, targetCol, String(docId)), { ...item, updatedAt: Date.now() }, { merge: true })
+            .catch(() => {});
+        });
+      }
     }
   } catch (err) {
     console.error(`Error saving ${key} to storage:`, err);
   }
 }
 
+// Universal Real-time Listener for Keyed Global Documents
 export function subscribeToRealtimeCollection<T>(key: string, callback: (data: T) => void) {
   if (!db) return () => {};
   return onSnapshot(
@@ -103,7 +158,7 @@ export function subscribeToRealtimeCollection<T>(key: string, callback: (data: T
     (snapshot) => {
       if (snapshot.exists()) {
         const val = snapshot.data();
-        if (val && Array.isArray(val.data)) {
+        if (val && (Array.isArray(val.data) || typeof val.data === 'object')) {
           try {
             localStorage.setItem(key, JSON.stringify(val.data));
           } catch (_) {}
@@ -115,6 +170,121 @@ export function subscribeToRealtimeCollection<T>(key: string, callback: (data: T
       console.warn(`Firestore subscription notice for ${key}:`, error);
     }
   );
+}
+
+// Dedicated Real-time Listeners for Firestore Collections
+export function subscribeToFirestoreCollection<T>(collectionName: string, callback: (data: T[]) => void) {
+  if (!db) return () => {};
+  const colRef = collection(db, collectionName);
+  return onSnapshot(
+    colRef,
+    (snapshot) => {
+      const items: T[] = [];
+      snapshot.forEach((docSnap) => {
+        items.push({ id: docSnap.id, ...docSnap.data() } as T);
+      });
+      if (items.length > 0) {
+        callback(items);
+      }
+    },
+    (error) => {
+      console.warn(`Firestore subscription notice for collection ${collectionName}:`, error);
+    }
+  );
+}
+
+export function subscribeToUsers(callback: (users: User[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<User>(FIRESTORE_COLLECTIONS.USERS, (users) => {
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    callback(users);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<User[]>(STORAGE_KEYS.USERS, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+export function subscribeToProjects(callback: (projects: Project[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<Project>(FIRESTORE_COLLECTIONS.PROJECTS, (projects) => {
+    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
+    callback(projects);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<Project[]>(STORAGE_KEYS.PROJECTS, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+export function subscribeToComplaints(callback: (complaints: Complaint[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<Complaint>(FIRESTORE_COLLECTIONS.COMPLAINTS, (complaints) => {
+    localStorage.setItem(STORAGE_KEYS.COMPLAINTS, JSON.stringify(complaints));
+    callback(complaints);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<Complaint[]>(STORAGE_KEYS.COMPLAINTS, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+export function subscribeToLeaveRequests(callback: (leaves: LeaveRequest[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<LeaveRequest>(FIRESTORE_COLLECTIONS.LEAVE_REQUESTS, (leaves) => {
+    localStorage.setItem(STORAGE_KEYS.LEAVE, JSON.stringify(leaves));
+    callback(leaves);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<LeaveRequest[]>(STORAGE_KEYS.LEAVE, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+export function subscribeToNotifications(callback: (notifications: NotificationItem[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<NotificationItem>(FIRESTORE_COLLECTIONS.NOTIFICATIONS, (notifs) => {
+    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifs));
+    callback(notifs);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<NotificationItem[]>(STORAGE_KEYS.NOTIFICATIONS, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+// Generic Firestore CRUD operations
+export async function getFirestoreDocs<T>(collectionName: string): Promise<T[]> {
+  if (!db) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    const results: T[] = [];
+    querySnapshot.forEach((docSnap) => {
+      results.push({ id: docSnap.id, ...docSnap.data() } as T);
+    });
+    return results;
+  } catch (err) {
+    console.error(`Error fetching docs from ${collectionName}:`, err);
+    return [];
+  }
+}
+
+export async function saveFirestoreDoc(collectionName: string, docId: string, data: any): Promise<void> {
+  if (!db) return;
+  try {
+    await setDoc(doc(db, collectionName, String(docId)), { ...data, updatedAt: Date.now() }, { merge: true });
+  } catch (err) {
+    console.error(`Error saving doc ${docId} in ${collectionName}:`, err);
+  }
+}
+
+export async function deleteFirestoreDoc(collectionName: string, docId: string): Promise<void> {
+  if (!db) return;
+  try {
+    await deleteDoc(doc(db, collectionName, String(docId)));
+  } catch (err) {
+    console.error(`Error deleting doc ${docId} in ${collectionName}:`, err);
+  }
 }
 
 export class CampusStorage {
