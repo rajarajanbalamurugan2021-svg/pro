@@ -59,9 +59,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const normRole = normalizeRole(userRole);
   const isSuperAdmin = normRole === 'super_admin';
   const isAdmin = normRole === 'admin' || isSuperAdmin;
+  const isFaculty = normRole === 'faculty';
 
-  if (!isAdmin) {
-    return <AccessDeniedPage userRole={userRole} moduleName="Campus Admin Control" requiredRole="Admin / SuperAdmin" />;
+  if (!isAdmin && !isFaculty) {
+    return <AccessDeniedPage userRole={userRole} moduleName="Campus Management" requiredRole="Faculty / Admin / SuperAdmin" />;
   }
 
   const [activeTab, setActiveTab] = useState<
@@ -79,7 +80,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     | 'ai_settings'
     | 'audit_logs'
     | 'system_settings'
-  >(() => (initialTab as any) || 'metrics');
+  >(() => (initialTab as any) || (isFaculty ? 'students' : 'metrics'));
 
   React.useEffect(() => {
     if (initialTab) {
@@ -218,15 +219,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white shadow-xl border border-purple-800/40">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-300">
-            {isSuperAdmin ? <Crown className="h-4 w-4 text-amber-400" /> : <ShieldAlert className="h-4 w-4 text-indigo-400" />}
-            <span>{isSuperAdmin ? 'SuperAdmin Full System Control' : 'Admin Campus Management'}</span>
+            {isSuperAdmin ? <Crown className="h-4 w-4 text-amber-400" /> : isFaculty ? <GraduationCap className="h-4 w-4 text-emerald-400" /> : <ShieldAlert className="h-4 w-4 text-indigo-400" />}
+            <span>{isSuperAdmin ? 'SuperAdmin Full System Control' : isFaculty ? 'Faculty Academic Portal' : 'Admin Campus Management'}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
-            {isSuperAdmin ? 'Super Admin Master Governance' : 'Campus Administrator Dashboard'}
+            {isSuperAdmin ? 'Super Admin Master Governance' : isFaculty ? 'My Students & Academic Roster' : 'Campus Administrator Dashboard'}
           </h1>
           <p className="text-xs sm:text-sm text-purple-200 mt-1 max-w-xl">
             {isSuperAdmin
               ? 'Complete access over all users, role assignments, security policies, audit logs, database backups, and system parameters.'
+              : isFaculty
+              ? 'View and manage student records, register numbers, department allocations, academic results, and student performance.'
               : 'Institutional control over students, faculty, departments, courses, published results, and grievance management.'}
           </p>
         </div>

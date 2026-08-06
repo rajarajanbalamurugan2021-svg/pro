@@ -571,9 +571,10 @@ export default function App() {
             activeModule === 'faculty' ||
             activeModule === 'departments' ||
             activeModule === 'courses' ||
+            activeModule === 'my_courses' ||
             activeModule === 'system_settings' ||
             activeModule === 'audit_logs') && (
-            (userRole === 'admin' || userRole === 'super_admin') ? (
+            (userRole === 'admin' || userRole === 'super_admin' || userRole === 'faculty') ? (
               <AdminDashboard
                 userRole={userRole}
                 users={users}
@@ -588,10 +589,8 @@ export default function App() {
                     ? 'students'
                     : activeModule === 'faculty'
                     ? 'faculty'
-                    : activeModule === 'departments'
+                    : activeModule === 'departments' || activeModule === 'courses' || activeModule === 'my_courses'
                     ? 'departments'
-                    : activeModule === 'courses'
-                    ? 'courses'
                     : activeModule === 'system_settings'
                     ? 'system_settings'
                     : activeModule === 'audit_logs'

@@ -146,7 +146,7 @@ export function canAccessModule(role?: string | UserRole, moduleName?: string): 
   if (moduleName === 'reporting' && (allowed.includes('complaints') || allowed.includes('reporting'))) return true;
   if (moduleName === 'marks' && norm === 'faculty') return true;
   if (moduleName === 'my_profile' && norm === 'student') return true;
-  if (moduleName === 'my_students' && (norm === 'faculty' || norm === 'admin')) return true;
+  if ((moduleName === 'my_students' || moduleName === 'students') && (norm === 'faculty' || norm === 'admin')) return true;
   if (moduleName === 'my_courses' && norm === 'faculty') return true;
   if (moduleName === 'gpa_calculator' && norm === 'student') return true;
   if (moduleName === 'downloads' && (norm === 'student' || norm === 'faculty' || norm === 'admin')) return true;
