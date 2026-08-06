@@ -278,6 +278,26 @@ export async function saveFirestoreDoc(collectionName: string, docId: string, da
   }
 }
 
+export async function addFirestoreDoc(collectionName: string, data: any): Promise<string> {
+  if (!db) return `temp_${Date.now()}`;
+  try {
+    const docRef = await addDoc(collection(db, collectionName), { ...data, createdAt: Date.now(), updatedAt: Date.now() });
+    return docRef.id;
+  } catch (err) {
+    console.error(`Error adding doc to ${collectionName}:`, err);
+    return `temp_${Date.now()}`;
+  }
+}
+
+export async function updateFirestoreDoc(collectionName: string, docId: string, data: any): Promise<void> {
+  if (!db) return;
+  try {
+    await updateDoc(doc(db, collectionName, String(docId)), { ...data, updatedAt: Date.now() });
+  } catch (err) {
+    console.error(`Error updating doc ${docId} in ${collectionName}:`, err);
+  }
+}
+
 export async function deleteFirestoreDoc(collectionName: string, docId: string): Promise<void> {
   if (!db) return;
   try {
@@ -285,6 +305,72 @@ export async function deleteFirestoreDoc(collectionName: string, docId: string):
   } catch (err) {
     console.error(`Error deleting doc ${docId} in ${collectionName}:`, err);
   }
+}
+
+// Collection Specific Firestore CRUD Functions
+export async function getUsersFirestore(): Promise<User[]> {
+  return getFirestoreDocs<User>(FIRESTORE_COLLECTIONS.USERS);
+}
+
+export async function saveUserFirestore(user: User): Promise<void> {
+  const userId = user.id || (user as any).userId || `user_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.USERS, userId, user);
+}
+
+export async function deleteUserFirestore(userId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.USERS, userId);
+}
+
+export async function getProjectsFirestore(): Promise<Project[]> {
+  return getFirestoreDocs<Project>(FIRESTORE_COLLECTIONS.PROJECTS);
+}
+
+export async function saveProjectFirestore(project: Project): Promise<void> {
+  const projectId = project.id || (project as any).projectId || `proj_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.PROJECTS, projectId, project);
+}
+
+export async function deleteProjectFirestore(projectId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.PROJECTS, projectId);
+}
+
+export async function getComplaintsFirestore(): Promise<Complaint[]> {
+  return getFirestoreDocs<Complaint>(FIRESTORE_COLLECTIONS.COMPLAINTS);
+}
+
+export async function saveComplaintFirestore(complaint: Complaint): Promise<void> {
+  const complaintId = complaint.id || (complaint as any).complaintId || `comp_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.COMPLAINTS, complaintId, complaint);
+}
+
+export async function deleteComplaintFirestore(complaintId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.COMPLAINTS, complaintId);
+}
+
+export async function getLeaveRequestsFirestore(): Promise<LeaveRequest[]> {
+  return getFirestoreDocs<LeaveRequest>(FIRESTORE_COLLECTIONS.LEAVE_REQUESTS);
+}
+
+export async function saveLeaveRequestFirestore(leave: LeaveRequest): Promise<void> {
+  const leaveId = leave.id || (leave as any).leaveId || `leave_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.LEAVE_REQUESTS, leaveId, leave);
+}
+
+export async function deleteLeaveRequestFirestore(leaveId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.LEAVE_REQUESTS, leaveId);
+}
+
+export async function getNotificationsFirestore(): Promise<NotificationItem[]> {
+  return getFirestoreDocs<NotificationItem>(FIRESTORE_COLLECTIONS.NOTIFICATIONS);
+}
+
+export async function saveNotificationFirestore(notif: NotificationItem): Promise<void> {
+  const notifId = notif.id || `notif_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.NOTIFICATIONS, notifId, notif);
+}
+
+export async function deleteNotificationFirestore(notifId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.NOTIFICATIONS, notifId);
 }
 
 export class CampusStorage {
