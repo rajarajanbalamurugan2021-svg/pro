@@ -540,7 +540,7 @@ export default function App() {
             />
           )}
 
-          {activeModule === 'leave' && (
+          {(activeModule === 'leave' || activeModule === 'leave_management') && (
             <LeaveManagement
               leaves={leaves}
               userRole={userRole}

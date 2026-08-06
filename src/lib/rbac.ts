@@ -53,6 +53,8 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   super_admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/superadmin/dashboard' },
     { id: 'user_management', label: 'User Management', module: 'user_management', iconName: 'Users', path: '/superadmin/users' },
+    { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
+    { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'departments', label: 'Departments', module: 'departments', iconName: 'Building2', path: '/superadmin/departments' },
     { id: 'courses', label: 'Courses', module: 'courses', iconName: 'BookOpen', path: '/superadmin/courses' },
     { id: 'complaints', label: 'Complaints', module: 'complaints', iconName: 'AlertCircle', path: '/superadmin/complaints' },
@@ -66,8 +68,10 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/admin/dashboard' },
+    { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'students', label: 'Students', module: 'students', iconName: 'GraduationCap', path: '/admin/students' },
     { id: 'faculty', label: 'Faculty', module: 'faculty', iconName: 'UserCheck2', path: '/admin/faculty' },
+    { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'departments', label: 'Departments', module: 'departments', iconName: 'Building2', path: '/admin/departments' },
     { id: 'courses', label: 'Courses', module: 'courses', iconName: 'BookOpen', path: '/admin/courses' },
     { id: 'complaints', label: 'Complaints', module: 'complaints', iconName: 'AlertCircle', path: '/admin/complaints' },
@@ -78,6 +82,8 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   faculty: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
+    { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
+    { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_students', label: 'My Students', module: 'my_students', iconName: 'GraduationCap', path: '/faculty/students' },
     { id: 'my_courses', label: 'My Courses', module: 'my_courses', iconName: 'BookOpen', path: '/faculty/courses' },
     { id: 'attendance', label: 'Attendance', module: 'attendance', iconName: 'QrCode', path: '/faculty/attendance' },
@@ -88,6 +94,8 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   student: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/student/dashboard' },
+    { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
+    { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_profile', label: 'My Profile', module: 'my_profile', iconName: 'User', path: '/student/profile' },
     { id: 'results', label: 'Results', module: 'results', iconName: 'Award', path: '/student/results' },
     { id: 'attendance', label: 'Attendance', module: 'attendance', iconName: 'QrCode', path: '/student/attendance' },
