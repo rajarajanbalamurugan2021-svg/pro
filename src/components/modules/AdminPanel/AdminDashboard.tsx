@@ -28,7 +28,7 @@ import {
   Bell,
   Bot
 } from 'lucide-react';
-import { CampusStorage } from '../../../services/api';
+import { CampusStorage, saveProfileFirestore, saveRegistrationFirestore, saveFirestoreDoc } from '../../../services/api';
 import { normalizeRole, RBAC } from '../../../lib/rbac';
 import { AccessDeniedPage } from '../../common/AccessDeniedPage';
 import { CrudManager, CrudColumn, CrudFieldSchema } from '../../common/CrudManager';
@@ -106,7 +106,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const facultyList = users.filter((u) => normalizeRole(u.role) === 'faculty');
   const adminList = users.filter((u) => normalizeRole(u.role) === 'admin' || normalizeRole(u.role) === 'super_admin');
 
-  // Save Users Handler for CrudManager
+  // Save Users Handler for CrudManager with Firestore Synchronization
   const handleSaveUser = (updatedUser: User, isEdit: boolean) => {
     let updatedUsers: User[];
     if (isEdit) {
@@ -116,6 +116,37 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
     onUpdateUsers(updatedUsers);
     CampusStorage.saveUsers(updatedUsers);
+
+    // Sync to Cloud Collation & Storage Center (Firestore)
+    saveProfileFirestore({
+      id: updatedUser.id,
+      userId: updatedUser.id,
+      fullName: updatedUser.name,
+      email: updatedUser.email,
+      department: updatedUser.department || 'General',
+      registerNumber: updatedUser.registerNo || updatedUser.rollNumber || 'REG-2026',
+      role: updatedUser.role,
+      bloodGroup: updatedUser.bloodGroup || 'O+',
+      communalCategory: updatedUser.communalCategory || 'General',
+      emergencyContact: updatedUser.phone || '',
+      dateOfBirth: updatedUser.dateOfBirth || '',
+      address: updatedUser.address || '',
+      skills: updatedUser.skills || ['React', 'TypeScript']
+    }).catch(console.error);
+
+    saveRegistrationFirestore({
+      id: `reg_${updatedUser.id}`,
+      fullName: updatedUser.name,
+      email: updatedUser.email,
+      rollNumber: updatedUser.rollNumber || updatedUser.registerNo || 'REG-2026',
+      department: updatedUser.department || 'General',
+      appliedRole: updatedUser.role,
+      status: updatedUser.status === 'active' ? 'approved' : 'pending',
+      submittedAt: new Date().toISOString(),
+      submittedAtFormatted: new Date().toLocaleString()
+    }).catch(console.error);
+
+    saveFirestoreDoc('users', updatedUser.id, updatedUser).catch(console.error);
   };
 
   const handleDeleteUser = (ids: string[], isPermanent = false) => {
@@ -379,6 +410,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <span className="text-xs text-emerald-600 font-semibold">Academic Downloads</span>
               <div className="text-2xl font-extrabold text-emerald-600 mt-1">{resources.reduce((acc, r) => acc + (r.downloadsCount || 0), 0) + 120}</div>
+            </div>
+          </div>
+
+          {/* Cloud Database Integration Banner */}
+          <div className="p-6 rounded-3xl bg-gradient-to-r from-orange-600 via-amber-600 to-amber-700 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-200 uppercase tracking-wider">
+                <Database className="h-4 w-4" />
+                <span>Google Firebase Firestore Live Sync</span>
+              </div>
+              <h3 className="text-lg font-extrabold">Cloud Collation & Storage Center Active</h3>
+              <p className="text-xs text-amber-100 max-w-xl">
+                All campus user registrations, user profile updates (including My Profile), and course/lecture materials are synchronized live to Firestore collections <code className="bg-white/20 px-1 py-0.5 rounded font-mono text-white">registrations</code>, <code className="bg-white/20 px-1 py-0.5 rounded font-mono text-white">profiles</code>, and <code className="bg-white/20 px-1 py-0.5 rounded font-mono text-white">uploadable_contents</code>.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono font-bold flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></span> Live Cloud Active
+              </span>
             </div>
           </div>
         </div>

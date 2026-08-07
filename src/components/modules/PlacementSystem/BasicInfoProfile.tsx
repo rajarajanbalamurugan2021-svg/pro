@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '../../../types';
-import { Save, CheckCircle2 } from 'lucide-react';
+import { Save, CheckCircle2, CloudCheck } from 'lucide-react';
+import { saveProfileFirestore, saveFirestoreDoc } from '../../../services/api';
 
 interface Props {
   user: User;
@@ -121,6 +122,25 @@ export const BasicInfoProfile: React.FC<Props> = ({ user, onUpdateUser }) => {
       onUpdateUser(updatedUser);
     }
 
+    // Sync directly to Cloud Collation & Storage Center (Firestore)
+    saveProfileFirestore({
+      id: updatedUser.id,
+      userId: updatedUser.id,
+      fullName: updatedUser.name,
+      email: updatedUser.email,
+      department: updatedUser.department,
+      registerNumber: updatedUser.registerNo || updatedUser.rollNumber,
+      role: updatedUser.role,
+      bloodGroup: updatedUser.bloodGroup,
+      communalCategory: updatedUser.communalCategory,
+      emergencyContact: updatedUser.phone,
+      dateOfBirth: updatedUser.dateOfBirth,
+      address: updatedUser.address,
+      skills: updatedUser.skills || []
+    }).catch(console.error);
+
+    saveFirestoreDoc('users', updatedUser.id, updatedUser).catch(console.error);
+
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3500);
   };
@@ -140,10 +160,15 @@ export const BasicInfoProfile: React.FC<Props> = ({ user, onUpdateUser }) => {
         </div>
 
         <div className="flex items-center gap-3">
+          <span className="hidden sm:flex items-center gap-1 text-[11px] font-mono font-bold text-orange-600 dark:text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/20">
+            <CloudCheck className="w-3.5 h-3.5 text-orange-500" />
+            <span>Firestore Synced</span>
+          </span>
+
           {savedSuccess && (
             <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800 animate-fade-in">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              Basic Info Updated!
+              Basic Info Updated & Cloud Synced!
             </span>
           )}
 

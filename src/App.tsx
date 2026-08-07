@@ -48,7 +48,7 @@ import { ToastContainer, ToastNotification } from './components/common/ToastCont
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [activeModule, setActiveModule] = useState<string>('placement');
   const [userRole, setUserRole] = useState<UserRole>('student');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {

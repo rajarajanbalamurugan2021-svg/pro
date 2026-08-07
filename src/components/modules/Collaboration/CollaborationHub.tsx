@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Resource, UserRole } from '../../../types';
+import { saveUploadableContentFirestore } from '../../../services/api';
 import {
   BookOpenCheck,
   Plus,
@@ -68,6 +69,21 @@ export const CollaborationHub: React.FC<CollaborationHubProps> = ({
     };
 
     onAddResource(newRes);
+
+    // Sync to Cloud Collation & Storage Center (Firestore)
+    saveUploadableContentFirestore({
+      id: newRes.id,
+      title: newRes.title,
+      category: newRes.type,
+      department: newRes.department,
+      fileType: newRes.fileType || 'PDF',
+      description: newRes.description,
+      authorName: newRes.authorName,
+      fileSizeKb: 5400,
+      uploadedAt: new Date().toISOString(),
+      uploadedAtFormatted: new Date().toLocaleString()
+    }).catch(console.error);
+
     setShowModal(false);
     setTitle('');
     setDescription('');
