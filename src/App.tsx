@@ -45,6 +45,11 @@ import { AIChatbot } from './components/common/AIChatbot';
 import { AIChatbotModule } from './components/modules/AIChatbotModule';
 import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
+import { SplashScreen } from './components/common/SplashScreen';
+import { MobileBottomNav } from './components/common/MobileBottomNav';
+import { MobileDrawer } from './components/common/MobileDrawer';
+import { PWAInstallPrompt } from './components/common/PWAInstallPrompt';
+import { useAndroidBackButton } from './hooks/useAndroidBackButton';
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
@@ -82,8 +87,21 @@ export default function App() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
 
-  // AI Chatbot state
+  // AI Chatbot & Mobile Drawer state
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Hook for Android System Back Button & Gesture Navigation handling
+  useAndroidBackButton({
+    isAiOpen,
+    setIsAiOpen,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    activeModule,
+    setActiveModule,
+    addToast: (t) => addToast({ title: t.title, message: t.message, type: 'info' })
+  });
 
   // Helper function to trigger a Toast notification
   const addToast = (toastData: Omit<ToastNotification, 'id' | 'timestamp'>) => {
@@ -398,7 +416,15 @@ export default function App() {
   };
 
   if (!isAuthenticated) {
-    return <AuthScreen users={users} onLogin={handleLogin} />;
+    return (
+      <>
+        <AuthScreen users={users} onLogin={handleLogin} />
+        <PWAInstallPrompt />
+        {showSplash && (
+          <SplashScreen onFinish={() => setShowSplash(false)} durationMs={1200} />
+        )}
+      </>
+    );
   }
 
   return (
@@ -416,6 +442,7 @@ export default function App() {
         onNavigateModule={(mod) => setActiveModule(mod)}
         onRoleChange={handleRoleChange}
         onToggleTheme={handleToggleTheme}
+        onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
         onLogout={handleLogout}
         onOpenAiDrawer={() => setIsAiOpen(true)}
       />
@@ -436,7 +463,7 @@ export default function App() {
         />
 
         {/* Dynamic Content Body */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
           {(activeModule === 'projects' || activeModule === 'project_innovation') && (
             <ProjectInnovationHub
               userRole={userRole}
@@ -696,6 +723,36 @@ export default function App() {
         onClose={() => setIsAiOpen(false)}
         onOpen={() => setIsAiOpen(true)}
       />
+
+      {/* Native Mobile Bottom Navigation Bar (Android Touch Optimized) */}
+      <MobileBottomNav
+        activeModule={activeModule}
+        onSelectModule={(mod) => setActiveModule(mod)}
+        onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
+        onOpenAiChat={() => setIsAiOpen(true)}
+        unreadNotificationsCount={notifications.filter((n) => !n.read).length}
+      />
+
+      {/* Native Mobile Navigation Drawer */}
+      <MobileDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        currentUser={currentUser}
+        userRole={userRole}
+        onRoleChange={handleRoleChange}
+        activeModule={activeModule}
+        onSelectModule={(mod) => setActiveModule(mod)}
+        onLogout={handleLogout}
+        onOpenAiChat={() => setIsAiOpen(true)}
+      />
+
+      {/* PWA App Install Banner */}
+      <PWAInstallPrompt />
+
+      {/* Full-Screen Native Android App Splash Screen */}
+      {showSplash && (
+        <SplashScreen onFinish={() => setShowSplash(false)} durationMs={1200} />
+      )}
 
     </div>
   );
