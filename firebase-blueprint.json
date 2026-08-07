@@ -1,235 +1,94 @@
 {
   "entities": {
+    "registrations": {
+      "title": "Campus Registrations",
+      "description": "Student and faculty registration applications submitted on campus portal",
+      "properties": {
+        "id": { "type": "string", "description": "Unique registration ID" },
+        "fullName": { "type": "string", "description": "Full name of applicant" },
+        "email": { "type": "string", "description": "Email address" },
+        "role": { "type": "string", "description": "Requested role: student or faculty" },
+        "department": { "type": "string", "description": "Department name" },
+        "rollNumber": { "type": "string", "description": "Roll or register number" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "status": { "type": "string", "description": "Status: pending, approved, or rejected" },
+        "createdAt": { "type": "number", "description": "Creation timestamp in epoch ms" }
+      },
+      "required": ["fullName", "email", "role", "department", "status"]
+    },
+    "profiles": {
+      "title": "User Profiles",
+      "description": "Comprehensive profile records for campus members including basic info, contact details, blood group, address, etc.",
+      "properties": {
+        "id": { "type": "string", "description": "User ID matching auth/user identifier" },
+        "userId": { "type": "string", "description": "Associated user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "firstName": { "type": "string", "description": "First name" },
+        "lastName": { "type": "string", "description": "Last name" },
+        "email": { "type": "string", "description": "Personal email" },
+        "officialEmail": { "type": "string", "description": "Official institutional email" },
+        "role": { "type": "string", "description": "User role" },
+        "department": { "type": "string", "description": "Department name" },
+        "programme": { "type": "string", "description": "Degree programme e.g. BE ECE" },
+        "academicSession": { "type": "string", "description": "Academic session e.g. 2026-2027" },
+        "semester": { "type": "number", "description": "Current semester number" },
+        "className": { "type": "string", "description": "Class identifier e.g. II ECE" },
+        "rollNumber": { "type": "string", "description": "Roll number" },
+        "registerNo": { "type": "string", "description": "Anna University or campus register number" },
+        "title": { "type": "string", "description": "Title e.g. Mr, Ms, Dr, Prof" },
+        "dateOfBirth": { "type": "string", "description": "Date of birth string" },
+        "gender": { "type": "string", "description": "Male, Female, or Others" },
+        "phone": { "type": "string", "description": "Contact number" },
+        "whatsappNumber": { "type": "string", "description": "WhatsApp contact number" },
+        "religion": { "type": "string", "description": "Religion" },
+        "communalCategory": { "type": "string", "description": "Communal category e.g. MBC, BC, SC, ST, OC" },
+        "bloodGroup": { "type": "string", "description": "Blood group e.g. O+VE" },
+        "country": { "type": "string", "description": "Country of residence" },
+        "state": { "type": "string", "description": "State" },
+        "district": { "type": "string", "description": "District" },
+        "cityVillage": { "type": "string", "description": "City or Village" },
+        "address": { "type": "string", "description": "Full postal address" },
+        "streetArea": { "type": "string", "description": "Street or area" },
+        "pinCode": { "type": "string", "description": "Postal pincode" },
+        "motherTongue": { "type": "string", "description": "Mother tongue language" },
+        "nationality": { "type": "string", "description": "Nationality" },
+        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
+      },
+      "required": ["userId", "name", "email", "role"]
+    },
+    "uploadable_contents": {
+      "title": "Uploadable Contents & Documents",
+      "description": "Cloud document uploads, learning materials, certificates, complaint evidence, assignment submissions, and project attachments",
+      "properties": {
+        "id": { "type": "string", "description": "Unique upload ID" },
+        "title": { "type": "string", "description": "Title or display name of the uploaded document" },
+        "fileName": { "type": "string", "description": "Original file name" },
+        "fileType": { "type": "string", "description": "MIME type or file category e.g. PDF, image/png, docx" },
+        "fileSize": { "type": "number", "description": "File size in bytes" },
+        "fileUrl": { "type": "string", "description": "Download URL or base64 data URL" },
+        "category": { "type": "string", "description": "Category: certificate, assignment, notes, complaint_attachment, project_doc, profile_avatar, lab_report" },
+        "uploadedBy": { "type": "string", "description": "User ID of uploader" },
+        "uploaderName": { "type": "string", "description": "Name of uploader" },
+        "department": { "type": "string", "description": "Associated department" },
+        "accessLevel": { "type": "string", "description": "Access visibility: public, department, private, admin_only" },
+        "description": { "type": "string", "description": "Optional description or caption" },
+        "createdAt": { "type": "number", "description": "Upload timestamp in epoch ms" }
+      },
+      "required": ["title", "fileName", "fileUrl", "category", "uploadedBy"]
+    },
     "users": {
       "title": "Users",
-      "description": "Registered students, faculty, mentors, and administrators.",
-      "type": "object",
+      "description": "Campus system user accounts",
       "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "email": { "type": "string" },
-        "role": { "type": "string" },
-        "department": { "type": "string" },
-        "phone": { "type": "string" },
-        "avatar": { "type": "string" },
-        "status": { "type": "string" }
+        "id": { "type": "string", "description": "User ID" },
+        "name": { "type": "string", "description": "User full name" },
+        "email": { "type": "string", "description": "User email address" },
+        "role": { "type": "string", "description": "User role" },
+        "department": { "type": "string", "description": "Department name" },
+        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
+        "status": { "type": "string", "description": "Status: active or inactive" }
       },
-      "required": ["id", "name", "email", "role"]
-    },
-    "departments": {
-      "title": "Departments",
-      "description": "Academic departments in CKCET.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "code": { "type": "string" },
-        "head": { "type": "string text" },
-        "totalStudents": { "type": "number" },
-        "totalFaculty": { "type": "number" }
-      },
-      "required": ["id", "name"]
-    },
-    "results": {
-      "title": "Results",
-      "description": "Student semester examination performance records.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "studentId": { "type": "string" },
-        "studentName": { "type": "string" },
-        "registerNo": { "type": "string" },
-        "department": { "type": "string" },
-        "semester": { "type": "number" },
-        "cgpa": { "type": "number text" },
-        "status": { "type": "string" },
-        "subjects": { "type": "array" }
-      },
-      "required": ["id", "studentId", "semester"]
-    },
-    "complaints": {
-      "title": "Complaints",
-      "description": "Student and faculty campus issue tickets.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "category": { "type": "string" },
-        "description": { "type": "string text" },
-        "status": { "type": "string" },
-        "priority": { "type": "string" },
-        "submittedBy": { "type": "string" },
-        "submittedByRole": { "type": "string" },
-        "submittedAt": { "type": "string" },
-        "assignedTo": { "type": "string" },
-        "aiPriority": { "type": "string" },
-        "aiCategory": { "type": "string" }
-      },
-      "required": ["id", "title", "description", "status"]
-    },
-    "lost_found": {
-      "title": "Lost & Found Items",
-      "description": "Lost and found items reported on campus.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "category": { "type": "string" },
-        "type": { "type": "string" },
-        "description": { "type": "string text" },
-        "location": { "type": "string" },
-        "date": { "type": "string" },
-        "contactName": { "type": "string" },
-        "contactPhone": { "type": "string" },
-        "status": { "type": "string" },
-        "imageUrl": { "type": "string" }
-      },
-      "required": ["id", "title", "type", "status"]
-    },
-    "resources": {
-      "title": "Shared Resources",
-      "description": "Study notes, lab manuals, and syllabus files.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "subject": { "type": "string" },
-        "department": { "type": "string" },
-        "semester": { "type": "number" },
-        "type": { "type": "string" },
-        "uploadedBy": { "type": "string text" },
-        "uploadedAt": { "type": "string" },
-        "fileSize": { "type": "string" },
-        "downloads": { "type": "number" },
-        "likes": { "type": "number" },
-        "downloadUrl": { "type": "string" }
-      },
-      "required": ["id", "title", "subject"]
-    },
-    "projects": {
-      "title": "Innovation Projects",
-      "description": "Student innovation and research projects.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "abstract": { "type": "string text" },
-        "category": { "type": "string" },
-        "status": { "type": "string" },
-        "leadStudent": { "type": "string" },
-        "leadEmail": { "type": "string" },
-        "department": { "type": "string" },
-        "mentor": { "type": "string" },
-        "teamMembers": { "type": "array" },
-        "openRoles": { "type": "array" },
-        "techStack": { "type": "array" },
-        "createdAt": { "type": "string" },
-        "stars": { "type": "number" }
-      },
-      "required": ["id", "title", "category"]
-    },
-    "community_posts": {
-      "title": "Community Posts",
-      "description": "Forum discussions and campus Q&A posts.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "author": { "type": "string" },
-        "authorRole": { "type": "string" },
-        "avatar": { "type": "string" },
-        "title": { "type": "string" },
-        "content": { "type": "string text" },
-        "category": { "type": "string" },
-        "timestamp": { "type": "string" },
-        "likes": { "type": "number" },
-        "commentsCount": { "type": "number" },
-        "tags": { "type": "array" },
-        "isPinned": { "type": "boolean" },
-        "comments": { "type": "array" }
-      },
-      "required": ["id", "author", "content"]
-    },
-    "announcements": {
-      "title": "Announcements",
-      "description": "Official campus notices and alerts.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "content": { "type": "string text" },
-        "date": { "type": "string" },
-        "author": { "type": "string" },
-        "category": { "type": "string" },
-        "priority": { "type": "string" },
-        "targetDepartment": { "type": "string" }
-      },
-      "required": ["id", "title", "content"]
-    },
-    "leave_requests": {
-      "title": "Leave Requests",
-      "description": "Student leave applications and approvals.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "studentName": { "type": "string" },
-        "registerNo": { "type": "string" },
-        "department": { "type": "string" },
-        "reason": { "type": "string text" },
-        "fromDate": { "type": "string" },
-        "toDate": { "type": "string" },
-        "type": { "type": "string" },
-        "status": { "type": "string" },
-        "appliedOn": { "type": "string" },
-        "remarks": { "type": "string" }
-      },
-      "required": ["id", "studentName", "reason", "status"]
-    },
-    "notifications": {
-      "title": "Notifications",
-      "description": "Real-time user system notifications.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string text" },
-        "title": { "type": "string text" },
-        "message": { "type": "string text" },
-        "timestamp": { "type": "string text" },
-        "read": { "type": "boolean" },
-        "type": { "type": "string text" }
-      },
-      "required": ["id", "title", "message"]
-    },
-    "audit_logs": {
-      "title": "Audit Logs",
-      "description": "System administrative access and modification logs.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string text" },
-        "action": { "type": "string text" },
-        "performedBy": { "type": "string text" },
-        "userRole": { "type": "string text" },
-        "target": { "type": "string text" },
-        "timestamp": { "type": "string text" },
-        "ipAddress": { "type": "string text" }
-      },
-      "required": ["id", "action", "performedBy"]
-    },
-    "faqs": {
-      "title": "Offline AI FAQs",
-      "description": "Frequently asked questions for offline AI chatbot and online synchronization.",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string text" },
-        "category": { "type": "string text" },
-        "question": { "type": "string text" },
-        "keywords": { "type": "array" },
-        "answer": { "type": "string text" },
-        "relatedQuestions": { "type": "array" },
-        "status": { "type": "string text" },
-        "version": { "type": "number" },
-        "createdAt": { "type": "string text" },
-        "updatedAt": { "type": "string text" }
-      },
-      "required": ["id", "category", "question", "answer"]
+      "required": ["name", "email", "role"]
     }
   }
 }

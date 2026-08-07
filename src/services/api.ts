@@ -62,6 +62,9 @@ import {
 
 const STORAGE_KEYS = {
   USERS: 'smart_campus_users',
+  PROFILES: 'smart_campus_profiles',
+  REGISTRATIONS: 'smart_campus_registrations',
+  UPLOADS: 'smart_campus_uploads',
   DEPARTMENTS: 'smart_campus_depts',
   RESULTS: 'smart_campus_results',
   COMPLAINTS: 'smart_campus_complaints',
@@ -88,6 +91,9 @@ const STORAGE_KEYS = {
 // Firestore Collection Names Mapping
 export const FIRESTORE_COLLECTIONS = {
   USERS: 'users',
+  PROFILES: 'profiles',
+  REGISTRATIONS: 'registrations',
+  UPLOADABLE_CONTENTS: 'uploadable_contents',
   PROJECTS: 'projects',
   COMPLAINTS: 'complaints',
   LEAVE_REQUESTS: 'leaveRequests',
@@ -321,6 +327,52 @@ export async function deleteUserFirestore(userId: string): Promise<void> {
   await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.USERS, userId);
 }
 
+// 1. Registrations Collection Functions
+export async function getRegistrationsFirestore(): Promise<any[]> {
+  return getFirestoreDocs<any>(FIRESTORE_COLLECTIONS.REGISTRATIONS);
+}
+
+export async function saveRegistrationFirestore(registrationData: any): Promise<void> {
+  const regId = registrationData.id || `reg_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.REGISTRATIONS, regId, registrationData);
+}
+
+export function subscribeToRegistrations(callback: (registrations: any[]) => void) {
+  return subscribeToFirestoreCollection<any>(FIRESTORE_COLLECTIONS.REGISTRATIONS, callback);
+}
+
+// 2. Profiles Collection Functions
+export async function getProfilesFirestore(): Promise<any[]> {
+  return getFirestoreDocs<any>(FIRESTORE_COLLECTIONS.PROFILES);
+}
+
+export async function saveProfileFirestore(profileData: any): Promise<void> {
+  const profileId = profileData.id || profileData.userId || `prof_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.PROFILES, profileId, profileData);
+}
+
+export function subscribeToProfiles(callback: (profiles: any[]) => void) {
+  return subscribeToFirestoreCollection<any>(FIRESTORE_COLLECTIONS.PROFILES, callback);
+}
+
+// 3. Uploadable Contents Collection Functions
+export async function getUploadableContentsFirestore(): Promise<any[]> {
+  return getFirestoreDocs<any>(FIRESTORE_COLLECTIONS.UPLOADABLE_CONTENTS);
+}
+
+export async function saveUploadableContentFirestore(uploadData: any): Promise<void> {
+  const uploadId = uploadData.id || `upload_${Date.now()}`;
+  await saveFirestoreDoc(FIRESTORE_COLLECTIONS.UPLOADABLE_CONTENTS, uploadId, uploadData);
+}
+
+export async function deleteUploadableContentFirestore(uploadId: string): Promise<void> {
+  await deleteFirestoreDoc(FIRESTORE_COLLECTIONS.UPLOADABLE_CONTENTS, uploadId);
+}
+
+export function subscribeToUploadableContents(callback: (uploads: any[]) => void) {
+  return subscribeToFirestoreCollection<any>(FIRESTORE_COLLECTIONS.UPLOADABLE_CONTENTS, callback);
+}
+
 export async function getProjectsFirestore(): Promise<Project[]> {
   return getFirestoreDocs<Project>(FIRESTORE_COLLECTIONS.PROJECTS);
 }
@@ -380,6 +432,30 @@ export class CampusStorage {
 
   static saveUsers(users: User[]) {
     setStored(STORAGE_KEYS.USERS, users);
+  }
+
+  static getProfiles(): any[] {
+    return getStored(STORAGE_KEYS.PROFILES, []);
+  }
+
+  static saveProfiles(profiles: any[]) {
+    setStored(STORAGE_KEYS.PROFILES, profiles);
+  }
+
+  static getRegistrations(): any[] {
+    return getStored(STORAGE_KEYS.REGISTRATIONS, []);
+  }
+
+  static saveRegistrations(registrations: any[]) {
+    setStored(STORAGE_KEYS.REGISTRATIONS, registrations);
+  }
+
+  static getUploads(): any[] {
+    return getStored(STORAGE_KEYS.UPLOADS, []);
+  }
+
+  static saveUploads(uploads: any[]) {
+    setStored(STORAGE_KEYS.UPLOADS, uploads);
   }
 
   static getDepartments(): Department[] {

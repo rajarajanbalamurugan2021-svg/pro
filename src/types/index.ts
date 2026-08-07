@@ -53,6 +53,29 @@ export interface User {
   interests?: string[];
   projectsCompleted?: number;
   githubProfile?: string;
+  academicSession?: string;
+  programme?: string;
+  className?: string;
+  registerNo?: string;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  officialEmail?: string;
+  whatsappNumber?: string;
+  religion?: string;
+  communalCategory?: string;
+  title?: string;
+  bloodGroup?: string;
+  country?: string;
+  state?: string;
+  district?: string;
+  cityVillage?: string;
+  address?: string;
+  streetArea?: string;
+  pinCode?: string;
+  motherTongue?: string;
+  nationality?: string;
 }
 
 export interface Department {

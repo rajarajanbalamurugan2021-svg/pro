@@ -42,6 +42,8 @@ import { LabAttendance } from './components/modules/LabAttendance/LabAttendance'
 import { PlacementSystem } from './components/modules/PlacementSystem/PlacementSystem';
 import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
 import { AIChatbot } from './components/common/AIChatbot';
+import { AIChatbotModule } from './components/modules/AIChatbotModule';
+import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
 import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
 
@@ -362,6 +364,23 @@ export default function App() {
     CampusStorage.saveLeaveRequests(updated);
   };
 
+  const handleMarkNotificationRead = (id: string) => {
+    const updated = notifications.map((n) => (n.id === id ? { ...n, read: true } : n));
+    setNotifications(updated);
+    CampusStorage.saveNotifications(updated);
+  };
+
+  const handleMarkAllNotificationsRead = () => {
+    const updated = notifications.map((n) => ({ ...n, read: true }));
+    setNotifications(updated);
+    CampusStorage.saveNotifications(updated);
+  };
+
+  const handleClearAllNotifications = () => {
+    setNotifications([]);
+    CampusStorage.saveNotifications([]);
+  };
+
   const currentStudentResult = (studentResults && studentResults.length > 0 ? studentResults[0] : null) || {
     id: 'res-default',
     studentId: currentUser?.id || 'usr-1',
@@ -391,6 +410,10 @@ export default function App() {
         userRole={userRole}
         theme={theme}
         notifications={notifications}
+        onMarkNotificationRead={handleMarkNotificationRead}
+        onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
+        onClearAllNotifications={handleClearAllNotifications}
+        onNavigateModule={(mod) => setActiveModule(mod)}
         onRoleChange={handleRoleChange}
         onToggleTheme={handleToggleTheme}
         onLogout={handleLogout}
@@ -555,6 +578,7 @@ export default function App() {
           {(activeModule === 'placement' || activeModule === 'placement_system' || activeModule === 'my_profile') && (
             <PlacementSystem
               user={currentUser}
+              initialTab={activeModule === 'my_profile' ? 'profile' : undefined}
               onUpdateUser={(updatedUser) => {
                 setCurrentUser(updatedUser);
                 const updatedUsers = users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
@@ -562,6 +586,14 @@ export default function App() {
                 CampusStorage.saveUsers(updatedUsers);
               }}
             />
+          )}
+
+          {(activeModule === 'ai_chatbot' || activeModule === 'ai_assistant') && (
+            <AIChatbotModule currentUser={currentUser} />
+          )}
+
+          {(activeModule === 'cloud_db' || activeModule === 'cloud_collation' || activeModule === 'firestore_hub') && (
+            <FirebaseCloudHubModule />
           )}
 
           {(activeModule === 'admin' ||

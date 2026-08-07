@@ -29,12 +29,19 @@ import {
 interface Props {
   user: User;
   onUpdateUser?: (user: User) => void;
+  initialTab?: 'profile' | 'recommendations' | 'resume' | 'interview' | 'career' | 'applications' | 'officer' | 'recruiter' | 'analytics';
 }
 
-export const PlacementSystem: React.FC<Props> = ({ user, onUpdateUser }) => {
+export const PlacementSystem: React.FC<Props> = ({ user, onUpdateUser, initialTab }) => {
   const [activeTab, setActiveTab] = useState<
     'profile' | 'recommendations' | 'resume' | 'interview' | 'career' | 'applications' | 'officer' | 'recruiter' | 'analytics'
-  >('recommendations');
+  >(initialTab || 'recommendations');
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   const [opportunities, setOpportunities] = useState<PlacementOpportunity[]>([]);
   const [applications, setApplications] = useState<PlacementApplication[]>([]);

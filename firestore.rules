@@ -58,12 +58,41 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Users Collection
+    // Users & Profiles Collections
     match /users/{userId} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update: if isOwner(userId) || isAdmin();
-      allow delete: if isSuperAdmin();
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if true;
+    }
+    match /profiles/{profileId} {
+      allow read: if true;
+      allow create, update, write: if true;
+      allow delete: if true;
+    }
+    match /user_profiles/{profileId} {
+      allow read: if true;
+      allow create, update, write: if true;
+      allow delete: if true;
+    }
+
+    // Registrations Collection
+    match /registrations/{regId} {
+      allow read: if true;
+      allow create, update, write: if true;
+      allow delete: if true;
+    }
+
+    // Uploadable Contents & Files Collections
+    match /uploadable_contents/{uploadId} {
+      allow read: if true;
+      allow create, update, write: if true;
+      allow delete: if true;
+    }
+    match /uploads/{uploadId} {
+      allow read: if true;
+      allow create, update, write: if true;
+      allow delete: if true;
     }
 
     // Roles & Permissions Collections

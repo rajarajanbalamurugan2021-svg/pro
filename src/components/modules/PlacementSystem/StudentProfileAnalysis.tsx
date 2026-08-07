@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, StudentProfileExtra, SkillGapAnalysis } from '../../../types';
+import { BasicInfoProfile } from './BasicInfoProfile';
 import {
   User as UserIcon,
   Award,
@@ -184,6 +185,9 @@ export const StudentProfileAnalysis: React.FC<Props> = ({ user, onUpdateUser }) 
           </div>
         </div>
       </div>
+
+      {/* Basic Info Section (CKCET Academic Profile Standard) */}
+      <BasicInfoProfile user={user} onUpdateUser={onUpdateUser} />
 
       {/* Grid Section: Profile Details & AI Skill Gap Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
