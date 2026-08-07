@@ -1,0 +1,23 @@
+{
+  "short_name": "CKCET CAMPRO",
+  "name": "CKCET CAMPRO - Smart Campus Portal",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "any",
+  "scope": "/",
+  "description": "Comprehensive Smart Campus Management System for Christ The King Engineering College"
+}
