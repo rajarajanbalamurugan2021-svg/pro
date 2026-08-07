@@ -231,6 +231,10 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow write: if isAdmin();
     }
+    match /faqs/{faqId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
 
     // Single-document global sync collection fallback
     match /ckcet_campro/{docKey} {

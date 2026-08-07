@@ -1,5 +1,19 @@
 export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor' | 'maintenance_staff' | 'department_head';
 
+export interface FAQItem {
+  id: string;
+  category: string;
+  question: string;
+  keywords: string[];
+  answer: string;
+  relatedQuestions?: string[];
+  language?: string;
+  version?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  status?: 'active' | 'inactive';
+}
+
 export interface ComplaintCategoryItem {
   id: string;
   name: string;

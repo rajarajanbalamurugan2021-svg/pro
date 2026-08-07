@@ -212,6 +212,24 @@
         "ipAddress": { "type": "string text" }
       },
       "required": ["id", "action", "performedBy"]
+    },
+    "faqs": {
+      "title": "Offline AI FAQs",
+      "description": "Frequently asked questions for offline AI chatbot and online synchronization.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string text" },
+        "category": { "type": "string text" },
+        "question": { "type": "string text" },
+        "keywords": { "type": "array" },
+        "answer": { "type": "string text" },
+        "relatedQuestions": { "type": "array" },
+        "status": { "type": "string text" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string text" },
+        "updatedAt": { "type": "string text" }
+      },
+      "required": ["id", "category", "question", "answer"]
     }
   }
 }

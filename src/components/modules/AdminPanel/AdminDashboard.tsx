@@ -32,6 +32,7 @@ import { CampusStorage } from '../../../services/api';
 import { normalizeRole, RBAC } from '../../../lib/rbac';
 import { AccessDeniedPage } from '../../common/AccessDeniedPage';
 import { CrudManager, CrudColumn, CrudFieldSchema } from '../../common/CrudManager';
+import { FAQManager } from './FAQManager';
 
 interface AdminDashboardProps {
   userRole?: UserRole;
@@ -77,6 +78,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     | 'complaints'
     | 'announcements'
     | 'notifications'
+    | 'faq_manager'
     | 'ai_settings'
     | 'audit_logs'
     | 'system_settings'
@@ -312,6 +314,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         >
           <Megaphone className="h-4 w-4" /> Announcements ({announcementList.length})
         </button>
+
+        {isAdmin && (
+          <button
+            onClick={() => setActiveTab('faq_manager')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+              activeTab === 'faq_manager' ? 'bg-purple-600 text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Bot className="h-4 w-4 text-blue-400" /> FAQ Manager
+          </button>
+        )}
 
         {isSuperAdmin && (
           <>
@@ -562,6 +575,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           ]}
         />
       )}
+
+      {/* FAQ MANAGER TAB */}
+      {activeTab === 'faq_manager' && <FAQManager />}
 
       {/* AI CHATBOT SETTINGS TAB (SuperAdmin Only) */}
       {activeTab === 'ai_settings' && isSuperAdmin && (
