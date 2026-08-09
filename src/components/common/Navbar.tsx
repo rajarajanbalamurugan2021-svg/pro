@@ -438,7 +438,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Direct Log Out Icon Button (Quick Access) */}
           <button
             onClick={onLogout}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 text-red-600 dark:text-red-400 text-xs font-semibold border border-red-200 dark:border-red-900/50 transition"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 text-red-600 dark:text-red-400 text-xs font-semibold border border-red-200 dark:border-red-900/50 transition shrink-0"
             title="Log Out of System"
           >
             <LogOut className="h-4 w-4 shrink-0" />
@@ -446,23 +446,25 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Current User Profile Dropdown Menu */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
               onClick={() => {
                 setShowUserMenu(!showUserMenu);
                 setShowNotifications(false);
+                setShowSyncMenu(false);
               }}
-              className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800 hover:opacity-80 transition cursor-pointer"
+              className="flex items-center gap-2 pl-2 pr-1 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 border-l border-slate-200 dark:border-slate-800 transition cursor-pointer"
+              title="User Account Menu"
             >
               <img
                 src={currentUser?.avatar}
                 alt={currentUser?.name}
-                className="h-9 w-9 rounded-full object-cover ring-2 ring-blue-500/30"
+                className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover ring-2 ring-blue-500/30 shrink-0"
               />
-              <div className="hidden lg:block text-left">
-                <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight flex items-center gap-1">
-                  <span>{currentUser?.name}</span>
-                  <ChevronDown className="h-3 w-3 text-slate-400" />
+              <div className="hidden lg:block text-left min-w-0">
+                <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight flex items-center gap-1 min-w-0">
+                  <span className="truncate max-w-[90px] xl:max-w-[130px]">{currentUser?.name}</span>
+                  <ChevronDown className="h-3 w-3 text-slate-400 shrink-0" />
                 </div>
               </div>
             </button>

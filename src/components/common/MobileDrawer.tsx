@@ -98,12 +98,6 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
     onClose();
   };
 
-  const roleOptions: { role: UserRole; label: string }[] = [
-    { role: 'student', label: 'Student' },
-    { role: 'faculty', label: 'Faculty' },
-    { role: 'admin', label: 'Administrator' },
-    { role: 'super_admin', label: 'Super Admin' }
-  ];
 
   return (
     <div className="md:hidden fixed inset-0 z-[9990] flex select-none">
@@ -153,27 +147,6 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
             </div>
           </div>
 
-          {/* Quick Role Switcher Chip Selector */}
-          <div className="space-y-1 pt-1">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-              Active Role View
-            </label>
-            <div className="grid grid-cols-2 gap-1.5">
-              {roleOptions.map((opt) => (
-                <button
-                  key={opt.role}
-                  onClick={() => onRoleChange(opt.role)}
-                  className={`py-1.5 px-2 rounded-xl text-[11px] font-bold text-center border transition ${
-                    userRole === opt.role
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-sm'
-                      : 'bg-slate-800/60 text-slate-300 border-slate-700/60 hover:bg-slate-800'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Network Sync Status */}
           <div className="pt-1 flex items-center justify-between text-xs">
