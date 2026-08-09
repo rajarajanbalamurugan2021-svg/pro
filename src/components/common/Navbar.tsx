@@ -147,18 +147,32 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right Section: Actions & Role Switcher */}
         <div className="flex items-center gap-2 sm:gap-3">
           
-          {/* Official College Web Page Link */}
-          <a
-            href="https://ckcet.edu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/80 border border-blue-200 dark:border-blue-800 transition shadow-2xs group"
-            title="Visit Official CKCET Website (ckcet.edu.in)"
-          >
-            <Globe className="w-3.5 h-3.5 text-blue-500 group-hover:rotate-12 transition-transform" />
-            <span className="hidden md:inline">ckcet.edu.in</span>
-            <ExternalLink className="w-3 h-3 text-blue-400" />
-          </a>
+          {/* Official College Web Page & NetCampus Portal Links */}
+          <div className="hidden sm:flex items-center gap-1.5">
+            <a
+              href="https://ckcet.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/80 border border-blue-200 dark:border-blue-800 transition shadow-2xs group"
+              title="Visit Official CKCET Website (ckcet.edu.in)"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-500 group-hover:rotate-12 transition-transform" />
+              <span className="hidden md:inline">ckcet.edu.in</span>
+              <ExternalLink className="w-3 h-3 text-blue-400" />
+            </a>
+
+            <a
+              href="https://ckcet.mynetcampus.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 hover:bg-purple-100 dark:hover:bg-purple-900/80 border border-purple-200 dark:border-purple-800 transition shadow-2xs group"
+              title="Go to CKCET MyNetCampus Portal Login"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-purple-500 group-hover:scale-110 transition-transform" />
+              <span className="hidden lg:inline">MyNetCampus</span>
+              <span className="lg:hidden">NetCampus</span>
+            </a>
+          </div>
           
           {/* Real-Time Sync & Multi-Device Status Indicator */}
           <div className="relative">

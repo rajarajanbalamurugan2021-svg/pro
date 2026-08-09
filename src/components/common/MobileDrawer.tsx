@@ -228,16 +228,28 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
         {/* Footer Actions */}
         <div className="p-4 border-t border-slate-800 space-y-2 bg-slate-950/40">
-          <a
-            href="https://ckcet.edu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700/60 text-xs font-bold transition shadow-sm"
-          >
-            <Globe className="w-4 h-4 text-blue-400" />
-            <span>Official College Website</span>
-            <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
-          </a>
+          <div className="grid grid-cols-1 gap-2">
+            <a
+              href="https://ckcet.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700/60 text-xs font-bold transition shadow-sm"
+            >
+              <Globe className="w-4 h-4 text-blue-400" />
+              <span>Official College Website</span>
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+            </a>
+
+            <a
+              href="https://ckcet.mynetcampus.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700/60 text-xs font-bold transition shadow-sm"
+            >
+              <ExternalLink className="w-4 h-4 text-purple-400" />
+              <span>MyNetCampus Login</span>
+            </a>
+          </div>
 
           {onResetDatabase && (
             <button

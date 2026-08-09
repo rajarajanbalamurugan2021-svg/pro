@@ -169,19 +169,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Footer Actions & Logout */}
       <div className="mt-auto pt-4 space-y-3 border-t border-slate-100 dark:border-slate-800">
         
-        {/* Official College Web Portal Link */}
-        <a
-          href="https://ckcet.edu.in/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 text-xs font-bold transition shadow-2xs group"
-        >
-          <div className="flex items-center gap-2.5 truncate">
-            <Globe className="h-4 w-4 text-blue-500 shrink-0 group-hover:rotate-12 transition-transform" />
-            <span className="truncate">CKCET Main Portal</span>
-          </div>
-          <ExternalLink className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-        </a>
+        {/* External Portals & Web Links */}
+        <div className="space-y-1.5">
+          <a
+            href="https://ckcet.edu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 text-xs font-bold transition shadow-2xs group"
+          >
+            <div className="flex items-center gap-2.5 truncate">
+              <Globe className="h-4 w-4 text-blue-500 shrink-0 group-hover:rotate-12 transition-transform" />
+              <span className="truncate">CKCET Main Portal</span>
+            </div>
+            <ExternalLink className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+          </a>
+
+          <a
+            href="https://ckcet.mynetcampus.com/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/80 text-xs font-bold transition shadow-2xs group"
+          >
+            <div className="flex items-center gap-2.5 truncate">
+              <ExternalLink className="h-4 w-4 text-purple-500 shrink-0 group-hover:scale-110 transition-transform" />
+              <span className="truncate">MyNetCampus Login</span>
+            </div>
+            <ExternalLink className="h-3.5 w-3.5 text-purple-400 shrink-0" />
+          </a>
+        </div>
 
         {onLogout && (
           <button

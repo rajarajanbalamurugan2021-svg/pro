@@ -81,8 +81,11 @@ export const ReportsExportModal: React.FC<ReportsExportModalProps> = ({
           {/* Institutional Header */}
           <div className="text-center pb-6 border-b-2 border-slate-900 dark:border-slate-100 space-y-1">
             <h1 className="text-2xl font-black uppercase tracking-wider text-slate-900 dark:text-white">
-              CHRIST KINGS COLLEGE OF ENGINEERING & TECHNOLOGY
+              CK COLLEGE OF ENGINEERING & TECHNOLOGY
             </h1>
+            <p className="text-xs font-extrabold text-blue-600 dark:text-blue-400 uppercase tracking-widest pt-0.5">
+              AN AUTONOMOUS INSTITUTION
+            </p>
             <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
               Approved by AICTE • Affiliated to Anna University • Accredited by NAAC 'A+' Grade
             </p>

@@ -725,21 +725,34 @@ export default function App() {
 
           {/* Global Campus Portal Footer with Link to Official Web Page */}
           <footer className="mt-12 pt-6 pb-4 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
-            <div className="flex items-center gap-2 font-medium">
-              <span className="font-bold text-slate-700 dark:text-slate-200">Christ The King Engineering College</span>
+            <div className="flex flex-wrap items-center justify-center gap-2 font-medium">
+              <span className="font-bold text-slate-700 dark:text-slate-200">CK College of Engineering & Technology</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-extrabold uppercase border border-blue-200 dark:border-blue-800">Autonomous</span>
               <span>•</span>
               <span>CKCET CAMPRO Portal</span>
             </div>
-            <a
-              href="https://ckcet.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/80 border border-blue-200 dark:border-blue-800 transition shadow-2xs group"
-            >
-              <Globe className="w-3.5 h-3.5 text-blue-500 group-hover:rotate-12 transition-transform" />
-              <span>Official Website (ckcet.edu.in)</span>
-              <ExternalLink className="w-3 h-3 text-blue-400" />
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <a
+                href="https://ckcet.edu.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/80 border border-blue-200 dark:border-blue-800 transition shadow-2xs group"
+              >
+                <Globe className="w-3.5 h-3.5 text-blue-500 group-hover:rotate-12 transition-transform" />
+                <span>ckcet.edu.in</span>
+                <ExternalLink className="w-3 h-3 text-blue-400" />
+              </a>
+
+              <a
+                href="https://ckcet.mynetcampus.com/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 hover:bg-purple-100 dark:hover:bg-purple-900/80 border border-purple-200 dark:border-purple-800 transition shadow-2xs group"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-purple-500 group-hover:scale-110 transition-transform" />
+                <span>MyNetCampus Login</span>
+              </a>
+            </div>
           </footer>
         </main>
       </div>

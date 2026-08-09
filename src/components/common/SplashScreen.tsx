@@ -80,8 +80,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
             Smart Campus Portal
           </p>
-          <p className="text-[11px] text-slate-400 max-w-[240px] mx-auto font-medium">
-            Christ The King Engineering College
+          <p className="text-[11px] text-slate-300 max-w-[280px] mx-auto font-semibold">
+            CK College of Engineering & Technology
+          </p>
+          <p className="text-[10px] text-blue-400 font-extrabold uppercase tracking-widest">
+            An Autonomous Institution
           </p>
         </div>
 

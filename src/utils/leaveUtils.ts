@@ -106,7 +106,7 @@ export function printLeaveLetter(leave: LeaveRequest) {
       <body>
         <div class="header">
           <div class="institution">CKCET CAMPRO - ACADEMIC ADMINISTRATION</div>
-          <div class="sub-text">College of Engineering & Technology • Office of Student Affairs & Academic Leaves</div>
+          <div class="sub-text">CK College of Engineering & Technology (An Autonomous Institution) • Office of Student Affairs & Academic Leaves</div>
           <div class="badge">OFFICIAL LEAVE SANCTION ORDER</div>
         </div>
 

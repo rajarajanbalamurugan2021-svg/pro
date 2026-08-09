@@ -310,18 +310,30 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
             </span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Enterprise RBAC Campus Management & Authentication System
+            CK College of Engineering & Technology <span className="text-blue-400 font-extrabold">(An Autonomous Institution)</span>
           </p>
-          <a
-            href="https://ckcet.edu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 bg-blue-950/70 hover:bg-blue-900/80 border border-blue-800/80 transition"
-          >
-            <Globe className="w-3.5 h-3.5 text-blue-400" />
-            <span>Official College Website (ckcet.edu.in)</span>
-            <ExternalLink className="w-3 h-3 text-blue-400" />
-          </a>
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+            <a
+              href="https://ckcet.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 bg-blue-950/70 hover:bg-blue-900/80 border border-blue-800/80 transition"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-400" />
+              <span>ckcet.edu.in</span>
+              <ExternalLink className="w-3 h-3 text-blue-400" />
+            </a>
+
+            <a
+              href="https://ckcet.mynetcampus.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-purple-400 bg-purple-950/70 hover:bg-purple-900/80 border border-purple-800/80 transition"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
+              <span>MyNetCampus Login</span>
+            </a>
+          </div>
         </div>
 
         {/* Lockout Warning Banner */}

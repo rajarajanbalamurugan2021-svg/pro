@@ -7,7 +7,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     category: 'General',
     question: 'What is CKCET CAMPRO?',
     keywords: ['ckcet', 'campro', 'about', 'system', 'portal', 'overview', 'what is'],
-    answer: 'CKCET CAMPRO is the comprehensive smart campus management software for Sri Jayaram Educational Trust\'s Christ The King Engineering College. It unifies attendance, internal marks, leave workflows, grievance redressal, project collaboration, lab monitoring, and placement management in a single real-time platform.',
+    answer: 'CKCET CAMPRO is the comprehensive smart campus management software for Sri Jayaram Educational Trust\'s CK College of Engineering & Technology (An Autonomous Institution). It unifies attendance, internal marks, leave workflows, grievance redressal, project collaboration, lab monitoring, and placement management in a single real-time platform.',
     relatedQuestions: [
       'What are the key features of CKCET CAMPRO?',
       'Who can use CKCET CAMPRO?'
