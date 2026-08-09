@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ShieldCheck, Sparkles, Wifi } from 'lucide-react';
+import { ShieldCheck, Sparkles } from 'lucide-react';
+import { Logo } from './Logo';
 
 interface SplashScreenProps {
   onFinish?: () => void;
@@ -41,7 +42,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))'
       }}
     >
-      {/* Top Android App Header */}
+      {/* Top Header */}
       <div className="w-full flex items-center justify-between text-slate-400 text-xs font-mono">
         <span className="flex items-center gap-1.5 font-bold text-blue-400">
           <ShieldCheck className="w-4 h-4 text-blue-500" />
@@ -56,45 +57,36 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       {/* Main Branding Center */}
       <div className="flex flex-col items-center text-center space-y-5 my-auto max-w-sm">
         <div className="relative group">
-          <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 via-purple-600 to-amber-500 rounded-3xl blur-xl opacity-60 animate-pulse"></div>
-          <div className="relative w-28 h-28 rounded-3xl bg-slate-900 border-2 border-slate-700/80 p-3 shadow-2xl flex items-center justify-center">
-            <img
-              src="/logo.png"
-              alt="CKCET CAMPRO Logo"
-              className="w-full h-full object-contain drop-shadow-md"
-              onError={(e) => {
-                // Fallback to pure SVG vector logo
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
-            <div className="hidden border-4 border-blue-500/20 w-full h-full rounded-2xl flex items-center justify-center bg-blue-950/60 text-blue-400 font-extrabold text-2xl">
-              CK
-            </div>
+          <div className="absolute -inset-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 rounded-3xl blur-xl opacity-70 animate-pulse"></div>
+          <div className="relative p-2 rounded-3xl bg-slate-900/90 border-2 border-blue-500/30 shadow-2xl flex items-center justify-center">
+            <Logo size="xl" showText={false} />
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-blue-200 bg-clip-text text-transparent">
-            CKCET CAMPRO
-          </h1>
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-sans">
+              CKCET <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">CAMPRO</span>
+            </h1>
+          </div>
+          <p className="text-xs font-extrabold uppercase tracking-widest text-blue-400">
             Smart Campus Portal
           </p>
           <p className="text-[11px] text-slate-300 max-w-[280px] mx-auto font-semibold">
             CK College of Engineering & Technology
           </p>
           <p className="text-[10px] text-blue-400 font-extrabold uppercase tracking-widest">
-            An Autonomous Institution
+            (An Autonomous Institution)
           </p>
         </div>
 
         {/* Animated Loading Progress */}
         <div className="w-48 space-y-2 pt-2">
           <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/80">
-            <div className="h-full bg-gradient-to-r from-blue-500 via-amber-400 to-emerald-400 rounded-full animate-pulse w-full"></div>
+            <div className="h-full bg-gradient-to-r from-blue-500 via-indigo-400 to-sky-400 rounded-full animate-pulse w-full"></div>
           </div>
           <p className="text-[10px] text-slate-500 font-mono tracking-wider">
-            Initializing Firebase Session...
+            Initializing Session...
           </p>
         </div>
       </div>
@@ -112,3 +104,4 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     </div>
   );
 };
+

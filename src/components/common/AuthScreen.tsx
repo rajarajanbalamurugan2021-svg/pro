@@ -58,7 +58,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
   const [generatedOtp, setGeneratedOtp] = useState('842901');
   const [otpCountdown, setOtpCountdown] = useState(30);
   const [otpMethod, setOtpMethod] = useState<'email' | 'sms'>('email');
-  const [copiedOtpNotice, setCopiedOtpNotice] = useState(false);
+  const [failed2FAAttempts, setFailed2FAAttempts] = useState(0);
+  const [twoFactorLockout, setTwoFactorLockout] = useState(0);
+  const [dispatchToast, setDispatchToast] = useState<string | null>(null);
 
   // Anti-Bot Security Challenge state
   const [numA, setNumA] = useState(5);
@@ -91,6 +93,16 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
     }
   }, [lockoutTimer]);
 
+  // 2FA Lockout countdown timer effect
+  useEffect(() => {
+    if (twoFactorLockout > 0) {
+      const timer = setInterval(() => {
+        setTwoFactorLockout((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [twoFactorLockout]);
+
   // 2FA OTP Countdown timer effect
   useEffect(() => {
     if (require2FA && otpCountdown > 0) {
@@ -109,12 +121,18 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
   };
 
   const trigger2FAProcess = (userToAuthenticate: User, roleToAuthenticate: UserRole) => {
+    const normRole = normalizeRole(roleToAuthenticate);
     const code = generateNewOtp();
     setRequire2FA(true);
     setPendingUser({ user: userToAuthenticate, role: roleToAuthenticate });
     setTwoFactorPin('');
     setError('');
-    setSuccessMsg(`2-Step Security Verification code (${code}) sent for ${getRoleDisplayName(normalizeRole(roleToAuthenticate))} Portal.`);
+    setFailed2FAAttempts(0);
+    setTwoFactorLockout(0);
+
+    // Show simulated secure dispatch notification toast
+    setDispatchToast(`🔒 2-Step Security Code dispatched to ${userToAuthenticate.email} for ${getRoleDisplayName(normRole)} Portal.`);
+    setTimeout(() => setDispatchToast(null), 6000);
   };
 
   // Password strength calculation
@@ -162,12 +180,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
 
   const handle2FASubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPin = twoFactorPin.trim();
-    if (cleanPin !== generatedOtp && cleanPin !== '123456') {
-      setError(`Invalid 2-Step Security Code. Enter code (${generatedOtp}) or default demo PIN 123456.`);
-      setFailedAttempts((prev) => prev + 1);
+    if (twoFactorLockout > 0) {
+      setError(`Too many invalid 2FA attempts. Cooldown active for ${twoFactorLockout}s.`);
       return;
     }
+
+    const cleanPin = twoFactorPin.trim();
+    if (cleanPin !== generatedOtp && cleanPin !== '123456') {
+      const nextFailed = failed2FAAttempts + 1;
+      setFailed2FAAttempts(nextFailed);
+      if (nextFailed >= 3) {
+        setTwoFactorLockout(20);
+        setError('Maximum 2FA verification attempts reached. Temporary 20s security cooldown initiated.');
+      } else {
+        setError(`Invalid 2-Step Security Code. (${3 - nextFailed} attempt(s) remaining. Demo backup PIN: 123456)`);
+      }
+      return;
+    }
+
     if (pendingUser) {
       onLogin(pendingUser.user, pendingUser.role);
     }
@@ -316,16 +346,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
         
         {/* Header Branding */}
         <div className="text-center mb-6 flex flex-col items-center">
-          <Logo size="xl" showText={false} className="mb-3" />
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            CKCET <span className="text-blue-400">CAMPRO</span>
-            <span className="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-[10px] font-bold text-blue-400 uppercase tracking-widest flex items-center gap-1">
-              <Shield className="h-3 w-3 text-blue-400" />
-              Secure
-            </span>
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            CK College of Engineering & Technology <span className="text-blue-400 font-extrabold">(An Autonomous Institution)</span>
+          <Logo size="xl" showText={true} className="mb-2" />
+          <p className="text-xs text-slate-400 mt-2 font-medium">
+            CK College of Engineering & Technology <span className="text-blue-400 font-bold">(An Autonomous Institution)</span>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
             <a
@@ -351,6 +374,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
           </div>
         </div>
 
+        {/* Dispatch Notification Toast Banner */}
+        {dispatchToast && (
+          <div className="mb-4 p-3.5 rounded-2xl bg-blue-950/90 border border-blue-500/50 shadow-xl text-blue-200 text-xs font-medium flex items-start gap-2.5 animate-bounce">
+            <ShieldCheck className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <div className="font-bold text-white">Security Verification Code Dispatched</div>
+              <div className="text-[11px] text-blue-300 mt-0.5">{dispatchToast}</div>
+            </div>
+          </div>
+        )}
+
         {/* Lockout Warning Banner */}
         {lockoutTimer > 0 && (
           <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/40 text-red-400 text-xs font-semibold flex items-start gap-3 animate-pulse">
@@ -373,11 +407,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 <div className="flex items-center justify-between gap-2">
                   <h3 className="text-sm font-bold text-white tracking-tight truncate">2-Step Security Verification</h3>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/30 uppercase tracking-widest shrink-0 flex items-center gap-1">
-                    <ShieldCheck className="h-3 w-3" /> Active
+                    <ShieldCheck className="h-3 w-3" /> Mandatory
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">
-                  Verifying access for <span className="font-bold text-blue-300">{getRoleDisplayName(normalizeRole(pendingUser.role))} Portal</span>
+                  Verifying identity for <span className="font-bold text-blue-300">{getRoleDisplayName(normalizeRole(pendingUser.role))} Portal</span>
                 </p>
               </div>
             </div>
@@ -396,8 +430,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 </span>
               </div>
               <div className="flex items-center justify-between text-slate-300">
-                <span className="text-slate-400">User:</span>
-                <span className="font-bold text-white">{pendingUser.user.name} ({pendingUser.user.email})</span>
+                <span className="text-slate-400">Authenticated User:</span>
+                <span className="font-bold text-white">{pendingUser.user.name}</span>
               </div>
             </div>
 
@@ -407,7 +441,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => setOtpMethod('email')}
+                  onClick={() => {
+                    setOtpMethod('email');
+                    setDispatchToast(`Security code dispatched to campus email: ${pendingUser.user.email}`);
+                    setTimeout(() => setDispatchToast(null), 4000);
+                  }}
                   className={`py-1.5 px-3 rounded-xl text-xs font-bold border transition flex items-center justify-center gap-1.5 ${
                     otpMethod === 'email'
                       ? 'bg-blue-600/30 border-blue-500 text-blue-300'
@@ -419,7 +457,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setOtpMethod('sms')}
+                  onClick={() => {
+                    setOtpMethod('sms');
+                    setDispatchToast(`SMS security OTP sent to mobile device ending in ****${Math.floor(1000 + Math.random() * 9000)}.`);
+                    setTimeout(() => setDispatchToast(null), 4000);
+                  }}
                   className={`py-1.5 px-3 rounded-xl text-xs font-bold border transition flex items-center justify-center gap-1.5 ${
                     otpMethod === 'sms'
                       ? 'bg-blue-600/30 border-blue-500 text-blue-300'
@@ -432,28 +474,28 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
               </div>
             </div>
 
-            {/* Generated Code Display & Quick Auto-Fill */}
-            <div className="p-3 rounded-xl bg-gradient-to-r from-blue-950/70 via-slate-900 to-purple-950/70 border border-blue-500/30 flex items-center justify-between gap-3">
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-blue-400">
-                  {otpMethod === 'email' ? 'Campus Email Security Code' : 'SMS OTP Security Code'}
-                </div>
-                <div className="text-xl font-black font-mono tracking-widest text-white mt-0.5">
-                  {generatedOtp}
-                </div>
+            {/* Secure Simulated Dispatch Notification Status Card (No plaintext OTP display / No auto-fill) */}
+            <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-slate-300 flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                  {otpMethod === 'email' ? 'Campus Email Security Dispatch' : 'Mobile SMS OTP Dispatch'}
+                </span>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 uppercase tracking-wider font-bold">
+                  SENT
+                </span>
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setTwoFactorPin(generatedOtp);
-                  setCopiedOtpNotice(true);
-                  setTimeout(() => setCopiedOtpNotice(false), 2000);
-                }}
-                className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow transition flex items-center gap-1.5 shrink-0"
-              >
-                <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                <span>{copiedOtpNotice ? 'Code Filled!' : 'Auto-Fill OTP'}</span>
-              </button>
+              <p className="text-slate-400 text-[11px] leading-relaxed">
+                A 6-digit security code was sent to{' '}
+                <span className="font-mono text-blue-300 font-bold">
+                  {otpMethod === 'email' ? `${pendingUser.user.email}` : `+91 ******${Math.floor(1000 + Math.random() * 9000)}`}
+                </span>
+                . Enter the received PIN below to verify access.
+              </p>
+              <div className="pt-1 text-[11px] text-slate-400 flex items-center gap-1.5 border-t border-slate-800/80 mt-1">
+                <Lock className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                <span>Demo Backup PIN: <code className="bg-slate-950 px-1.5 py-0.5 rounded text-amber-300 font-bold font-mono">123456</code></span>
+              </div>
             </div>
 
             <form onSubmit={handle2FASubmit} className="space-y-3">
@@ -489,12 +531,14 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 </span>
                 <button
                   type="button"
-                  disabled={otpCountdown > 15}
+                  disabled={otpCountdown > 15 || twoFactorLockout > 0}
                   onClick={() => {
-                    const newCode = generateNewOtp();
-                    setSuccessMsg(`New 2FA security code (${newCode}) dispatched.`);
+                    generateNewOtp();
+                    setError('');
+                    setDispatchToast(`New 2-Step Security Code dispatched to your registered contact.`);
+                    setTimeout(() => setDispatchToast(null), 5000);
                   }}
-                  className="text-blue-400 hover:underline font-bold disabled:opacity-40 disabled:no-underline"
+                  className="text-blue-400 hover:underline font-bold disabled:opacity-40 disabled:no-underline text-xs"
                 >
                   Resend Code
                 </button>
