@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, UserRole, NotificationItem } from '../../types';
 import { Logo } from './Logo';
+import { AvatarChangeModal } from './AvatarChangeModal';
 import {
   GraduationCap,
   Bell,
@@ -30,7 +31,8 @@ import {
   CheckCheck,
   Trash2,
   ExternalLink,
-  Menu
+  Menu,
+  Camera
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -38,6 +40,7 @@ interface NavbarProps {
   userRole?: UserRole;
   onRoleChange?: (role: UserRole) => void;
   onLogout?: () => void;
+  onUpdateAvatar?: (newAvatarUrl: string) => void;
   darkMode?: boolean;
   theme?: 'light' | 'dark';
   onToggleDarkMode?: () => void;
@@ -60,6 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   userRole = 'student',
   onRoleChange = (_role: UserRole) => {},
   onLogout = () => {},
+  onUpdateAvatar,
   darkMode,
   theme,
   onToggleDarkMode,
@@ -79,6 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showSyncMenu, setShowSyncMenu] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState('Just now');
   const [syncStatus, setSyncStatus] = useState<'synced' | 'syncing'>('synced');
@@ -459,11 +464,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             {showUserMenu && (
               <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-50 p-3">
                 <div className="flex items-center gap-3 p-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-                  <img
-                    src={currentUser?.avatar}
-                    alt={currentUser?.name}
-                    className="h-10 w-10 rounded-full object-cover ring-2 ring-blue-500/30"
-                  />
+                  <div className="relative group shrink-0">
+                    <img
+                      src={currentUser?.avatar}
+                      alt={currentUser?.name}
+                      className="h-11 w-11 rounded-full object-cover ring-2 ring-blue-500/40"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setShowAvatarModal(true);
+                      }}
+                      className="absolute inset-0 rounded-full bg-slate-900/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      title="Change Profile DP"
+                    >
+                      <Camera className="h-4 w-4" />
+                    </button>
+                  </div>
                   <div className="overflow-hidden">
                     <div className="text-sm font-bold text-slate-900 dark:text-white truncate">
                       {currentUser?.name}
@@ -476,7 +494,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
 
                 <div className="py-2 space-y-1 text-xs text-slate-600 dark:text-slate-300">
-                  <div className="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      setShowAvatarModal(true);
+                    }}
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800/80 transition"
+                  >
+                    <Camera className="h-4 w-4 text-blue-500 shrink-0" />
+                    <span>Change Profile Picture (DP)</span>
+                  </button>
+
+                  <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 text-[11px]">
                     <span className="text-slate-400">Department:</span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
                       {currentUser?.department || 'CSE'}
@@ -502,6 +532,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         </div>
       </div>
+
+      {/* Profile DP Change Modal */}
+      {currentUser && (
+        <AvatarChangeModal
+          isOpen={showAvatarModal}
+          onClose={() => setShowAvatarModal(false)}
+          currentUser={currentUser}
+          onUpdateAvatar={(newAvatarUrl) => {
+            if (onUpdateAvatar) {
+              onUpdateAvatar(newAvatarUrl);
+            }
+          }}
+        />
+      )}
     </header>
   );
 };

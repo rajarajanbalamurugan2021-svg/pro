@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '../../../types';
-import { Save, CheckCircle2, CloudCheck } from 'lucide-react';
+import { Save, CheckCircle2, CloudCheck, Camera, UserCheck } from 'lucide-react';
 import { saveProfileFirestore, saveFirestoreDoc } from '../../../services/api';
+import { AvatarChangeModal } from '../../common/AvatarChangeModal';
 
 interface Props {
   user: User;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const BasicInfoProfile: React.FC<Props> = ({ user, onUpdateUser }) => {
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [formData, setFormData] = useState({
     academicSession: user.academicSession || '2026-2027',
     department: user.department || 'ELECTRONICS AND COMMUNICATION ENGINEERING',
@@ -181,6 +183,46 @@ export const BasicInfoProfile: React.FC<Props> = ({ user, onUpdateUser }) => {
             <span>Save Profile Info</span>
           </button>
         </div>
+      </div>
+
+      {/* Profile DP / Avatar Banner */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-900/10 via-slate-900/5 to-indigo-900/10 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="relative group shrink-0">
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="w-16 h-16 rounded-full object-cover ring-4 ring-blue-500/40 shadow-md"
+            />
+            <button
+              type="button"
+              onClick={() => setShowAvatarModal(true)}
+              className="absolute inset-0 rounded-full bg-slate-950/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              title="Change Profile DP"
+            >
+              <Camera className="h-5 w-5" />
+            </button>
+          </div>
+          <div>
+            <div className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span>{user.name}</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30 uppercase">
+                {user.role}
+              </span>
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{user.email}</div>
+            <div className="text-[11px] text-slate-400 mt-1">Campus ID / Reg: {user.registerNo || user.rollNumber || '420725106036'}</div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowAvatarModal(true)}
+          className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-2 shrink-0"
+        >
+          <Camera className="h-4 w-4 text-blue-400" />
+          <span>Change Profile Picture (DP)</span>
+        </button>
       </div>
 
       {/* Form Fields Grid */}
@@ -594,6 +636,20 @@ export const BasicInfoProfile: React.FC<Props> = ({ user, onUpdateUser }) => {
 
         </div>
       </form>
+
+      {/* Avatar Change Modal */}
+      <AvatarChangeModal
+        isOpen={showAvatarModal}
+        onClose={() => setShowAvatarModal(false)}
+        currentUser={user}
+        onUpdateAvatar={(newAvatar) => {
+          const updatedUser = { ...user, avatar: newAvatar };
+          if (onUpdateUser) {
+            onUpdateUser(updatedUser);
+          }
+          saveFirestoreDoc('users', updatedUser.id, updatedUser).catch(console.error);
+        }}
+      />
     </div>
   );
 };

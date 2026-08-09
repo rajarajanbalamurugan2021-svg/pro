@@ -201,6 +201,16 @@ export default function App() {
     setIsAuthenticated(false);
   };
 
+  const handleUpdateAvatar = (newAvatarUrl: string) => {
+    if (!currentUser) return;
+    const updatedUser = { ...currentUser, avatar: newAvatarUrl };
+    setCurrentUser(updatedUser);
+    const updatedUsers = users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+    setUsers(updatedUsers);
+    CampusStorage.saveUsers(updatedUsers);
+    localStorage.setItem('ckcet_campro_current_user', JSON.stringify(updatedUser));
+  };
+
   // Theme toggle handler
   const handleToggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -446,6 +456,7 @@ export default function App() {
         onToggleTheme={handleToggleTheme}
         onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
         onLogout={handleLogout}
+        onUpdateAvatar={handleUpdateAvatar}
         onOpenAiDrawer={() => setIsAiOpen(true)}
       />
 
