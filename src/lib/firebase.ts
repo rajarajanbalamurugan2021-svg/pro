@@ -6,6 +6,7 @@ import {
   onSnapshot,
   collection,
   getDocs,
+  getDocFromServer,
   deleteDoc,
   enableIndexedDbPersistence,
   query,
@@ -44,6 +45,22 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// Test Firestore connection on startup
+async function testConnection() {
+  try {
+    await getDocFromServer(doc(db, 'test', 'connection'));
+    console.log('Firestore connected successfully.');
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('the client is offline')) {
+      console.error('Please check your Firebase configuration.');
+    }
+  }
+}
+
+if (typeof window !== 'undefined') {
+  testConnection();
+}
+
 // Storage setup
 export const storage = getStorage(app);
 
@@ -66,6 +83,7 @@ export {
   onSnapshot,
   collection,
   getDocs,
+  getDocFromServer,
   deleteDoc,
   query,
   where,
