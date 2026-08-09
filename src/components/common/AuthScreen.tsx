@@ -346,7 +346,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
         
         {/* Header Branding */}
         <div className="text-center mb-6 flex flex-col items-center">
-          <Logo size="xl" showText={true} className="mb-2" />
+          <Logo size="xl" showText={true} className="mb-2" allowEdit={false} />
           <p className="text-xs text-slate-400 mt-2 font-medium">
             CK College of Engineering & Technology <span className="text-blue-400 font-bold">(An Autonomous Institution)</span>
           </p>

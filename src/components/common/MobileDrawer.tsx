@@ -123,7 +123,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       >
         {/* Header */}
         <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-          <Logo size="sm" />
+          <Logo size="sm" userRole={userRole} />
           <button
             onClick={onClose}
             className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition"
