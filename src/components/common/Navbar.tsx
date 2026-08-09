@@ -173,15 +173,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
 
             <a
-              href="https://ckcet.mynetcampus.com/login"
+              href="https://zonesynapse-ckcet-obe.pages.dev/login"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 hover:bg-purple-100 dark:hover:bg-purple-900/80 border border-purple-200 dark:border-purple-800 transition shadow-2xs group"
-              title="Go to CKCET MyNetCampus Portal Login"
+              title="Go to ZoneSynapse OBE Portal Login"
             >
               <ExternalLink className="w-3.5 h-3.5 text-purple-500 group-hover:scale-110 transition-transform" />
-              <span className="hidden lg:inline">MyNetCampus</span>
-              <span className="lg:hidden">NetCampus</span>
+              <span className="hidden lg:inline">ZoneSynapse OBE</span>
+              <span className="lg:hidden">OBE Portal</span>
             </a>
           </div>
           

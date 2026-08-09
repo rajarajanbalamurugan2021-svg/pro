@@ -243,13 +243,13 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
             </a>
 
             <a
-              href="https://ckcet.mynetcampus.com/login"
+              href="https://zonesynapse-ckcet-obe.pages.dev/login"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700/60 text-xs font-bold transition shadow-sm"
             >
               <ExternalLink className="w-4 h-4 text-purple-400" />
-              <span>MyNetCampus Login</span>
+              <span>ZoneSynapse OBE Login</span>
             </a>
           </div>
 

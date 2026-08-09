@@ -363,13 +363,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
             </a>
 
             <a
-              href="https://ckcet.mynetcampus.com/login"
+              href="https://zonesynapse-ckcet-obe.pages.dev/login"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-purple-400 bg-purple-950/70 hover:bg-purple-900/80 border border-purple-800/80 transition"
             >
               <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-              <span>MyNetCampus Login</span>
+              <span>ZoneSynapse OBE Login</span>
             </a>
           </div>
         </div>

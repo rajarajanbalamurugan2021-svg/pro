@@ -187,14 +187,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </a>
 
           <a
-            href="https://ckcet.mynetcampus.com/login"
+            href="https://zonesynapse-ckcet-obe.pages.dev/login"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/80 text-xs font-bold transition shadow-2xs group"
           >
             <div className="flex items-center gap-2.5 truncate">
               <ExternalLink className="h-4 w-4 text-purple-500 shrink-0 group-hover:scale-110 transition-transform" />
-              <span className="truncate">MyNetCampus Login</span>
+              <span className="truncate">ZoneSynapse OBE Login</span>
             </div>
             <ExternalLink className="h-3.5 w-3.5 text-purple-400 shrink-0" />
           </a>
