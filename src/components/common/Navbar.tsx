@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { User, UserRole, NotificationItem } from '../../types';
+import { normalizeRole } from '../../lib/rbac';
 import { Logo } from './Logo';
 import { AvatarChangeModal } from './AvatarChangeModal';
+import { LogoChangeModal } from './LogoChangeModal';
 import {
   GraduationCap,
   Bell,
@@ -84,6 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showSyncMenu, setShowSyncMenu] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [showLogoModal, setShowLogoModal] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState('Just now');
   const [syncStatus, setSyncStatus] = useState<'synced' | 'syncing'>('synced');
@@ -94,6 +97,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleToggleTheme = onToggleDarkMode || onToggleTheme || (() => {});
   const handleOpenAi = onOpenAIChat || onOpenAiDrawer || (() => {});
   const activeRole = userRole || currentUser?.role || 'student';
+
+  const normRole = normalizeRole(activeRole);
+  const isAdminOrSuperAdmin = normRole === 'admin' || normRole === 'super_admin';
 
   const handleManualSync = () => {
     setIsSyncing(true);
@@ -132,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Menu className="w-5 h-5" />
             </button>
           )}
-          <Logo size="md" />
+          <Logo size="md" userRole={activeRole} />
         </div>
 
         {/* Middle Section: Global Search Bar */}
@@ -506,6 +512,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span>Change Profile Picture (DP)</span>
                   </button>
 
+                  {isAdminOrSuperAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setShowLogoModal(true);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 font-bold border border-purple-200 dark:border-purple-800/80 transition"
+                    >
+                      <Sparkles className="h-4 w-4 text-purple-500 shrink-0" />
+                      <span>Customize Campus Logo</span>
+                    </button>
+                  )}
+
                   <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 text-[11px]">
                     <span className="text-slate-400">Department:</span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
@@ -546,6 +566,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
         />
       )}
+
+      {/* Campus Logo Customizer Modal */}
+      <LogoChangeModal
+        isOpen={showLogoModal}
+        onClose={() => setShowLogoModal(false)}
+      />
     </header>
   );
 };

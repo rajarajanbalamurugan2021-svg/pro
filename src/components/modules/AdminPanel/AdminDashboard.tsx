@@ -33,6 +33,7 @@ import { normalizeRole, RBAC } from '../../../lib/rbac';
 import { AccessDeniedPage } from '../../common/AccessDeniedPage';
 import { CrudManager, CrudColumn, CrudFieldSchema } from '../../common/CrudManager';
 import { FAQManager } from './FAQManager';
+import { LogoChangeModal } from '../../common/LogoChangeModal';
 
 interface AdminDashboardProps {
   userRole?: UserRole;
@@ -100,6 +101,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [aiEnabled, setAiEnabled] = useState(true);
   const [aiModel, setAiModel] = useState('gemini-2.5-flash');
   const [aiSystemPrompt, setAiSystemPrompt] = useState('You are CKCET CAMPRO Academic AI Assistant.');
+  const [showLogoModal, setShowLogoModal] = useState(false);
 
   // Student list
   const studentList = users.filter((u) => normalizeRole(u.role) === 'student');
@@ -776,10 +778,38 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <p className="text-slate-500">Unrestricted system access, user role assignments, audit logs, backup & restore.</p>
               <span className="text-[10px] font-bold text-purple-600 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded">Unrestricted</span>
             </div>
+
+            {/* Institutional Logo & Branding Customizer */}
+            <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-900/10 via-purple-900/10 to-blue-900/10 border border-indigo-200 dark:border-indigo-800/60 space-y-3 md:col-span-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <span className="font-extrabold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                    <Crown className="h-4 w-4 text-amber-500" />
+                    Institution Branding & Custom Campus Logo
+                  </span>
+                  <p className="text-slate-500 text-xs mt-0.5">
+                    Customize the global campus crest, emblem presets, custom image uploads, or institution titles across header bars and reports.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowLogoModal(true)}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2"
+                >
+                  <Settings className="h-3.5 w-3.5" />
+                  Customize Campus Logo
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Logo Customizer Modal */}
+      <LogoChangeModal
+        isOpen={showLogoModal}
+        onClose={() => setShowLogoModal(false)}
+      />
     </div>
   );
 };

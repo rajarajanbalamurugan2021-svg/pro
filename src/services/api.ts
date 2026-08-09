@@ -19,7 +19,8 @@ import {
   TeamInvitation,
   PlacementOpportunity,
   PlacementApplication,
-  InterviewQuestion
+  InterviewQuestion,
+  CampusLogoConfig
 } from '../types';
 import {
   INITIAL_USERS,
@@ -85,7 +86,8 @@ const STORAGE_KEYS = {
   INVITATIONS: 'smart_campus_invitations',
   OPPORTUNITIES: 'smart_campus_opportunities',
   APPLICATIONS: 'smart_campus_applications',
-  INTERVIEW_QUESTIONS: 'smart_campus_interview_questions'
+  INTERVIEW_QUESTIONS: 'smart_campus_interview_questions',
+  CUSTOM_LOGO: 'smart_campus_custom_logo'
 };
 
 // Firestore Collection Names Mapping
@@ -651,6 +653,25 @@ export class CampusStorage {
 
   static saveInterviewQuestions(questions: InterviewQuestion[]) {
     setStored(STORAGE_KEYS.INTERVIEW_QUESTIONS, questions);
+  }
+
+  static getCustomLogo(): CampusLogoConfig {
+    return getStored(STORAGE_KEYS.CUSTOM_LOGO, {
+      title: 'CKCET',
+      subtitle: 'CAMPRO',
+      tagline: 'Enterprise Campus ERP',
+      logoUrl: '',
+      presetIcon: 'modern-shield',
+      gradientBg: 'from-blue-700 via-indigo-600 to-sky-500'
+    });
+  }
+
+  static saveCustomLogo(logoConfig: CampusLogoConfig) {
+    setStored(STORAGE_KEYS.CUSTOM_LOGO, logoConfig);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('campus_logo_updated', { detail: logoConfig }));
+    }
+    saveFirestoreDoc('settings', 'campus_logo', logoConfig).catch(console.error);
   }
 
   static resetToDefaults() {

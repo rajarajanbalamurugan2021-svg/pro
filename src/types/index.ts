@@ -1,3 +1,12 @@
+export interface CampusLogoConfig {
+  logoUrl?: string;
+  title?: string;
+  subtitle?: string;
+  tagline?: string;
+  presetIcon?: 'modern-shield' | 'academic-crest' | 'future-core' | 'golden-crown' | 'tech-atom' | 'minimal-diamond';
+  gradientBg?: string;
+}
+
 export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor' | 'maintenance_staff' | 'department_head';
 
 export interface FAQItem {
