@@ -439,7 +439,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white transition-colors duration-200">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white transition-colors duration-200">
       
       {/* Top Navbar */}
       <Navbar
@@ -460,7 +460,7 @@ export default function App() {
       />
 
       {/* Main Layout Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex w-full max-w-full overflow-x-hidden min-w-0">
         
         {/* Sidebar */}
         <Sidebar
@@ -475,7 +475,7 @@ export default function App() {
         />
 
         {/* Dynamic Content Body */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden w-full max-w-full min-w-0 p-3 sm:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
           {(activeModule === 'projects' || activeModule === 'project_innovation') && (
             <ProjectInnovationHub
               userRole={userRole}

@@ -220,23 +220,23 @@ export const OpportunityRecommendations: React.FC<Props> = ({
 
                 {/* Key Stats */}
                 <div className="space-y-2 py-3 border-y border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 mb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 text-slate-500">
-                      <DollarSign className="h-3.5 w-3.5 text-emerald-500" /> Package / Stipend:
+                  <div className="flex items-center justify-between gap-2 min-w-0">
+                    <span className="flex items-center gap-1.5 text-slate-500 shrink-0">
+                      <DollarSign className="h-3.5 w-3.5 text-emerald-500 shrink-0" /> Package / Stipend:
                     </span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">{opp.stipendOrPackage}</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 text-right truncate">{opp.stipendOrPackage}</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 text-slate-500">
-                      <MapPin className="h-3.5 w-3.5 text-blue-500" /> Location:
+                  <div className="flex items-center justify-between gap-2 min-w-0">
+                    <span className="flex items-center gap-1.5 text-slate-500 shrink-0">
+                      <MapPin className="h-3.5 w-3.5 text-blue-500 shrink-0" /> Location:
                     </span>
-                    <span className="font-semibold">{opp.location}</span>
+                    <span className="font-semibold text-right truncate">{opp.location}</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 text-slate-500">
-                      <Calendar className="h-3.5 w-3.5 text-purple-500" /> Deadline:
+                  <div className="flex items-center justify-between gap-2 min-w-0">
+                    <span className="flex items-center gap-1.5 text-slate-500 shrink-0">
+                      <Calendar className="h-3.5 w-3.5 text-purple-500 shrink-0" /> Deadline:
                     </span>
-                    <span className="font-medium text-amber-600 dark:text-amber-400">{opp.applicationDeadline}</span>
+                    <span className="font-medium text-amber-600 dark:text-amber-400 text-right truncate">{opp.applicationDeadline}</span>
                   </div>
                 </div>
 

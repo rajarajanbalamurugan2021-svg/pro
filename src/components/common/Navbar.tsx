@@ -124,15 +124,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors overflow-x-hidden">
+      <div className="flex h-16 items-center justify-between px-2.5 sm:px-6 w-full max-w-full min-w-0">
         
         {/* Left Section: Brand Logo & Mobile Drawer Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           {onToggleDrawer && (
             <button
               onClick={onToggleDrawer}
-              className="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="md:hidden p-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               aria-label="Toggle navigation drawer"
             >
               <Menu className="w-5 h-5" />
@@ -142,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Middle Section: Global Search Bar */}
-        <div className="hidden md:flex flex-1 max-w-md mx-6">
+        <div className="hidden md:flex flex-1 max-w-md mx-4">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
@@ -156,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Right Section: Actions & Role Switcher */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1 sm:gap-2.5 shrink-0 min-w-0">
           
           {/* Official College Web Page & NetCampus Portal Links */}
           <div className="hidden sm:flex items-center gap-1.5">
@@ -193,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 setShowNotifications(false);
                 setShowUserMenu(false);
               }}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 transition cursor-pointer"
               title="Real-Time Cloud & Multi-Device Sync Status"
             >
               <span className="relative flex h-2 w-2">
@@ -204,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Wifi className="h-3.5 w-3.5 text-emerald-500" />
                 <span>Live Sync</span>
               </div>
-              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1">
+              <span className="hidden md:flex px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 items-center gap-1">
                 <Laptop className="h-3 w-3" />
                 <span>3 Devices</span>
               </span>
@@ -212,7 +212,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Sync & Devices Dropdown */}
             {showSyncMenu && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl z-50 p-4 space-y-3">
+              <div className="absolute right-0 mt-2 w-[calc(100vw-1.5rem)] sm:w-96 max-w-sm rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl z-50 p-4 space-y-3">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-2">
                     <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
@@ -360,7 +360,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl z-50 p-4 space-y-3">
+              <div className="absolute right-0 mt-2 w-[calc(100vw-1.5rem)] sm:w-96 max-w-sm rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl z-50 p-4 space-y-3">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">Campus Notifications</h3>
@@ -468,7 +468,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-50 p-3">
+              <div className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-50 p-3">
                 <div className="flex items-center gap-3 p-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                   <div className="relative group shrink-0">
                     <img
