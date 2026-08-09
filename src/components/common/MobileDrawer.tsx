@@ -30,7 +30,9 @@ import {
   Shield,
   Smartphone,
   Search,
-  RotateCcw
+  RotateCcw,
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 
 interface MobileDrawerProps {
@@ -226,6 +228,17 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
         {/* Footer Actions */}
         <div className="p-4 border-t border-slate-800 space-y-2 bg-slate-950/40">
+          <a
+            href="https://ckcet.edu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700/60 text-xs font-bold transition shadow-sm"
+          >
+            <Globe className="w-4 h-4 text-blue-400" />
+            <span>Official College Website</span>
+            <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+          </a>
+
           {onResetDatabase && (
             <button
               onClick={() => {

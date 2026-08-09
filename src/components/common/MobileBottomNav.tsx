@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { UserRole } from '../../types';
+import { normalizeRole } from '../../lib/rbac';
 import {
   LayoutDashboard,
   CalendarDays,
   Sparkles,
   Database,
   Menu,
-  Bot
+  AlertCircle
 } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeModule: string;
+  userRole?: UserRole;
   onSelectModule: (mod: string) => void;
   onToggleDrawer: () => void;
   onOpenAiChat: () => void;
@@ -18,12 +21,15 @@ interface MobileBottomNavProps {
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   activeModule,
+  userRole = 'student',
   onSelectModule,
   onToggleDrawer,
   onOpenAiChat,
   unreadNotificationsCount = 0
 }) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const normRole = normalizeRole(userRole);
+  const canAccessCloudDb = normRole === 'admin' || normRole === 'super_admin';
 
   // Auto-hide bottom nav when virtual keyboard is active to avoid covering inputs
   useEffect(() => {
@@ -51,7 +57,9 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     { id: 'dashboard', label: 'Home', icon: LayoutDashboard },
     { id: 'leave', label: 'Leaves', icon: CalendarDays },
     { id: 'project_innovation', label: 'Hub', icon: Sparkles, badge: 'Hub' },
-    { id: 'cloud_db', label: 'Cloud DB', icon: Database, badge: 'Live' },
+    canAccessCloudDb
+      ? { id: 'cloud_db', label: 'Cloud DB', icon: Database, badge: 'Live' }
+      : { id: 'complaints', label: 'Grievance', icon: AlertCircle },
     { id: 'more', label: 'Menu', icon: Menu, isDrawerTrigger: true }
   ];
 

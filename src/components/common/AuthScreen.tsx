@@ -24,7 +24,9 @@ import {
   RefreshCw,
   AlertCircle,
   Check,
-  Shield
+  Shield,
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 
 interface AuthScreenProps {
@@ -310,6 +312,16 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
           <p className="text-xs text-slate-400 mt-1">
             Enterprise RBAC Campus Management & Authentication System
           </p>
+          <a
+            href="https://ckcet.edu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 bg-blue-950/70 hover:bg-blue-900/80 border border-blue-800/80 transition"
+          >
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
+            <span>Official College Website (ckcet.edu.in)</span>
+            <ExternalLink className="w-3 h-3 text-blue-400" />
+          </a>
         </div>
 
         {/* Lockout Warning Banner */}

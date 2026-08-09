@@ -84,7 +84,6 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   faculty: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
-    { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_students', label: 'My Students', module: 'my_students', iconName: 'GraduationCap', path: '/faculty/students' },
@@ -97,7 +96,6 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   student: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/student/dashboard' },
-    { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_profile', label: 'My Profile', module: 'my_profile', iconName: 'User', path: '/student/profile' },
@@ -136,6 +134,11 @@ export function canAccessModule(role?: string | UserRole, moduleName?: string): 
   if (!moduleName) return true;
   const norm = normalizeRole(role);
 
+  // Cloud database modules strictly require admin or super_admin
+  if (moduleName === 'cloud_db' || moduleName === 'cloud_collation' || moduleName === 'firestore_hub') {
+    return norm === 'admin' || norm === 'super_admin';
+  }
+
   // Super Admin has unrestricted access to everything
   if (norm === 'super_admin') return true;
 
@@ -162,6 +165,8 @@ export function canAccessModule(role?: string | UserRole, moduleName?: string): 
  * Permission check functions for fine-grained action authorization
  */
 export const RBAC = {
+  // Cloud Database access control
+  canAccessCloudDatabase: (role?: string) => ['admin', 'super_admin'].includes(normalizeRole(role)),
   // Student permissions
   canViewOwnProfileOnly: (role?: string) => normalizeRole(role) === 'student',
   canViewOtherStudents: (role?: string) => ['faculty', 'admin', 'super_admin'].includes(normalizeRole(role)),

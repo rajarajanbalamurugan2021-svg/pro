@@ -41,6 +41,7 @@ import { LeaveManagement } from './components/modules/LeaveManagement/LeaveManag
 import { LabAttendance } from './components/modules/LabAttendance/LabAttendance';
 import { PlacementSystem } from './components/modules/PlacementSystem/PlacementSystem';
 import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
+import { normalizeRole } from './lib/rbac';
 import { AIChatbot } from './components/common/AIChatbot';
 import { AIChatbotModule } from './components/modules/AIChatbotModule';
 import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
@@ -50,7 +51,7 @@ import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { MobileDrawer } from './components/common/MobileDrawer';
 import { PWAInstallPrompt } from './components/common/PWAInstallPrompt';
 import { useAndroidBackButton } from './hooks/useAndroidBackButton';
-import { Bot, Bell, Shield, Sparkles } from 'lucide-react';
+import { Bot, Bell, Shield, Sparkles, Globe, ExternalLink } from 'lucide-react';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -620,7 +621,23 @@ export default function App() {
           )}
 
           {(activeModule === 'cloud_db' || activeModule === 'cloud_collation' || activeModule === 'firestore_hub') && (
-            <FirebaseCloudHubModule />
+            (normalizeRole(userRole) === 'admin' || normalizeRole(userRole) === 'super_admin') ? (
+              <FirebaseCloudHubModule />
+            ) : (
+              <div className="p-8 max-w-lg mx-auto my-12 bg-slate-900 border border-red-500/30 rounded-3xl text-center text-white shadow-2xl">
+                <Shield className="w-12 h-12 mx-auto text-red-400 mb-3" />
+                <h3 className="text-xl font-black">Access Restricted</h3>
+                <p className="text-xs text-slate-300 mt-2">
+                  Cloud Database administration and Firestore synchronization are strictly restricted to Administrators and Super Admins.
+                </p>
+                <button
+                  onClick={() => setActiveModule('dashboard')}
+                  className="mt-5 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-lg"
+                >
+                  Return to Dashboard
+                </button>
+              </div>
+            )
           )}
 
           {(activeModule === 'admin' ||
@@ -705,6 +722,25 @@ export default function App() {
               />
             )
           )}
+
+          {/* Global Campus Portal Footer with Link to Official Web Page */}
+          <footer className="mt-12 pt-6 pb-4 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
+            <div className="flex items-center gap-2 font-medium">
+              <span className="font-bold text-slate-700 dark:text-slate-200">Christ The King Engineering College</span>
+              <span>•</span>
+              <span>CKCET CAMPRO Portal</span>
+            </div>
+            <a
+              href="https://ckcet.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/80 border border-blue-200 dark:border-blue-800 transition shadow-2xs group"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-500 group-hover:rotate-12 transition-transform" />
+              <span>Official Website (ckcet.edu.in)</span>
+              <ExternalLink className="w-3 h-3 text-blue-400" />
+            </a>
+          </footer>
         </main>
       </div>
 
@@ -727,6 +763,7 @@ export default function App() {
       {/* Native Mobile Bottom Navigation Bar (Android Touch Optimized) */}
       <MobileBottomNav
         activeModule={activeModule}
+        userRole={userRole}
         onSelectModule={(mod) => setActiveModule(mod)}
         onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
         onOpenAiChat={() => setIsAiOpen(true)}
