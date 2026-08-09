@@ -52,6 +52,7 @@ export interface MenuItem {
 export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   super_admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/superadmin/dashboard' },
+    { id: 'gmail', label: 'Gmail Workspace', module: 'gmail', iconName: 'Mail', path: '/gmail', badge: 'OAuth' },
     { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'user_management', label: 'User Management', module: 'user_management', iconName: 'Users', path: '/superadmin/users' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
@@ -69,6 +70,7 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/admin/dashboard' },
+    { id: 'gmail', label: 'Gmail Workspace', module: 'gmail', iconName: 'Mail', path: '/gmail', badge: 'OAuth' },
     { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'students', label: 'Students', module: 'students', iconName: 'GraduationCap', path: '/admin/students' },
@@ -84,6 +86,7 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   faculty: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
+    { id: 'gmail', label: 'Gmail Workspace', module: 'gmail', iconName: 'Mail', path: '/gmail', badge: 'OAuth' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_students', label: 'My Students', module: 'my_students', iconName: 'GraduationCap', path: '/faculty/students' },
@@ -96,6 +99,7 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   student: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/student/dashboard' },
+    { id: 'gmail', label: 'Gmail Workspace', module: 'gmail', iconName: 'Mail', path: '/gmail', badge: 'OAuth' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_profile', label: 'My Profile', module: 'my_profile', iconName: 'User', path: '/student/profile' },

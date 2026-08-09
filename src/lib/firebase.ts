@@ -34,7 +34,7 @@ import config from '../../firebase-applet-config.json';
 
 const app = !getApps().length ? initializeApp(config) : getApp();
 
-export const db = getFirestore(app, config.firestoreDatabaseId || undefined);
+export const db = getFirestore(app, (config as any).firestoreDatabaseId || undefined);
 export const auth = getAuth(app);
 
 // Enable offline persistence safely

@@ -32,7 +32,8 @@ import {
   Search,
   RotateCcw,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Mail
 } from 'lucide-react';
 
 interface MobileDrawerProps {
@@ -67,7 +68,8 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Megaphone,
   User: UserIcon,
   Calculator,
-  Download
+  Download,
+  Mail
 };
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({

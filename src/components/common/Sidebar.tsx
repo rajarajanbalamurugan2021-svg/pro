@@ -25,7 +25,8 @@ import {
   Sparkles,
   ChevronRight,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Mail
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -60,7 +61,8 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Megaphone,
   User: UserIcon,
   Calculator,
-  Download
+  Download,
+  Mail
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({
