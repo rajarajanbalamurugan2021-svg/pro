@@ -43,7 +43,6 @@ import { PlacementSystem } from './components/modules/PlacementSystem/PlacementS
 import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
 import { normalizeRole } from './lib/rbac';
 import { AIChatbot } from './components/common/AIChatbot';
-import { GmailModule } from './components/modules/GmailModule';
 import { AIChatbotModule } from './components/modules/AIChatbotModule';
 import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
@@ -626,10 +625,6 @@ export default function App() {
                 CampusStorage.saveUsers(updatedUsers);
               }}
             />
-          )}
-
-          {activeModule === 'gmail' && (
-            <GmailModule currentUser={currentUser} />
           )}
 
           {(activeModule === 'ai_chatbot' || activeModule === 'ai_assistant') && (
