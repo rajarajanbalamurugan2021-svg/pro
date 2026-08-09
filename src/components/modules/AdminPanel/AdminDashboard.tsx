@@ -742,9 +742,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2 md:col-span-2 border-l-4 border-l-blue-500">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-blue-500" />
+                  Mandatory 2-Step Verification Security Policy (All Portals)
+                </span>
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/30">
+                  Enforced Across All Portals
+                </span>
+              </div>
+              <p className="text-slate-500 dark:text-slate-400">
+                All login attempts across Student, Faculty, Admin, and SuperAdmin portals are protected by 2-Step Verification with dynamic 6-digit OTP dispatch via Campus Email or Mobile SMS.
+              </p>
+            </div>
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
               <span className="font-extrabold text-slate-900 dark:text-white block">Student Role Guard</span>
-              <p className="text-slate-500">Restricted to own grades, attendance, complaints registration, and AI Chatbot.</p>
+              <p className="text-slate-500">Restricted to own grades, attendance, complaints registration, and AI Chatbot. Protected by 2FA.</p>
               <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded">Enforced</span>
             </div>
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">

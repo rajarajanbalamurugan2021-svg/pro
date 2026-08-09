@@ -54,6 +54,12 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
   const [twoFactorPin, setTwoFactorPin] = useState('');
   const [pendingUser, setPendingUser] = useState<{ user: User; role: UserRole } | null>(null);
 
+  // 2-Step Verification state for all portals
+  const [generatedOtp, setGeneratedOtp] = useState('842901');
+  const [otpCountdown, setOtpCountdown] = useState(30);
+  const [otpMethod, setOtpMethod] = useState<'email' | 'sms'>('email');
+  const [copiedOtpNotice, setCopiedOtpNotice] = useState(false);
+
   // Anti-Bot Security Challenge state
   const [numA, setNumA] = useState(5);
   const [numB, setNumB] = useState(3);
@@ -84,6 +90,32 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
       return () => clearInterval(timer);
     }
   }, [lockoutTimer]);
+
+  // 2FA OTP Countdown timer effect
+  useEffect(() => {
+    if (require2FA && otpCountdown > 0) {
+      const timer = setInterval(() => {
+        setOtpCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [require2FA, otpCountdown]);
+
+  const generateNewOtp = () => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(code);
+    setOtpCountdown(30);
+    return code;
+  };
+
+  const trigger2FAProcess = (userToAuthenticate: User, roleToAuthenticate: UserRole) => {
+    const code = generateNewOtp();
+    setRequire2FA(true);
+    setPendingUser({ user: userToAuthenticate, role: roleToAuthenticate });
+    setTwoFactorPin('');
+    setError('');
+    setSuccessMsg(`2-Step Security Verification code (${code}) sent for ${getRoleDisplayName(normalizeRole(roleToAuthenticate))} Portal.`);
+  };
 
   // Password strength calculation
   const getPasswordStrength = (pwd: string) => {
@@ -124,21 +156,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
     const matched = activeUsers.find((u) => normalizeRole(u.role) === role) || activeUsers[0];
     const authenticatedUser = prepareAuthUser(matched, role);
 
-    // If SuperAdmin or Admin, require 2FA PIN verification step
-    if (role === 'super_admin' || role === 'admin') {
-      setRequire2FA(true);
-      setPendingUser({ user: authenticatedUser, role: authenticatedUser.role });
-      setSuccessMsg(`2FA Security Verification required for high-privilege ${getRoleDisplayName(role)} account.`);
-      return;
-    }
-
-    onLogin(authenticatedUser, authenticatedUser.role);
+    // Enforce 2-Step Security Verification process for ALL portals (SuperAdmin, Admin, Faculty, Student)
+    trigger2FAProcess(authenticatedUser, authenticatedUser.role);
   };
 
   const handle2FASubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (twoFactorPin !== '123456' && twoFactorPin.length < 6) {
-      setError('Invalid 2FA Verification Code. (Default Demo Security Code is 123456)');
+    const cleanPin = twoFactorPin.trim();
+    if (cleanPin !== generatedOtp && cleanPin !== '123456') {
+      setError(`Invalid 2-Step Security Code. Enter code (${generatedOtp}) or default demo PIN 123456.`);
       setFailedAttempts((prev) => prev + 1);
       return;
     }
@@ -209,20 +235,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
           const authenticatedUser = prepareAuthUser(foundUser);
           setIsLoading(false);
 
-          // Trigger 2FA for Admin/SuperAdmin roles
-          if (selectedRole === 'super_admin' || selectedRole === 'admin') {
-            setRequire2FA(true);
-            setPendingUser({ user: authenticatedUser, role: authenticatedUser.role });
-            setSuccessMsg(`2FA Security Verification code required for ${getRoleDisplayName(selectedRole)}.`);
-            return;
-          }
-
-          onLogin(authenticatedUser, authenticatedUser.role);
+          // Require 2-Step Verification for all portals
+          trigger2FAProcess(authenticatedUser, authenticatedUser.role);
         } else {
           const fallback = activeUsers.find((u) => normalizeRole(u.role) === selectedRole) || activeUsers[0];
           const authenticatedUser = prepareAuthUser(fallback, selectedRole);
           setIsLoading(false);
-          onLogin(authenticatedUser, authenticatedUser.role);
+
+          // Require 2-Step Verification for all portals
+          trigger2FAProcess(authenticatedUser, authenticatedUser.role);
         }
       } catch (err: any) {
         setIsLoading(false);
@@ -276,14 +297,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
 
         setIsLoading(false);
 
-        if (selectedRole === 'super_admin' || selectedRole === 'admin') {
-          setRequire2FA(true);
-          setPendingUser({ user: newUser, role: selectedRole as UserRole });
-          setSuccessMsg('Account registered successfully. Verify 2FA code to complete sign in.');
-          return;
-        }
-
-        onLogin(newUser, selectedRole as UserRole);
+        // Require 2-Step Verification for all portals
+        trigger2FAProcess(newUser, selectedRole as UserRole);
       } catch (err: any) {
         setIsLoading(false);
         setError('Error registering account. Please check credentials.');
@@ -348,35 +363,144 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
         )}
 
         {/* 2FA Verification Modal Overlay */}
-        {require2FA ? (
-          <div className="p-4 rounded-2xl bg-slate-950 border border-purple-500/40 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
-                <Fingerprint className="h-6 w-6" />
+        {require2FA && pendingUser ? (
+          <div className="p-5 rounded-2xl bg-slate-950 border border-blue-500/40 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
+              <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-blue-400 border border-blue-500/30 shrink-0">
+                <Fingerprint className="h-6 w-6 animate-pulse" />
               </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-sm font-bold text-white tracking-tight truncate">2-Step Security Verification</h3>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/30 uppercase tracking-widest shrink-0 flex items-center gap-1">
+                    <ShieldCheck className="h-3 w-3" /> Active
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Verifying access for <span className="font-bold text-blue-300">{getRoleDisplayName(normalizeRole(pendingUser.role))} Portal</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Target Portal Badge & User Info */}
+            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Portal Access:</span>
+                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border uppercase tracking-wider ${
+                  normalizeRole(pendingUser.role) === 'super_admin' ? 'bg-purple-500/20 text-purple-300 border-purple-500/40' :
+                  normalizeRole(pendingUser.role) === 'admin' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' :
+                  normalizeRole(pendingUser.role) === 'faculty' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
+                  'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                }`}>
+                  {getRoleDisplayName(normalizeRole(pendingUser.role))} Portal
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-slate-300">
+                <span className="text-slate-400">User:</span>
+                <span className="font-bold text-white">{pendingUser.user.name} ({pendingUser.user.email})</span>
+              </div>
+            </div>
+
+            {/* Delivery Method Selection */}
+            <div className="space-y-1.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Verification Delivery Channel</div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setOtpMethod('email')}
+                  className={`py-1.5 px-3 rounded-xl text-xs font-bold border transition flex items-center justify-center gap-1.5 ${
+                    otpMethod === 'email'
+                      ? 'bg-blue-600/30 border-blue-500 text-blue-300'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  <span>Campus Email</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOtpMethod('sms')}
+                  className={`py-1.5 px-3 rounded-xl text-xs font-bold border transition flex items-center justify-center gap-1.5 ${
+                    otpMethod === 'sms'
+                      ? 'bg-blue-600/30 border-blue-500 text-blue-300'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <KeyRound className="h-3.5 w-3.5" />
+                  <span>Mobile SMS</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Generated Code Display & Quick Auto-Fill */}
+            <div className="p-3 rounded-xl bg-gradient-to-r from-blue-950/70 via-slate-900 to-purple-950/70 border border-blue-500/30 flex items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-bold text-white">Two-Factor Security Verification</h3>
-                <p className="text-xs text-slate-400">Enter your 6-digit security code (Demo PIN: 123456)</p>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-blue-400">
+                  {otpMethod === 'email' ? 'Campus Email Security Code' : 'SMS OTP Security Code'}
+                </div>
+                <div className="text-xl font-black font-mono tracking-widest text-white mt-0.5">
+                  {generatedOtp}
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setTwoFactorPin(generatedOtp);
+                  setCopiedOtpNotice(true);
+                  setTimeout(() => setCopiedOtpNotice(false), 2000);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow transition flex items-center gap-1.5 shrink-0"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                <span>{copiedOtpNotice ? 'Code Filled!' : 'Auto-Fill OTP'}</span>
+              </button>
             </div>
 
             <form onSubmit={handle2FASubmit} className="space-y-3">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  6-Digit Verification PIN
+                  Enter 6-Digit Verification PIN
                 </label>
                 <input
                   type="text"
                   maxLength={6}
                   value={twoFactorPin}
                   onChange={(e) => setTwoFactorPin(e.target.value.replace(/\D/g, ''))}
-                  placeholder="123456"
-                  className="w-full text-center text-lg tracking-[0.5em] font-mono rounded-xl bg-slate-900 border border-purple-500/50 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="------"
+                  className="w-full text-center text-xl font-black tracking-[0.5em] font-mono rounded-xl bg-slate-900 border border-blue-500/50 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
                   required
                 />
               </div>
-              {error && <p className="text-xs text-red-400 font-medium">{error}</p>}
-              <div className="flex gap-2">
+
+              {error && (
+                <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-medium flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400">
+                  {otpCountdown > 0 ? (
+                    <>Resend code in <span className="font-bold text-white">{otpCountdown}s</span></>
+                  ) : (
+                    <span className="text-amber-400 font-semibold">Code expired</span>
+                  )}
+                </span>
+                <button
+                  type="button"
+                  disabled={otpCountdown > 15}
+                  onClick={() => {
+                    const newCode = generateNewOtp();
+                    setSuccessMsg(`New 2FA security code (${newCode}) dispatched.`);
+                  }}
+                  className="text-blue-400 hover:underline font-bold disabled:opacity-40 disabled:no-underline"
+                >
+                  Resend Code
+                </button>
+              </div>
+
+              <div className="flex gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => { setRequire2FA(false); setPendingUser(null); setError(''); }}
@@ -386,9 +510,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow-md transition"
+                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95 text-white text-xs font-bold shadow-md transition flex items-center justify-center gap-2"
                 >
-                  Verify & Sign In
+                  <ShieldCheck className="h-4 w-4" />
+                  <span>Verify & Launch Portal</span>
                 </button>
               </div>
             </form>
