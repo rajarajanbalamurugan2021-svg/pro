@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserRole } from '../../../types';
+import { CoreEngineeringCMS } from './CoreEngineeringCMS';
+import { fetchCmsItems, CmsTool } from '../../../services/coreEngineeringService';
 import {
   CORE_ENGINEERING_TOOLS,
   CORE_CAREER_ROLES,
@@ -116,6 +118,37 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   const [newSkillInput, setNewSkillInput] = useState('');
 
   const isAdminOrFaculty = userRole === 'admin' || userRole === 'super_admin' || userRole === 'faculty';
+
+  // Load live content from Firestore on mount
+  useEffect(() => {
+    async function loadFirestoreTools() {
+      try {
+        const liveTools = await fetchCmsItems<CmsTool>('tools');
+        if (liveTools && liveTools.length > 0) {
+          const mappedTools: CoreTool[] = liveTools.map(t => ({
+            id: t.id,
+            name: t.name,
+            branch: t.branch,
+            domain: t.domain || 'Core',
+            level: t.skillLevel || 'Intermediate',
+            license: t.license || 'Open Source / Free',
+            operatingSystem: t.operatingSystem || 'Windows / Linux',
+            systemRequirements: t.systemRequirements || '8GB RAM',
+            purpose: t.description || t.useCases || 'Engineering simulation and design tool.',
+            industryRelevance: t.industryRelevance || 'Standard industry tool.',
+            officialWebsite: t.officialWebsite || 'https://',
+            officialDocs: t.officialDocs || 'https://',
+            tutorialUrl: t.tutorialUrl || 'https://',
+            exampleProject: t.relatedProjects?.[0] || 'Core Engineering Project'
+          }));
+          setAdminToolsList(mappedTools);
+        }
+      } catch (err) {
+        console.warn('Using default static tools fallback:', err);
+      }
+    }
+    loadFirestoreTools();
+  }, [activeTab]);
 
   // Handler to compute missing skills
   const getMissingSkillsForRole = (role: CareerRoleDetail) => {
@@ -235,7 +268,8 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
             { id: 'software', label: 'Software & Tools Hub', icon: Wrench, badge: `${adminToolsList.length}` },
             { id: 'careers', label: 'Core Companies & Internships', icon: Briefcase },
             { id: 'interview', label: 'Technical Interview Prep', icon: Code2 },
-            { id: 'dashboard', label: 'Personal Career Radar', icon: BarChart3 }
+            { id: 'dashboard', label: 'Personal Career Radar', icon: BarChart3 },
+            ...(isAdminOrFaculty ? [{ id: 'admin', label: 'Core Content CMS', icon: Sliders, badge: 'Manage' }] : [])
           ].map(tab => {
             const IconComp = tab.icon;
             const isActive = activeTab === tab.id;
@@ -1160,6 +1194,19 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
             </div>
           )}
         </div>
+      )}
+
+      {/* TAB 8: FULL ADMIN CONTENT CMS */}
+      {activeTab === 'admin' && (
+        <CoreEngineeringCMS
+          currentUser={{
+            id: userEmail || 'usr-admin-1',
+            name: userEmail ? userEmail.split('@')[0] : 'Admin User',
+            role: userRole,
+            email: userEmail
+          }}
+          onClose={() => setActiveTab('branches')}
+        />
       )}
 
     </div>
