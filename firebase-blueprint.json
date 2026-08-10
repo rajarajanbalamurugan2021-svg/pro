@@ -89,6 +89,62 @@
         "status": { "type": "string", "description": "Status: active or inactive" }
       },
       "required": ["name", "email", "role"]
+    },
+    "attendance": {
+      "title": "Daily Attendance Records",
+      "description": "Daily student subject attendance sessions logged by faculty",
+      "properties": {
+        "id": { "type": "string", "description": "Record ID" },
+        "studentId": { "type": "string", "description": "Student user ID" },
+        "registerNumber": { "type": "string", "description": "Student register or roll number" },
+        "studentName": { "type": "string", "description": "Student full name" },
+        "department": { "type": "string", "description": "Department name" },
+        "year": { "type": "string", "description": "Academic year" },
+        "section": { "type": "string", "description": "Class section e.g. A, B" },
+        "semester": { "type": "number", "description": "Semester number" },
+        "subjectId": { "type": "string", "description": "Subject ID" },
+        "subjectName": { "type": "string", "description": "Subject name" },
+        "facultyId": { "type": "string", "description": "Faculty user ID" },
+        "facultyName": { "type": "string", "description": "Faculty full name" },
+        "date": { "type": "string", "description": "Date string YYYY-MM-DD" },
+        "period": { "type": "number", "description": "Period or hour number 1 to 8" },
+        "status": { "type": "string", "description": "Attendance status: PRESENT, ABSENT, OD, or LEAVE" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" },
+        "updatedAt": { "type": "number", "description": "Updated timestamp epoch ms" }
+      },
+      "required": ["studentId", "department", "subjectId", "date", "period", "status"]
+    },
+    "attendance_summary": {
+      "title": "Attendance Summaries",
+      "description": "Aggregated subject-wise attendance statistics per student",
+      "properties": {
+        "summaryId": { "type": "string", "description": "Summary record ID" },
+        "studentId": { "type": "string", "description": "Student ID" },
+        "subjectId": { "type": "string", "description": "Subject ID" },
+        "totalClasses": { "type": "number", "description": "Total classes held" },
+        "presentCount": { "type": "number", "description": "Classes attended as PRESENT" },
+        "absentCount": { "type": "number", "description": "Classes marked ABSENT" },
+        "odCount": { "type": "number", "description": "Classes marked ON DUTY (OD)" },
+        "leaveCount": { "type": "number", "description": "Classes marked APPROVED LEAVE" },
+        "attendancePercentage": { "type": "number", "description": "Overall attendance percentage" },
+        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
+      },
+      "required": ["studentId", "subjectId", "attendancePercentage"]
+    },
+    "attendance_audit": {
+      "title": "Attendance Audit Logs",
+      "description": "Immutable change history when faculty or admin edits attendance records",
+      "properties": {
+        "auditId": { "type": "string", "description": "Audit log ID" },
+        "attendanceId": { "type": "string", "description": "Target attendance record ID" },
+        "action": { "type": "string", "description": "Action: CREATED, EDITED, or DELETED" },
+        "oldStatus": { "type": "string", "description": "Previous status" },
+        "newStatus": { "type": "string", "description": "New updated status" },
+        "editedBy": { "type": "string", "description": "User ID/Name who performed the edit" },
+        "reason": { "type": "string", "description": "Faculty reason or note for editing" },
+        "timestamp": { "type": "number", "description": "Audit timestamp epoch ms" }
+      },
+      "required": ["attendanceId", "action", "editedBy", "reason"]
     }
   }
 }

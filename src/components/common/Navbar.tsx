@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { User, UserRole, NotificationItem } from '../../types';
 import { normalizeRole } from '../../lib/rbac';
 import { Logo } from './Logo';
@@ -91,6 +91,30 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [lastSyncTime, setLastSyncTime] = useState('Just now');
   const [syncStatus, setSyncStatus] = useState<'synced' | 'syncing'>('synced');
 
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const notifMenuRef = useRef<HTMLDivElement>(null);
+  const syncMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+      if (notifMenuRef.current && !notifMenuRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+      if (syncMenuRef.current && !syncMenuRef.current.contains(event.target as Node)) {
+        setShowSyncMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const safeNotifications = notifications || [];
   const unreadCount = safeNotifications.filter((n) => !n.read).length;
   const isDark = darkMode ?? (theme === 'dark');
@@ -124,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors overflow-x-hidden">
+    <header className="sticky top-0 z-[100] w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors">
       <div className="flex h-16 items-center justify-between px-2.5 sm:px-6 w-full max-w-full min-w-0">
         
         {/* Left Section: Brand Logo & Mobile Drawer Toggle */}
@@ -186,7 +210,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           
           {/* Real-Time Sync & Multi-Device Status Indicator */}
-          <div className="relative">
+          <div className="relative" ref={syncMenuRef}>
             <button
               onClick={() => {
                 setShowSyncMenu(!showSyncMenu);
@@ -343,7 +367,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Notifications Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={notifMenuRef}>
             <button
               onClick={() => {
                 setShowNotifications(!showNotifications);
@@ -446,14 +470,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Current User Profile Dropdown Menu */}
-          <div className="relative shrink-0">
+          <div className="relative shrink-0" ref={userMenuRef}>
             <button
               onClick={() => {
                 setShowUserMenu(!showUserMenu);
                 setShowNotifications(false);
                 setShowSyncMenu(false);
               }}
-              className="flex items-center gap-2 pl-2 pr-1 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 border-l border-slate-200 dark:border-slate-800 transition cursor-pointer"
+              className="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition cursor-pointer"
               title="User Account Menu"
             >
               <img
@@ -470,7 +494,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-50 p-3">
+              <div className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl z-[110] p-3">
                 <div className="flex items-center gap-3 p-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                   <div className="relative group shrink-0">
                     <img

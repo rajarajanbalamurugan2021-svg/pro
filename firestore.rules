@@ -139,6 +139,18 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow create, update, delete: if isFaculty();
     }
+    match /attendance_sessions/{sessionId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isFaculty();
+    }
+    match /attendance_summary/{summaryId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isFaculty();
+    }
+    match /attendance_audit/{auditId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isFaculty();
+    }
     match /labRecords/{labId} {
       allow read: if isSignedIn();
       allow write: if isFaculty();

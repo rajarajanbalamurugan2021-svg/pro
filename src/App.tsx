@@ -45,6 +45,8 @@ import { normalizeRole } from './lib/rbac';
 import { AIChatbot } from './components/common/AIChatbot';
 import { AIChatbotModule } from './components/modules/AIChatbotModule';
 import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
+import { FacultyAttendancePortal } from './components/modules/FacultyAttendance/FacultyAttendancePortal';
+import { StudentAttendancePortal } from './components/modules/FacultyAttendance/StudentAttendancePortal';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
 import { SplashScreen } from './components/common/SplashScreen';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
@@ -503,13 +505,11 @@ export default function App() {
           )}
 
           {activeModule === 'attendance' && (
-            <ResultPortal
-              results={studentResults}
-              result={currentStudentResult}
-              userRole={userRole}
-              onUpdateResults={setStudentResults}
-              defaultTab="attendance"
-            />
+            userRole === 'student' ? (
+              <StudentAttendancePortal currentUser={currentUser} />
+            ) : (
+              <FacultyAttendancePortal currentUser={currentUser} userRole={userRole} />
+            )
           )}
 
           {activeModule === 'marks' && (

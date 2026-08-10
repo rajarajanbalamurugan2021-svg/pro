@@ -158,6 +158,99 @@ export interface AttendanceRecord {
   method: 'QR' | 'Manual';
 }
 
+export type AttendanceStatusType = 'PRESENT' | 'ABSENT' | 'OD' | 'LEAVE';
+
+export interface DailyAttendanceRecord {
+  id: string;
+  attendanceId?: string;
+  sessionId?: string;
+  studentId: string;
+  registerNumber: string;
+  studentName: string;
+  department: string;
+  year: number | string;
+  section: string;
+  semester: number;
+  subjectId: string;
+  subjectName: string;
+  subjectCode?: string;
+  facultyId: string;
+  facultyName?: string;
+  date: string; // YYYY-MM-DD
+  period: number; // 1 to 8
+  status: AttendanceStatusType;
+  remarks?: string;
+  createdAt: number;
+  updatedAt: number;
+  createdBy: string;
+  updatedBy?: string;
+}
+
+export interface AttendanceSession {
+  sessionId: string;
+  id?: string;
+  department: string;
+  year: number | string;
+  section: string;
+  semester: number;
+  subjectId: string;
+  subjectCode?: string;
+  subjectName: string;
+  facultyId: string;
+  facultyName: string;
+  date: string;
+  period: number;
+  totalStudents: number;
+  presentCount: number;
+  absentCount: number;
+  odCount: number;
+  leaveCount: number;
+  attendancePercentage: number;
+  createdAt: number;
+  updatedAt: number;
+  records: DailyAttendanceRecord[];
+}
+
+export interface AttendanceSummaryRecord {
+  summaryId: string;
+  id?: string;
+  studentId: string;
+  registerNumber: string;
+  studentName: string;
+  department: string;
+  year: number | string;
+  section: string;
+  semester: number;
+  subjectId: string;
+  subjectCode: string;
+  subjectName: string;
+  totalClasses: number;
+  presentCount: number;
+  absentCount: number;
+  odCount: number;
+  leaveCount: number;
+  attendancePercentage: number;
+  updatedAt: number;
+}
+
+export interface AttendanceAuditLog {
+  auditId: string;
+  attendanceId: string;
+  sessionId?: string;
+  studentId?: string;
+  studentName?: string;
+  subjectName?: string;
+  date?: string;
+  period?: number;
+  action: 'CREATED' | 'EDITED' | 'DELETED';
+  oldStatus?: string;
+  newStatus?: string;
+  editedBy: string;
+  editorRole?: string;
+  reason: string;
+  timestamp: number;
+}
+
 export interface StudentAttendanceSummary {
   studentId: string;
   studentName: string;

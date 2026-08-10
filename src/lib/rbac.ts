@@ -83,15 +83,14 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
     { id: 'analytics', label: 'Analytics', module: 'analytics', iconName: 'BarChart3', path: '/admin/analytics' }
   ],
   faculty: [
-    { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
-    { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
-    { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
-    { id: 'my_students', label: 'My Students', module: 'my_students', iconName: 'GraduationCap', path: '/faculty/students' },
-    { id: 'my_courses', label: 'My Courses', module: 'my_courses', iconName: 'BookOpen', path: '/faculty/courses' },
-    { id: 'attendance', label: 'Attendance', module: 'attendance', iconName: 'QrCode', path: '/faculty/attendance' },
+    { id: 'dashboard', label: 'Faculty Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
+    { id: 'my_classes', label: 'My Classes', module: 'my_classes', iconName: 'Building2', path: '/faculty/classes' },
+    { id: 'my_subjects', label: 'My Subjects', module: 'my_subjects', iconName: 'BookOpen', path: '/faculty/subjects' },
+    { id: 'attendance', label: 'Attendance', module: 'attendance', iconName: 'CheckCircle2', path: '/faculty/attendance' },
     { id: 'marks', label: 'Marks', module: 'marks', iconName: 'FileSpreadsheet', path: '/faculty/marks' },
+    { id: 'my_students', label: 'Students', module: 'my_students', iconName: 'GraduationCap', path: '/faculty/students' },
+    { id: 'leave', label: 'Leave Requests', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'reports', label: 'Reports', module: 'reports', iconName: 'FileText', path: '/faculty/reports' },
-    { id: 'complaints', label: 'Complaints', module: 'complaints', iconName: 'AlertCircle', path: '/faculty/complaints' },
     { id: 'announcements', label: 'Announcements', module: 'announcements', iconName: 'Megaphone', path: '/faculty/announcements' }
   ],
   student: [
