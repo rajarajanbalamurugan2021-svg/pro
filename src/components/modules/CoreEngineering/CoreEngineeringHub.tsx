@@ -68,18 +68,37 @@ import {
 interface CoreEngineeringHubProps {
   userRole?: UserRole;
   userEmail?: string;
+  initialTab?: string;
   onNavigateToModule?: (module: string) => void;
 }
 
 export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   userRole = 'student',
   userEmail = '',
+  initialTab,
   onNavigateToModule
 }) => {
+  const mapInitialTab = (tab?: string): 'branches' | 'gate' | 'higher_studies' | 'software' | 'careers' | 'interview' | 'dashboard' | 'admin' => {
+    if (tab === 'gate_prep' || tab === 'gate') return 'gate';
+    if (tab === 'higher_studies' || tab === 'research') return 'higher_studies';
+    if (tab === 'software_hub' || tab === 'software') return 'software';
+    if (tab === 'core_careers' || tab === 'careers') return 'careers';
+    if (tab === 'interview') return 'interview';
+    if (tab === 'dashboard' || tab === 'radar') return 'dashboard';
+    if (tab === 'admin' || tab === 'cms') return 'admin';
+    return 'branches';
+  };
+
   // Main Hub Active Tab
   const [activeTab, setActiveTab] = useState<
     'branches' | 'gate' | 'higher_studies' | 'software' | 'careers' | 'interview' | 'dashboard' | 'admin'
-  >('branches');
+  >(() => mapInitialTab(initialTab));
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(mapInitialTab(initialTab));
+    }
+  }, [initialTab]);
 
   // Branch Selection State
   const [selectedBranch, setSelectedBranch] = useState<'ECE' | 'EEE' | 'MECH' | 'CIVIL'>('ECE');
