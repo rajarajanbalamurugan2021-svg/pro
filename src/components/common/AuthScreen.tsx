@@ -566,8 +566,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
           <>
             {/* Quick Demo Access Bar for All Allowed Roles */}
             <div className="mb-6 p-3 rounded-2xl bg-slate-950/80 border border-slate-800">
-              <div className="text-sm font-bold text-amber-300 mb-2.5 text-center flex items-center justify-center gap-1.5 font-courgette">
-                <Sparkles className="h-4 w-4 text-amber-400" />
+              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2.5 text-center flex items-center justify-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                 <span>Select Role for Instant Authenticated Access</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">

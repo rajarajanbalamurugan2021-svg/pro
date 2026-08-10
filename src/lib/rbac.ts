@@ -19,8 +19,8 @@ export function normalizeRole(role?: string | UserRole): NormalizedRole {
   if (r === 'student') return 'student';
   
   // Fallbacks for existing legacy role strings
-  if (r === 'department_head' || r === 'placement_officer' || r === 'recruiter') return 'admin';
-  if (r === 'mentor' || r === 'maintenance_staff') return 'faculty';
+  if (r === 'department_head' || r === 'placement_officer' || r === 'recruiter' || r === 'hod') return 'admin';
+  if (r === 'mentor' || r === 'maintenance_staff' || r === 'class_advisor') return 'faculty';
 
   return 'student';
 }

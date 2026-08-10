@@ -60,39 +60,40 @@ service cloud.firestore {
 
     // Users & Profiles Collections
     match /users/{userId} {
-      allow read: if true;
+      allow read: if isSignedIn();
       allow create: if true;
-      allow update: if true;
-      allow delete: if true;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
     }
     match /profiles/{profileId} {
-      allow read: if true;
-      allow create, update, write: if true;
-      allow delete: if true;
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
     }
     match /user_profiles/{profileId} {
-      allow read: if true;
-      allow create, update, write: if true;
-      allow delete: if true;
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
     }
 
     // Registrations Collection
     match /registrations/{regId} {
-      allow read: if true;
-      allow create, update, write: if true;
-      allow delete: if true;
+      allow read: if isSignedIn();
+      allow create: if true;
+      allow update, write: if isSignedIn();
+      allow delete: if isAdmin();
     }
 
     // Uploadable Contents & Files Collections
     match /uploadable_contents/{uploadId} {
-      allow read: if true;
-      allow create, update, write: if true;
-      allow delete: if true;
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
     }
     match /uploads/{uploadId} {
-      allow read: if true;
-      allow create, update, write: if true;
-      allow delete: if true;
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
     }
 
     // Roles & Permissions Collections
@@ -279,7 +280,8 @@ service cloud.firestore {
 
     // Single-document global sync collection fallback
     match /ckcet_campro/{docKey} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isSignedIn();
     }
 
     // Default Fallback Policy

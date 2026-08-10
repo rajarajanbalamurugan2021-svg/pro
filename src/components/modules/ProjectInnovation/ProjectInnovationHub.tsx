@@ -287,7 +287,7 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
               <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
               <span>Student Project Collaboration & Innovation Platform</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-courgette text-amber-200">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
               Innovate, Collaborate, and Execute Capstone Projects
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">

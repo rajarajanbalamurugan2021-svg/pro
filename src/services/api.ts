@@ -600,6 +600,10 @@ export class CampusStorage {
     return getStored(STORAGE_KEYS.LOGS, INITIAL_AUDIT_LOGS);
   }
 
+  static saveAuditLogs(logs: AuditLog[]) {
+    setStored(STORAGE_KEYS.LOGS, logs);
+  }
+
   static addAuditLog(action: string, performedBy: string, userRole: string, target: string) {
     const logs = this.getAuditLogs();
     const newLog: AuditLog = {
@@ -613,6 +617,10 @@ export class CampusStorage {
     };
     const updated = [newLog, ...logs];
     setStored(STORAGE_KEYS.LOGS, updated);
+  }
+
+  static logAudit(action: string, performedBy: string, userRole: string, target: string) {
+    this.addAuditLog(action, performedBy, userRole, target);
   }
 
   static getOpportunities(): PlacementOpportunity[] {

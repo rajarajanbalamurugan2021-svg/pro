@@ -66,10 +66,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         <div className="space-y-1.5">
           <div className="flex items-center justify-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-sans">
-              CKCET <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent font-courgette text-3xl px-1">CAMPRO</span>
+              CKCET <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">CAMPRO</span>
             </h1>
           </div>
-          <p className="text-sm font-bold text-blue-400 font-courgette">
+          <p className="text-xs font-extrabold uppercase tracking-widest text-blue-400">
             Smart Campus Portal
           </p>
           <p className="text-[11px] text-slate-300 max-w-[280px] mx-auto font-semibold">

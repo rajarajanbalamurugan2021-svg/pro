@@ -7,7 +7,7 @@ export interface CampusLogoConfig {
   gradientBg?: string;
 }
 
-export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor' | 'maintenance_staff' | 'department_head';
+export type UserRole = 'super_admin' | 'admin' | 'placement_officer' | 'recruiter' | 'faculty' | 'student' | 'mentor' | 'maintenance_staff' | 'department_head' | 'hod' | 'class_advisor';
 
 export interface FAQItem {
   id: string;
