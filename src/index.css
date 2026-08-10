@@ -1,4 +1,27 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@theme {
+  --font-sans: 'Courgette', cursive, sans-serif;
+  --font-courgette: 'Courgette', cursive, sans-serif;
+}
+
+*,
+*::before,
+*::after,
+html,
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: 'Courgette', cursive, sans-serif !important;
+}
+
+.font-courgette {
+  font-family: 'Courgette', cursive, sans-serif !important;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 

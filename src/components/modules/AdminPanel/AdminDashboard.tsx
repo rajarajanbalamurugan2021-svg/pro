@@ -257,7 +257,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {isSuperAdmin ? <Crown className="h-4 w-4 text-amber-400" /> : isFaculty ? <GraduationCap className="h-4 w-4 text-emerald-400" /> : <ShieldAlert className="h-4 w-4 text-indigo-400" />}
             <span>{isSuperAdmin ? 'SuperAdmin Full System Control' : isFaculty ? 'Faculty Academic Portal' : 'Admin Campus Management'}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 font-courgette text-amber-200">
             {isSuperAdmin ? 'Super Admin Master Governance' : isFaculty ? 'My Students & Academic Roster' : 'Campus Administrator Dashboard'}
           </h1>
           <p className="text-xs sm:text-sm text-purple-200 mt-1 max-w-xl">

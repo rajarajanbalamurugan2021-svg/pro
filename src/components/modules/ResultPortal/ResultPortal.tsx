@@ -127,7 +127,7 @@ export const ResultPortal: React.FC<ResultPortalProps> = ({
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white font-courgette text-amber-200">
                   Student Result Management & Academic Analytics
                 </h1>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">

@@ -210,7 +210,7 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
                   <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white leading-none">
                     {logoConfig.title || 'CKCET'}
                   </span>
-                  <span className="text-lg font-black tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-sky-300 dark:to-indigo-300 bg-clip-text text-transparent leading-none">
+                  <span className="text-lg font-bold tracking-normal bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-sky-300 dark:to-indigo-300 bg-clip-text text-transparent leading-none font-courgette px-0.5">
                     {logoConfig.subtitle || 'CAMPRO'}
                   </span>
                 </div>

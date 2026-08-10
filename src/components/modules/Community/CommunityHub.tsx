@@ -88,7 +88,7 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-purple-200">
             <Users className="h-4 w-4" /> Campus Social & Student Forum
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 font-courgette text-amber-200">
             Community Hub & Official Bulletins
           </h1>
           <p className="text-sm text-purple-100 mt-1 max-w-xl">
