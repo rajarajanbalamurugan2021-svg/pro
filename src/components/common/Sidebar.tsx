@@ -26,7 +26,10 @@ import {
   ChevronRight,
   Globe,
   ExternalLink,
-  Mail
+  Mail,
+  Cpu,
+  Target,
+  Wrench
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -62,7 +65,10 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   User: UserIcon,
   Calculator,
   Download,
-  Mail
+  Mail,
+  Cpu,
+  Target,
+  Wrench
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({

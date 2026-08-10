@@ -52,6 +52,10 @@ export interface MenuItem {
 export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   super_admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/superadmin/dashboard' },
+    { id: 'core_engineering', label: 'Core Engineering Hub', module: 'core_engineering', iconName: 'Cpu', path: '/core_engineering', badge: 'Core Hub' },
+    { id: 'gate_prep', label: 'GATE Preparation', module: 'gate_prep', iconName: 'Target', path: '/gate_prep', badge: 'GATE' },
+    { id: 'higher_studies', label: 'Higher Studies & Research', module: 'higher_studies', iconName: 'GraduationCap', path: '/higher_studies', badge: 'Research' },
+    { id: 'software_hub', label: 'Software & Tools Hub', module: 'software_hub', iconName: 'Wrench', path: '/software_hub', badge: 'Tools' },
     { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'user_management', label: 'User Management', module: 'user_management', iconName: 'Users', path: '/superadmin/users' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
@@ -69,6 +73,10 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   admin: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/admin/dashboard' },
+    { id: 'core_engineering', label: 'Core Engineering Hub', module: 'core_engineering', iconName: 'Cpu', path: '/core_engineering', badge: 'Core Hub' },
+    { id: 'gate_prep', label: 'GATE Preparation', module: 'gate_prep', iconName: 'Target', path: '/gate_prep', badge: 'GATE' },
+    { id: 'higher_studies', label: 'Higher Studies & Research', module: 'higher_studies', iconName: 'GraduationCap', path: '/higher_studies', badge: 'Research' },
+    { id: 'software_hub', label: 'Software & Tools Hub', module: 'software_hub', iconName: 'Wrench', path: '/software_hub', badge: 'Tools' },
     { id: 'cloud_db', label: 'Cloud Database', module: 'cloud_db', iconName: 'Download', path: '/cloud_db', badge: 'Firestore' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'students', label: 'Students', module: 'students', iconName: 'GraduationCap', path: '/admin/students' },
@@ -84,6 +92,10 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   faculty: [
     { id: 'dashboard', label: 'Faculty Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/faculty/dashboard' },
+    { id: 'core_engineering', label: 'Core Engineering Hub', module: 'core_engineering', iconName: 'Cpu', path: '/core_engineering', badge: 'Core Hub' },
+    { id: 'gate_prep', label: 'GATE & Academics', module: 'gate_prep', iconName: 'Target', path: '/gate_prep', badge: 'GATE' },
+    { id: 'higher_studies', label: 'Research & Higher Studies', module: 'higher_studies', iconName: 'GraduationCap', path: '/higher_studies', badge: 'Research' },
+    { id: 'software_hub', label: 'Software & Tools Hub', module: 'software_hub', iconName: 'Wrench', path: '/software_hub', badge: 'Tools' },
     { id: 'my_classes', label: 'My Classes', module: 'my_classes', iconName: 'Building2', path: '/faculty/classes' },
     { id: 'my_subjects', label: 'My Subjects', module: 'my_subjects', iconName: 'BookOpen', path: '/faculty/subjects' },
     { id: 'attendance', label: 'Attendance', module: 'attendance', iconName: 'CheckCircle2', path: '/faculty/attendance' },
@@ -95,6 +107,10 @@ export const ROLE_SIDEBAR_MENUS: Record<NormalizedRole, MenuItem[]> = {
   ],
   student: [
     { id: 'dashboard', label: 'Dashboard', module: 'dashboard', iconName: 'LayoutDashboard', path: '/student/dashboard' },
+    { id: 'core_engineering', label: 'Core Engineering Hub', module: 'core_engineering', iconName: 'Cpu', path: '/core_engineering', badge: 'Core Hub' },
+    { id: 'gate_prep', label: 'GATE Preparation', module: 'gate_prep', iconName: 'Target', path: '/gate_prep', badge: 'GATE' },
+    { id: 'higher_studies', label: 'Higher Studies & Research', module: 'higher_studies', iconName: 'GraduationCap', path: '/higher_studies', badge: 'Academic' },
+    { id: 'software_hub', label: 'Engineering Software Hub', module: 'software_hub', iconName: 'Wrench', path: '/software_hub', badge: 'Tools' },
     { id: 'leave', label: 'Leave Management', module: 'leave', iconName: 'CalendarDays', path: '/leave' },
     { id: 'project_innovation', label: 'Project Collaboration', module: 'project_innovation', iconName: 'Sparkles', path: '/projects', badge: 'Hub' },
     { id: 'my_profile', label: 'My Profile', module: 'my_profile', iconName: 'User', path: '/student/profile' },
@@ -148,6 +164,7 @@ export function canAccessModule(role?: string | UserRole, moduleName?: string): 
   if (allowed.includes(moduleName)) return true;
 
   // Additional alias mapping for existing modules
+  if (moduleName === 'core_engineering' || moduleName === 'gate_prep' || moduleName === 'higher_studies' || moduleName === 'software_hub' || moduleName === 'core_careers') return true;
   if (moduleName === 'placement_system' || moduleName === 'projects' || moduleName === 'project_innovation') return true;
   if (moduleName === 'reporting' && (allowed.includes('complaints') || allowed.includes('reporting'))) return true;
   if (moduleName === 'marks' && norm === 'faculty') return true;

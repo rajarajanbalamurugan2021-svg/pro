@@ -47,6 +47,7 @@ import { AIChatbotModule } from './components/modules/AIChatbotModule';
 import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
 import { FacultyAttendancePortal } from './components/modules/FacultyAttendance/FacultyAttendancePortal';
 import { StudentAttendancePortal } from './components/modules/FacultyAttendance/StudentAttendancePortal';
+import { CoreEngineeringHub } from './components/modules/CoreEngineering/CoreEngineeringHub';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
 import { SplashScreen } from './components/common/SplashScreen';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
@@ -478,6 +479,14 @@ export default function App() {
 
         {/* Dynamic Content Body */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden w-full max-w-full min-w-0 p-3 sm:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
+          {(activeModule === 'core_engineering' || activeModule === 'gate_prep' || activeModule === 'higher_studies' || activeModule === 'software_hub' || activeModule === 'core_careers') && (
+            <CoreEngineeringHub
+              userRole={userRole}
+              userEmail={currentUser?.email || ''}
+              onNavigateToModule={(mod) => setActiveModule(mod)}
+            />
+          )}
+
           {(activeModule === 'projects' || activeModule === 'project_innovation') && (
             <ProjectInnovationHub
               userRole={userRole}

@@ -1,6 +1,6 @@
 {
   "name": "CKCET CAMPRO",
-  "description": "Comprehensive university ERP platform featuring Faculty Attendance Management, AI Internship & Placement Recommendation System, Result Portal, Complaint Tracking, Lost & Found, Resource Collaboration, Mentor-Mentee Hub, Community Forum, Leave Management, Lab Attendance, and AI Analytics.",
+  "description": "Comprehensive Core Engineering Intelligence & University ERP platform featuring Core Engineering Career Hubs (ECE, EEE, MECH, CIVIL), GATE Preparation & Mock Simulator, Higher Studies & Research Pathways, Engineering Software Installation Hub, Faculty Attendance, Placement System, Result Portal, and Campus Management.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

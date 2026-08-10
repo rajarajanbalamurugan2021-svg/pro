@@ -287,7 +287,7 @@ service cloud.firestore {
     // Default Fallback Policy
     match /{document=**} {
       allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow write: if isAdmin();
     }
   }
 }

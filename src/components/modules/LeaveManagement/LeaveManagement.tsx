@@ -10,13 +10,7 @@ import { LeaveDetailModal } from './LeaveDetailModal';
 import { LeaveReportsExporter } from './LeaveReportsExporter';
 import { 
   CalendarDays, 
-  UserCheck, 
-  ShieldCheck, 
-  Settings, 
-  User as UserIcon, 
-  Sparkles, 
-  FileSpreadsheet,
-  CheckCircle2
+  FileSpreadsheet
 } from 'lucide-react';
 
 interface LeaveManagementProps {
@@ -173,8 +167,8 @@ export const LeaveManagement: React.FC<LeaveManagementProps> = ({
   return (
     <div className="space-y-6 pb-12">
       
-      {/* Top Main Module Header with Role View Switcher */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-4">
+      {/* Top Main Module Header */}
+      <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           
           <div className="flex items-center space-x-3">
@@ -202,64 +196,6 @@ export const LeaveManagement: React.FC<LeaveManagementProps> = ({
             <span>Reports & Analytics</span>
           </button>
         </div>
-
-        {/* Role Portal View Selector */}
-        <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="text-xs text-slate-400 font-medium">
-            Active Portal Perspective:
-          </div>
-
-          <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 sm:pb-0">
-            <button
-              onClick={() => setActiveRoleView('STUDENT')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
-                activeRoleView === 'STUDENT'
-                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <UserIcon className="w-3.5 h-3.5" />
-              <span>Student Portal</span>
-            </button>
-
-            <button
-              onClick={() => setActiveRoleView('ADVISOR')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
-                activeRoleView === 'ADVISOR'
-                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>Class Advisor Portal</span>
-            </button>
-
-            <button
-              onClick={() => setActiveRoleView('HOD')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
-                activeRoleView === 'HOD'
-                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>HOD Portal</span>
-            </button>
-
-            <button
-              onClick={() => setActiveRoleView('ADMIN')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
-                activeRoleView === 'ADMIN'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Settings className="w-3.5 h-3.5" />
-              <span>Admin Policies</span>
-            </button>
-          </div>
-        </div>
-
       </div>
 
       {/* RENDER ACTIVE ROLE VIEW */}
