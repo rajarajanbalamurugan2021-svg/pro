@@ -2,9 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper Functions
+    // Global Helper Functions
     function isSignedIn() {
       return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
 
     function getUserData() {
@@ -40,25 +44,11 @@ service cloud.firestore {
       );
     }
 
-    function isHOD() {
-      return isSignedIn() && (
-        isAdmin() ||
-        request.auth.token.role == 'hod' || 
-        request.auth.token.role == 'HOD' ||
-        getUserData().role == 'hod' || 
-        getUserData().role == 'HOD'
-      );
-    }
-
-    function isStudent() {
-      return isSignedIn();
-    }
-
     function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
+      return isSignedIn() && (request.auth.uid == userId || resource.data.userId == request.auth.uid);
     }
 
-    // Users & Profiles Collections
+    // 1. Users & Profiles Collections (Supports Profile DP, Contact, Role & Avatar updates)
     match /users/{userId} {
       allow read: if isSignedIn();
       allow create: if true;
@@ -76,7 +66,7 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Registrations Collection
+    // 2. Registrations Collection
     match /registrations/{regId} {
       allow read: if isSignedIn();
       allow create: if true;
@@ -84,11 +74,11 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Uploadable Contents & Files Collections
+    // 3. Uploadable Contents & File Attachments (Profile DPs, Certificates, Evidence photos)
     match /uploadable_contents/{uploadId} {
       allow read: if isSignedIn();
       allow create, update, write: if isSignedIn();
-      allow delete: if isAdmin();
+      allow delete: if isAdmin() || isOwner(resource.data.uploadedBy);
     }
     match /uploads/{uploadId} {
       allow read: if isSignedIn();
@@ -96,68 +86,44 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Roles & Permissions Collections
-    match /roles/{roleId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
-    }
-    match /permissions/{permId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
-    }
-
-    // Students, Faculty, Admins
-    match /students/{studentId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin() || isFaculty() || isOwner(studentId);
-    }
-    match /faculty/{facultyId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
-    }
-    match /admins/{adminId} {
-      allow read: if isSignedIn();
-      allow write: if isSuperAdmin();
-    }
-
-    // Student Results & Marks & CGPA Collections
+    // 4. Student Results, Marks & CGPA Module
     match /student_results/{resultId} {
       allow read: if isSignedIn();
-      allow create, update: if isFaculty();
+      allow create, update: if isFaculty() || isAdmin();
       allow delete: if isAdmin();
     }
     match /marks/{markId} {
       allow read: if isSignedIn();
-      allow write: if isFaculty();
+      allow write: if isFaculty() || isAdmin();
     }
     match /cgpa/{cgpaId} {
       allow read: if isSignedIn();
-      allow write: if isFaculty();
+      allow write: if isFaculty() || isAdmin();
     }
 
-    // Attendance & Lab Records Collection
+    // 5. Faculty & Lab Attendance Module
     match /attendance/{attendanceId} {
       allow read: if isSignedIn();
-      allow create, update, delete: if isFaculty();
+      allow create, update, delete: if isFaculty() || isAdmin();
     }
     match /attendance_sessions/{sessionId} {
       allow read: if isSignedIn();
-      allow create, update, delete: if isFaculty();
+      allow create, update, delete: if isFaculty() || isAdmin();
     }
     match /attendance_summary/{summaryId} {
       allow read: if isSignedIn();
-      allow create, update, write: if isFaculty();
+      allow create, update, write: if isFaculty() || isAdmin();
     }
     match /attendance_audit/{auditId} {
       allow read: if isSignedIn();
-      allow create, update, write: if isFaculty();
+      allow create, update, write: if isFaculty() || isAdmin();
     }
     match /labRecords/{labId} {
       allow read: if isSignedIn();
-      allow write: if isFaculty();
+      allow write: if isFaculty() || isAdmin();
     }
 
-    // Leave Requests & Policies Collections
+    // 6. Leave Management Module
     match /leaveRequests/{leaveId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn();
@@ -175,7 +141,7 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Complaints Collection
+    // 7. Complaint Management Module
     match /complaints/{complaintId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn();
@@ -183,7 +149,7 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Projects, Teams, Tasks Collection
+    // 8. Project Innovation & Team Collaboration Module
     match /projects/{projectId} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn();
@@ -198,7 +164,7 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
-    // Community Posts, Comments, Messages, Notifications
+    // 9. Community Forum, Discussions, Messages & Notifications
     match /communityPosts/{postId} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn();
@@ -218,55 +184,39 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
-    // Placement, Internships, Recommendations
+    // 10. Placement, Internships & Career Recommendations
     match /internships/{internshipId} {
       allow read: if isSignedIn();
       allow write: if isSignedIn();
     }
     match /placements/{placementId} {
       allow read: if isSignedIn();
-      allow write: if isFaculty();
+      allow write: if isFaculty() || isAdmin();
     }
     match /careerRecommendations/{recId} {
       allow read: if isSignedIn();
       allow write: if isSignedIn();
     }
 
-    // Departments, Courses, Subjects
+    // 11. Core Engineering CMS Tools & Resources
+    match /core_cms_tools/{toolId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || isFaculty();
+    }
+    match /core_cms_branches/{branchId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || isFaculty();
+    }
+
+    // 12. Departments & System Administration
     match /departments/{deptId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
     }
-    match /courses/{courseId} {
-      allow read: if isSignedIn();
-      allow write: if isFaculty();
-    }
-    match /subjects/{subjectId} {
-      allow read: if isSignedIn();
-      allow write: if isFaculty();
-    }
-
-    // Documents, Reports, Analytics, Events, System Logs & Settings
-    match /documents/{docId} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
-    }
-    match /reports/{reportId} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
-    }
-    match /analytics/{analyticsId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
-    }
-    match /events/{eventId} {
-      allow read: if isSignedIn();
-      allow write: if isFaculty();
-    }
-    match /logs/{logId} {
+    match /audit_logs/{logId} {
       allow read, write: if isSignedIn();
     }
-    match /audit_logs/{logId} {
+    match /logs/{logId} {
       allow read, write: if isSignedIn();
     }
     match /settings/{settingId} {
@@ -278,13 +228,13 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
-    // Single-document global sync collection fallback
+    // 13. Universal Real-time Single-Document State Sync Fallback
     match /ckcet_campro/{docKey} {
       allow read: if true;
       allow write: if isSignedIn();
     }
 
-    // Default Fallback Policy
+    // Default Fallback
     match /{document=**} {
       allow read: if isSignedIn();
       allow write: if isAdmin();

@@ -483,6 +483,7 @@ export default function App() {
             <CoreEngineeringHub
               userRole={userRole}
               userEmail={currentUser?.email || ''}
+              initialTab={activeModule}
               onNavigateToModule={(mod) => setActiveModule(mod)}
             />
           )}

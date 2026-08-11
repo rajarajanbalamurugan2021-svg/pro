@@ -1,8 +1,50 @@
 {
   "entities": {
+    "users": {
+      "title": "Users",
+      "description": "Campus system user accounts with authentication and profile DP avatar metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User ID" },
+        "name": { "type": "string", "description": "User full name" },
+        "email": { "type": "string", "description": "User email address" },
+        "role": { "type": "string", "description": "User role (student, faculty, hod, admin, super_admin)" },
+        "department": { "type": "string", "description": "Department name" },
+        "avatarUrl": { "type": "string", "description": "Profile DP / avatar image URL" },
+        "status": { "type": "string", "description": "Status: active or inactive" },
+        "updatedAt": { "type": "number", "description": "Timestamp in epoch ms" }
+      },
+      "required": ["name", "email", "role"]
+    },
+    "profiles": {
+      "title": "User Profiles",
+      "description": "Comprehensive profile records for campus members including avatar DP, contact details, blood group, address, etc.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User ID matching auth/user identifier" },
+        "userId": { "type": "string", "description": "Associated user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Personal email" },
+        "officialEmail": { "type": "string", "description": "Official institutional email" },
+        "role": { "type": "string", "description": "User role" },
+        "department": { "type": "string", "description": "Department name" },
+        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
+        "programme": { "type": "string", "description": "Degree programme e.g. BE ECE" },
+        "semester": { "type": "number", "description": "Current semester number" },
+        "rollNumber": { "type": "string", "description": "Roll number" },
+        "registerNo": { "type": "string", "description": "Anna University or campus register number" },
+        "phone": { "type": "string", "description": "Contact number" },
+        "bloodGroup": { "type": "string", "description": "Blood group" },
+        "address": { "type": "string", "description": "Full postal address" },
+        "bio": { "type": "string", "description": "Short bio or tagline" },
+        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
+      },
+      "required": ["userId", "name", "email", "role"]
+    },
     "registrations": {
       "title": "Campus Registrations",
       "description": "Student and faculty registration applications submitted on campus portal",
+      "type": "object",
       "properties": {
         "id": { "type": "string", "description": "Unique registration ID" },
         "fullName": { "type": "string", "description": "Full name of applicant" },
@@ -16,49 +58,10 @@
       },
       "required": ["fullName", "email", "role", "department", "status"]
     },
-    "profiles": {
-      "title": "User Profiles",
-      "description": "Comprehensive profile records for campus members including basic info, contact details, blood group, address, etc.",
-      "properties": {
-        "id": { "type": "string", "description": "User ID matching auth/user identifier" },
-        "userId": { "type": "string", "description": "Associated user ID" },
-        "name": { "type": "string", "description": "Full name" },
-        "firstName": { "type": "string", "description": "First name" },
-        "lastName": { "type": "string", "description": "Last name" },
-        "email": { "type": "string", "description": "Personal email" },
-        "officialEmail": { "type": "string", "description": "Official institutional email" },
-        "role": { "type": "string", "description": "User role" },
-        "department": { "type": "string", "description": "Department name" },
-        "programme": { "type": "string", "description": "Degree programme e.g. BE ECE" },
-        "academicSession": { "type": "string", "description": "Academic session e.g. 2026-2027" },
-        "semester": { "type": "number", "description": "Current semester number" },
-        "className": { "type": "string", "description": "Class identifier e.g. II ECE" },
-        "rollNumber": { "type": "string", "description": "Roll number" },
-        "registerNo": { "type": "string", "description": "Anna University or campus register number" },
-        "title": { "type": "string", "description": "Title e.g. Mr, Ms, Dr, Prof" },
-        "dateOfBirth": { "type": "string", "description": "Date of birth string" },
-        "gender": { "type": "string", "description": "Male, Female, or Others" },
-        "phone": { "type": "string", "description": "Contact number" },
-        "whatsappNumber": { "type": "string", "description": "WhatsApp contact number" },
-        "religion": { "type": "string", "description": "Religion" },
-        "communalCategory": { "type": "string", "description": "Communal category e.g. MBC, BC, SC, ST, OC" },
-        "bloodGroup": { "type": "string", "description": "Blood group e.g. O+VE" },
-        "country": { "type": "string", "description": "Country of residence" },
-        "state": { "type": "string", "description": "State" },
-        "district": { "type": "string", "description": "District" },
-        "cityVillage": { "type": "string", "description": "City or Village" },
-        "address": { "type": "string", "description": "Full postal address" },
-        "streetArea": { "type": "string", "description": "Street or area" },
-        "pinCode": { "type": "string", "description": "Postal pincode" },
-        "motherTongue": { "type": "string", "description": "Mother tongue language" },
-        "nationality": { "type": "string", "description": "Nationality" },
-        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
-      },
-      "required": ["userId", "name", "email", "role"]
-    },
     "uploadable_contents": {
       "title": "Uploadable Contents & Documents",
-      "description": "Cloud document uploads, learning materials, certificates, complaint evidence, assignment submissions, and project attachments",
+      "description": "Cloud document uploads, learning materials, certificates, profile DP avatars, complaint evidence, assignment submissions, and project attachments",
+      "type": "object",
       "properties": {
         "id": { "type": "string", "description": "Unique upload ID" },
         "title": { "type": "string", "description": "Title or display name of the uploaded document" },
@@ -66,85 +69,204 @@
         "fileType": { "type": "string", "description": "MIME type or file category e.g. PDF, image/png, docx" },
         "fileSize": { "type": "number", "description": "File size in bytes" },
         "fileUrl": { "type": "string", "description": "Download URL or base64 data URL" },
-        "category": { "type": "string", "description": "Category: certificate, assignment, notes, complaint_attachment, project_doc, profile_avatar, lab_report" },
+        "category": { "type": "string", "description": "Category: profile_avatar, certificate, assignment, notes, complaint_attachment, project_doc, lab_report" },
         "uploadedBy": { "type": "string", "description": "User ID of uploader" },
         "uploaderName": { "type": "string", "description": "Name of uploader" },
         "department": { "type": "string", "description": "Associated department" },
         "accessLevel": { "type": "string", "description": "Access visibility: public, department, private, admin_only" },
-        "description": { "type": "string", "description": "Optional description or caption" },
         "createdAt": { "type": "number", "description": "Upload timestamp in epoch ms" }
       },
       "required": ["title", "fileName", "fileUrl", "category", "uploadedBy"]
     },
-    "users": {
-      "title": "Users",
-      "description": "Campus system user accounts",
+    "complaints": {
+      "title": "Complaint Management",
+      "description": "Student/Faculty campus grievances, maintenance issues, and AI auto-classified tickets",
+      "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "User ID" },
-        "name": { "type": "string", "description": "User full name" },
-        "email": { "type": "string", "description": "User email address" },
-        "role": { "type": "string", "description": "User role" },
-        "department": { "type": "string", "description": "Department name" },
-        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
-        "status": { "type": "string", "description": "Status: active or inactive" }
+        "id": { "type": "string", "description": "Complaint ID" },
+        "title": { "type": "string", "description": "Short complaint title" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "category": { "type": "string", "description": "Category e.g. Infrastructure, Academic, Hostel" },
+        "priority": { "type": "string", "description": "Priority: Low, Medium, High, Critical" },
+        "status": { "type": "string", "description": "Status: OPEN, IN_PROGRESS, RESOLVED, CLOSED" },
+        "submittedBy": { "type": "string", "description": "User ID or Name who filed complaint" },
+        "assignedTo": { "type": "string", "description": "Assignee name or ID" },
+        "department": { "type": "string", "description": "Target department" },
+        "location": { "type": "string", "description": "Campus location" },
+        "attachmentUrl": { "type": "string", "description": "Photo or document proof URL" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" },
+        "updatedAt": { "type": "number", "description": "Updated timestamp epoch ms" }
       },
-      "required": ["name", "email", "role"]
+      "required": ["title", "description", "category", "status", "submittedBy"]
+    },
+    "leaveRequests": {
+      "title": "Leave Management Requests",
+      "description": "Student & Faculty leave applications, medical OD requests, and approval workflow",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Leave request ID" },
+        "studentId": { "type": "string", "description": "Applicant student or faculty ID" },
+        "studentName": { "type": "string", "description": "Applicant full name" },
+        "leaveType": { "type": "string", "description": "Leave type: Casual, Medical, On-Duty, Special" },
+        "startDate": { "type": "string", "description": "Start date YYYY-MM-DD" },
+        "endDate": { "type": "string", "description": "End date YYYY-MM-DD" },
+        "reason": { "type": "string", "description": "Reason for leave" },
+        "status": { "type": "string", "description": "Status: PENDING, APPROVED, REJECTED, CANCELLED" },
+        "approvedBy": { "type": "string", "description": "Approver name or ID" },
+        "comments": { "type": "string", "description": "Approver comments" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" }
+      },
+      "required": ["studentId", "leaveType", "startDate", "endDate", "reason", "status"]
+    },
+    "student_results": {
+      "title": "Result Portal Records",
+      "description": "Semester academic results, CGPA, SGPA, subject grades, and arrear status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Result ID" },
+        "studentId": { "type": "string", "description": "Student user ID" },
+        "registerNo": { "type": "string", "description": "Student register number" },
+        "studentName": { "type": "string", "description": "Student name" },
+        "department": { "type": "string", "description": "Department name" },
+        "semester": { "type": "number", "description": "Semester number" },
+        "sgpa": { "type": "number", "description": "Semester SGPA" },
+        "cgpa": { "type": "number", "description": "Cumulative CGPA" },
+        "arrears": { "type": "number", "description": "Active arrear count" },
+        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
+      },
+      "required": ["studentId", "registerNo", "semester", "cgpa"]
+    },
+    "communityPosts": {
+      "title": "Community Posts & Discussions",
+      "description": "Campus forum posts, research share, announcements, and student clubs feed",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Post ID" },
+        "title": { "type": "string", "description": "Post title" },
+        "content": { "type": "string", "description": "Post text body" },
+        "authorId": { "type": "string", "description": "Author user ID" },
+        "authorName": { "type": "string", "description": "Author name" },
+        "authorAvatar": { "type": "string", "description": "Author profile DP" },
+        "category": { "type": "string", "description": "Category e.g. Academic, General, Research, Event" },
+        "likes": { "type": "number", "description": "Like count" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" }
+      },
+      "required": ["title", "content", "authorId", "category"]
+    },
+    "projects": {
+      "title": "Project Innovation Hub",
+      "description": "Student innovation projects, capstones, hackathon teams, and repositories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Project ID" },
+        "title": { "type": "string", "description": "Project title" },
+        "description": { "type": "string", "description": "Project summary" },
+        "department": { "type": "string", "description": "Department" },
+        "createdById": { "type": "string", "description": "Creator user ID" },
+        "creatorName": { "type": "string", "description": "Creator name" },
+        "techStack": { "type": "string", "description": "Technologies used" },
+        "status": { "type": "string", "description": "Status: IDEATION, IN_PROGRESS, COMPLETED, FEATURED" },
+        "githubUrl": { "type": "string", "description": "GitHub repo link" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" }
+      },
+      "required": ["title", "description", "createdById", "status"]
+    },
+    "placements": {
+      "title": "Placement & Internship Opportunities",
+      "description": "Campus recruitment drives, company postings, eligibility criteria, and job offers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Opportunity ID" },
+        "companyName": { "type": "string", "description": "Company name" },
+        "roleTitle": { "type": "string", "description": "Job role title" },
+        "type": { "type": "string", "description": "Drive type: Placement, Internship, Full-time" },
+        "ctc": { "type": "string", "description": "CTC or stipend info" },
+        "deadline": { "type": "string", "description": "Application deadline YYYY-MM-DD" },
+        "description": { "type": "string", "description": "Drive description" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" }
+      },
+      "required": ["companyName", "roleTitle", "type", "deadline"]
     },
     "attendance": {
       "title": "Daily Attendance Records",
       "description": "Daily student subject attendance sessions logged by faculty",
+      "type": "object",
       "properties": {
         "id": { "type": "string", "description": "Record ID" },
         "studentId": { "type": "string", "description": "Student user ID" },
-        "registerNumber": { "type": "string", "description": "Student register or roll number" },
         "studentName": { "type": "string", "description": "Student full name" },
         "department": { "type": "string", "description": "Department name" },
-        "year": { "type": "string", "description": "Academic year" },
-        "section": { "type": "string", "description": "Class section e.g. A, B" },
-        "semester": { "type": "number", "description": "Semester number" },
         "subjectId": { "type": "string", "description": "Subject ID" },
-        "subjectName": { "type": "string", "description": "Subject name" },
-        "facultyId": { "type": "string", "description": "Faculty user ID" },
-        "facultyName": { "type": "string", "description": "Faculty full name" },
         "date": { "type": "string", "description": "Date string YYYY-MM-DD" },
         "period": { "type": "number", "description": "Period or hour number 1 to 8" },
         "status": { "type": "string", "description": "Attendance status: PRESENT, ABSENT, OD, or LEAVE" },
-        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" },
         "updatedAt": { "type": "number", "description": "Updated timestamp epoch ms" }
       },
-      "required": ["studentId", "department", "subjectId", "date", "period", "status"]
+      "required": ["studentId", "department", "subjectId", "date", "status"]
     },
-    "attendance_summary": {
-      "title": "Attendance Summaries",
-      "description": "Aggregated subject-wise attendance statistics per student",
+    "audit_logs": {
+      "title": "System Audit Logs",
+      "description": "Audit trails for all administrative actions, profile changes, and module updates",
+      "type": "object",
       "properties": {
-        "summaryId": { "type": "string", "description": "Summary record ID" },
-        "studentId": { "type": "string", "description": "Student ID" },
-        "subjectId": { "type": "string", "description": "Subject ID" },
-        "totalClasses": { "type": "number", "description": "Total classes held" },
-        "presentCount": { "type": "number", "description": "Classes attended as PRESENT" },
-        "absentCount": { "type": "number", "description": "Classes marked ABSENT" },
-        "odCount": { "type": "number", "description": "Classes marked ON DUTY (OD)" },
-        "leaveCount": { "type": "number", "description": "Classes marked APPROVED LEAVE" },
-        "attendancePercentage": { "type": "number", "description": "Overall attendance percentage" },
-        "updatedAt": { "type": "number", "description": "Last updated epoch timestamp" }
+        "id": { "type": "string", "description": "Log ID" },
+        "action": { "type": "string", "description": "Action name" },
+        "performedBy": { "type": "string", "description": "User ID/Name who executed action" },
+        "userRole": { "type": "string", "description": "Role of user" },
+        "target": { "type": "string", "description": "Target module or document ID" },
+        "timestamp": { "type": "string", "description": "ISO or formatted timestamp string" }
       },
-      "required": ["studentId", "subjectId", "attendancePercentage"]
+      "required": ["action", "performedBy", "target"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/users" },
+      "description": "System user profiles, account metadata, and profile DP images"
     },
-    "attendance_audit": {
-      "title": "Attendance Audit Logs",
-      "description": "Immutable change history when faculty or admin edits attendance records",
-      "properties": {
-        "auditId": { "type": "string", "description": "Audit log ID" },
-        "attendanceId": { "type": "string", "description": "Target attendance record ID" },
-        "action": { "type": "string", "description": "Action: CREATED, EDITED, or DELETED" },
-        "oldStatus": { "type": "string", "description": "Previous status" },
-        "newStatus": { "type": "string", "description": "New updated status" },
-        "editedBy": { "type": "string", "description": "User ID/Name who performed the edit" },
-        "reason": { "type": "string", "description": "Faculty reason or note for editing" },
-        "timestamp": { "type": "number", "description": "Audit timestamp epoch ms" }
-      },
-      "required": ["attendanceId", "action", "editedBy", "reason"]
+    "/profiles/{profileId}": {
+      "schema": { "$ref": "#/entities/profiles" },
+      "description": "User academic and personal details, profile picture URL, and contact info"
+    },
+    "/registrations/{regId}": {
+      "schema": { "$ref": "#/entities/registrations" },
+      "description": "Student and faculty application registrations"
+    },
+    "/uploadable_contents/{uploadId}": {
+      "schema": { "$ref": "#/entities/uploadable_contents" },
+      "description": "Uploaded files, profile DP avatars, certificates, attachments"
+    },
+    "/complaints/{complaintId}": {
+      "schema": { "$ref": "#/entities/complaints" },
+      "description": "Campus complaints and maintenance grievance tickets"
+    },
+    "/leaveRequests/{leaveId}": {
+      "schema": { "$ref": "#/entities/leaveRequests" },
+      "description": "Student and faculty leave application requests"
+    },
+    "/student_results/{resultId}": {
+      "schema": { "$ref": "#/entities/student_results" },
+      "description": "Student academic results, semester CGPA, and SGPA"
+    },
+    "/communityPosts/{postId}": {
+      "schema": { "$ref": "#/entities/communityPosts" },
+      "description": "Community posts, discussions, and campus announcements"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/projects" },
+      "description": "Student innovation projects and repositories"
+    },
+    "/placements/{placementId}": {
+      "schema": { "$ref": "#/entities/placements" },
+      "description": "Campus recruitment drives and internship opportunities"
+    },
+    "/attendance/{attendanceId}": {
+      "schema": { "$ref": "#/entities/attendance" },
+      "description": "Daily student attendance records"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/audit_logs" },
+      "description": "System operational audit log records"
     }
   }
 }
