@@ -29,6 +29,7 @@ import { GpaCalculatorView } from './GpaCalculatorView';
 import { ReportsExportModal } from './ReportsExportModal';
 import { normalizeRole } from '../../../lib/rbac';
 import { AccessDeniedPage } from '../../common/AccessDeniedPage';
+import { ApiService, subscribeToResults, saveFirestoreDoc, FIRESTORE_COLLECTIONS } from '../../../services/api';
 
 interface ResultPortalProps {
   results?: StudentResult[];
@@ -90,16 +91,40 @@ export const ResultPortal: React.FC<ResultPortalProps> = ({
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   React.useEffect(() => {
-    if (allResults.length > 0 && (!selectedResult || !selectedResult.id)) {
-      setSelectedResult(allResults[0]);
-    }
-    if (results && results.length > 0) {
+    // Initial fetch / local storage backup
+    const initialFs = ApiService.getResults();
+    if (initialFs && initialFs.length > 0) {
+      setCurrentResultList(initialFs);
+      setSelectedResult((prev) => (prev && prev.id ? prev : initialFs[0]));
+    } else if (results && results.length > 0) {
       setCurrentResultList(results);
+      setSelectedResult((prev) => (prev && prev.id ? prev : results[0]));
     }
+
+    // Subscribe to Firestore real-time updates for results
+    const unsubscribe = subscribeToResults((realtimeResults) => {
+      if (realtimeResults && realtimeResults.length > 0) {
+        setCurrentResultList(realtimeResults);
+        setSelectedResult((prev) => {
+          if (!prev || !prev.id) return realtimeResults[0];
+          const match = realtimeResults.find((r) => r.id === prev.id || r.studentId === prev.studentId);
+          return match || realtimeResults[0];
+        });
+      }
+    });
+
+    return () => unsubscribe();
   }, [results, result]);
 
   const handleUpdateResults = (updatedList: StudentResult[]) => {
     setCurrentResultList(updatedList);
+    ApiService.saveResults(updatedList);
+
+    // Save individual student result docs to Firestore collection
+    updatedList.forEach((res) => {
+      saveFirestoreDoc(FIRESTORE_COLLECTIONS.STUDENT_RESULTS, res.id || res.studentId, res);
+    });
+
     if (onUpdateResults) {
       onUpdateResults(updatedList);
     }

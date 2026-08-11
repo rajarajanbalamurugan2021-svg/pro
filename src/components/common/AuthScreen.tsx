@@ -822,10 +822,14 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                       onChange={(e) => setDepartment(e.target.value)}
                       className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                      <option value="Information Technology">Information Technology</option>
-                      <option value="Electronics & Communication">Electronics & Communication</option>
-                      <option value="Mechanical Engineering">Mechanical Engineering</option>
+                      <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                      <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AI&DS)</option>
+                      <option value="Biomedical Engineering">Biomedical Engineering (Bio Medical)</option>
+                      <option value="Electronics & Communication Engineering">Electronics & Communication Engineering (ECE)</option>
+                      <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering (EEE)</option>
+                      <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                      <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                      <option value="Information Technology">Information Technology (IT)</option>
                       <option value="Academic Registrar">Academic Registrar</option>
                       <option value="Executive Board">Executive Board</option>
                     </select>

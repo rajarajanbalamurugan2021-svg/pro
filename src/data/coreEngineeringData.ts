@@ -1,7 +1,7 @@
 export interface CoreTool {
   id: string;
   name: string;
-  branch: 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
   domain: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Industry Level';
   license: 'Open Source / Free' | 'Commercial (Institutional License)' | 'Freemium / Academic';
@@ -35,7 +35,7 @@ export interface CareerRoadmapNode {
 
 export interface CareerRoleDetail {
   id: string;
-  branch: 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
   domain: string;
   title: string;
   description: string;
@@ -49,7 +49,7 @@ export interface CareerRoleDetail {
 
 export interface GateQuestion {
   id: string;
-  branch: 'ECE' | 'EEE' | 'ME' | 'CE';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'ME' | 'CE' | 'DA' | 'BM';
   subject: string;
   topic: string;
   year: number;
@@ -84,7 +84,7 @@ export interface HigherStudyPathway {
 
 export interface ResearchOpportunity {
   id: string;
-  branch: 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
   domain: string;
   title: string;
   labName: string;
@@ -100,7 +100,7 @@ export interface ResearchOpportunity {
 export interface CoreCompany {
   id: string;
   name: string;
-  branches: ('ECE' | 'EEE' | 'MECH' | 'CIVIL')[];
+  branches: ('AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL')[];
   domains: string[];
   companyType: 'MNC' | 'PSU / Govt' | 'R&D / Core Startup';
   rolesHired: string[];
@@ -113,7 +113,7 @@ export interface CoreCompany {
 export interface CoreProjectIdea {
   id: string;
   title: string;
-  branch: 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
   domain: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Industry Level';
   abstract: string;
@@ -124,7 +124,7 @@ export interface CoreProjectIdea {
 
 export interface TechnicalInterviewQA {
   id: string;
-  branch: 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
   subject: string;
   question: string;
   answer: string;
@@ -382,6 +382,108 @@ export const CORE_ENGINEERING_TOOLS: CoreTool[] = [
     officialDocs: 'https://help.autodesk.com/view/RVT/2024/ENU/',
     tutorialUrl: 'https://www.autodesk.com/campaigns/autodesk-design-academy',
     exampleProject: '4D BIM Structural Model and Quantity Takeoff for Integrated Hospital Complex'
+  },
+
+  // AI&DS Tools
+  {
+    id: 'tool-pytorch',
+    name: 'PyTorch & CUDA Studio',
+    branch: 'AI&DS',
+    domain: 'Machine Learning & Deep Neural Networks',
+    level: 'Industry Level',
+    license: 'Open Source / Free',
+    operatingSystem: 'Linux / Windows / macOS',
+    systemRequirements: '16GB RAM, NVIDIA CUDA GPU',
+    purpose: 'Open-source deep learning framework with dynamic computational graphs for tensor computation and deep neural networks.',
+    industryRelevance: 'Gold standard framework for generative AI, computer vision, natural language processing, and LLM fine-tuning.',
+    officialWebsite: 'https://pytorch.org/',
+    officialDocs: 'https://pytorch.org/docs/stable/index.html',
+    tutorialUrl: 'https://pytorch.org/tutorials/',
+    exampleProject: 'Multimodal Vision Transformer for Real-Time Satellite Deforestation Monitoring'
+  },
+  {
+    id: 'tool-pandas-scikit',
+    name: 'Pandas & Scikit-Learn Ecosystem',
+    branch: 'AI&DS',
+    domain: 'Data Science & Predictive Modeling',
+    level: 'Intermediate',
+    license: 'Open Source / Free',
+    operatingSystem: 'Cross-Platform',
+    systemRequirements: '8GB RAM',
+    purpose: 'Python data manipulation library and machine learning toolkit for classification, regression, clustering, and feature engineering.',
+    industryRelevance: 'Essential toolkit for every data scientist and machine learning engineer in finance, healthcare, and e-commerce.',
+    officialWebsite: 'https://scikit-learn.org/',
+    officialDocs: 'https://scikit-learn.org/stable/user_guide.html',
+    tutorialUrl: 'https://scikit-learn.org/stable/tutorial/index.html',
+    exampleProject: 'Automated Financial Fraud Detection Engine with XGBoost'
+  },
+
+  // Bio Medical Tools
+  {
+    id: 'tool-slicer3d',
+    name: '3D Slicer & ITK Toolkit',
+    branch: 'Bio Medical',
+    domain: 'Medical Image Computing & Visualization',
+    level: 'Advanced',
+    license: 'Open Source / Free',
+    operatingSystem: 'Windows / Linux / macOS',
+    systemRequirements: '16GB RAM, 3D GPU',
+    purpose: 'Free open source software platform for medical image informatics, DICOM processing, and 3D organ surface reconstruction.',
+    industryRelevance: 'Extensively used in surgical planning, medical robotics, radiomics research, and diagnostic medical imaging.',
+    officialWebsite: 'https://www.slicer.org/',
+    officialDocs: 'https://slicer.readthedocs.io/',
+    tutorialUrl: 'https://www.slicer.org/wiki/Documentation/4.10/Training',
+    exampleProject: 'Automated Brain Tumor Segmentation from Multi-Modal MRI Scan DICOM Files'
+  },
+  {
+    id: 'tool-physionet',
+    name: 'PhysioNet & WFDB Signal Studio',
+    branch: 'Bio Medical',
+    domain: 'Bio-Signal Processing & Monitoring',
+    level: 'Intermediate',
+    license: 'Open Source / Free',
+    operatingSystem: 'Cross-Platform',
+    systemRequirements: '8GB RAM',
+    purpose: 'Repository and toolkit for complex physiologic signals (ECG, EEG, PPG, EMG) waveform analysis and filtering algorithms.',
+    industryRelevance: 'De facto standard in patient monitoring equipment design, wearable health trackers, and ICU telemetry.',
+    officialWebsite: 'https://physionet.org/',
+    officialDocs: 'https://wfdb.readthedocs.io/',
+    tutorialUrl: 'https://physionet.org/tutorials/',
+    exampleProject: 'Real-time Arrhythmia Detection with QRS Complex Filtering in Ambulatory ECGs'
+  },
+
+  // CSE Tools
+  {
+    id: 'tool-docker-k8s',
+    name: 'Docker & Kubernetes Cloud Engine',
+    branch: 'CSE',
+    domain: 'DevOps & Distributed Systems',
+    level: 'Industry Level',
+    license: 'Open Source / Free',
+    operatingSystem: 'Linux / Windows / macOS',
+    systemRequirements: '16GB RAM',
+    purpose: 'Containerization engine and container orchestration platform for automating deployment, scaling, and management of cloud applications.',
+    industryRelevance: 'Standard infrastructure component for enterprise SaaS, high-availability microservices, and modern web backends.',
+    officialWebsite: 'https://www.docker.com/',
+    officialDocs: 'https://docs.docker.com/',
+    tutorialUrl: 'https://kubernetes.io/docs/tutorials/',
+    exampleProject: 'Auto-Scaling Microservices Architecture Deployed on Kubernetes Cluster'
+  },
+  {
+    id: 'tool-postman-swagger',
+    name: 'Postman & OpenAPI Workspace',
+    branch: 'CSE',
+    domain: 'Backend Engineering & API Development',
+    level: 'Intermediate',
+    license: 'Freemium / Academic',
+    operatingSystem: 'Cross-Platform',
+    systemRequirements: '8GB RAM',
+    purpose: 'API platform for building, testing, documenting, and managing RESTful, GraphQL, and gRPC endpoints.',
+    industryRelevance: 'Universal tool utilized across software engineering teams for backend contract design and integration testing.',
+    officialWebsite: 'https://www.postman.com/',
+    officialDocs: 'https://learning.postman.com/docs/',
+    tutorialUrl: 'https://www.postman.com/student-program/',
+    exampleProject: 'Secure OAuth2 Microservices Gateway with Automated Postman Test Suites'
   }
 ];
 
@@ -713,6 +815,174 @@ export const CORE_CAREER_ROLES: CareerRoleDetail[] = [
         keySkills: ['ETABS / STAAD.Pro Analysis', 'Seismic Response Spectrum', 'Revit BIM Modeling', '4D Scheduling'],
         recommendedTools: ['ETABS', 'Autodesk Revit', 'Primavera P6'],
         milestoneProject: 'Complete Structural Design, Seismic Safety Certification, and BIM Model for Metro Station'
+      }
+    ]
+  },
+
+  // AI&DS - AI & Machine Learning
+  {
+    id: 'role-aids-ml-engineer',
+    branch: 'AI&DS',
+    domain: 'Artificial Intelligence & Machine Learning',
+    title: 'AI / Machine Learning & MLOps Engineer',
+    description: 'Builds scalable machine learning models, computer vision neural networks, natural language processing pipelines, and deploys them to production cloud infrastructure.',
+    averageSalary: '₹8.5 LPA - ₹32 LPA',
+    topCompanies: ['Google AI', 'Microsoft Research', 'NVIDIA', 'OpenAI', 'Amazon Web Services', 'Fractal Analytics', 'Tiger Analytics'],
+    requiredSkills: [
+      'Python / C++',
+      'Deep Neural Networks (PyTorch / TensorFlow)',
+      'Computer Vision & OpenCV',
+      'Transformers & LLM Architecture',
+      'MLOps Model Deployment (MLflow / Docker)',
+      'Feature Engineering & Data Analytics'
+    ],
+    recommendedTools: ['PyTorch', 'TensorFlow', 'Scikit-Learn', 'MLflow', 'Docker', 'Jupyter Lab', 'CUDA'],
+    skillProgression: [
+      {
+        levelNumber: 1,
+        levelName: 'Level 1: Python Data Science & Statistical Analytics',
+        topics: ['Exploratory Data Analysis', 'Pandas & NumPy Matrix Operations', 'Supervised Classification & Regression', 'Model Validation & ROC Curves'],
+        recommendedTools: ['Jupyter Lab', 'Scikit-Learn', 'Pandas'],
+        projectIdea: 'Predictive Analytics Engine for Customer Churn and Retention',
+        expectedOutcome: 'Ability to clean datasets, engineer features, and train baseline ML models.'
+      },
+      {
+        levelNumber: 2,
+        levelName: 'Level 2: Deep Learning & Vision Transformers',
+        topics: ['Convolutional Neural Networks (CNNs)', 'Attention Mechanisms & Transformers', 'PyTorch Autograd & Backpropagation', 'MLOps Model Containerization'],
+        recommendedTools: ['PyTorch', 'OpenCV', 'Docker'],
+        projectIdea: 'Real-time Autonomous Vehicle Lane & Pedestrian Detection with YOLOv8',
+        expectedOutcome: 'Mastery over computer vision and deep neural network deployment.'
+      }
+    ],
+    roadmap: [
+      {
+        step: 1,
+        title: 'Data Science & Machine Learning Foundations',
+        subtitle: 'Data Wrangling & Statistical Algorithms',
+        keySkills: ['Python', 'Pandas', 'Scikit-Learn', 'Feature Engineering'],
+        recommendedTools: ['Jupyter', 'Scikit-Learn'],
+        milestoneProject: 'End-to-End Predictive Maintenance Model for Industrial IoT Sensors'
+      },
+      {
+        step: 2,
+        title: 'Deep Learning, Vision & LLM Engineering',
+        subtitle: 'Neural Nets & Generative AI Systems',
+        keySkills: ['PyTorch Deep Learning', 'Transformer Architecture', 'Fine-tuning LLMs', 'Docker MLOps'],
+        recommendedTools: ['PyTorch', 'Hugging Face', 'MLflow'],
+        milestoneProject: 'Multimodal Generative AI Medical Assistant with Vision & Text Reasoning'
+      }
+    ]
+  },
+
+  // Bio Medical - Medical Devices & Signal Processing
+  {
+    id: 'role-biomed-device-engineer',
+    branch: 'Bio Medical',
+    domain: 'Medical Devices & Bio-Instrumentation',
+    title: 'Biomedical Equipment & Instrumentation Engineer',
+    description: 'Designs physiological monitoring devices, medical imaging equipment, diagnostic sensors, and prosthetic electronic systems compliant with ISO 13485 medical device regulations.',
+    averageSalary: '₹6.5 LPA - ₹22 LPA',
+    topCompanies: ['GE Healthcare', 'Philips Medical Systems', 'Siemens Healthineers', 'Medtronic', 'Abbott', 'Stryker', 'TCS Health'],
+    requiredSkills: [
+      'Physiological Signal Processing (ECG / EEG / EMG)',
+      'Bio-Sensor Circuit Design',
+      'Medical Image Processing (DICOM)',
+      'ISO 13485 Medical Device Standards',
+      'FDA & CE Regulatory Compliance',
+      '3D Organ Modeling & Biomechanics'
+    ],
+    recommendedTools: ['3D Slicer', 'PhysioNet', 'Proteus', 'LTspice', 'MATLAB Bio-Toolbox', 'LabVIEW'],
+    skillProgression: [
+      {
+        levelNumber: 1,
+        levelName: 'Level 1: Bio-Signal Acquisition & Analog Filtering',
+        topics: ['Instrumentation Amplifiers (InAmp)', 'Right Leg Drive (RLD) Circuits', 'Bandpass Active Filtering', 'ECG Waveform Sampling'],
+        recommendedTools: ['LTspice', 'Proteus', 'Arduino'],
+        projectIdea: 'Single-Lead Portable ECG Acquisition Shield with Bluetooth Monitoring',
+        expectedOutcome: 'Understanding low-noise amplification of microvolt physiological signals.'
+      },
+      {
+        levelNumber: 2,
+        levelName: 'Level 2: Medical Imaging & Bio-Telemetry Systems',
+        topics: ['DICOM Image Processing & Segmentation', 'Wearable Biosensors', 'Patient Telemetry Protocols', 'ISO 14971 Risk Management'],
+        recommendedTools: ['3D Slicer', 'PhysioNet', 'MATLAB'],
+        projectIdea: 'AI-assisted Multi-parameter ICU Vital Signs Telemetry Monitor',
+        expectedOutcome: 'Job readiness for R&D roles in healthcare and patient monitoring equipment.'
+      }
+    ],
+    roadmap: [
+      {
+        step: 1,
+        title: 'Bio-Instrumentation & Analog Sensor Design',
+        subtitle: 'Physiological Amplifiers & Signal Conditioning',
+        keySkills: ['Instrumentation Amp', 'ECG/PPG Amplification', 'Noise Filtering', 'Safety Standards'],
+        recommendedTools: ['LTspice', 'LabVIEW'],
+        milestoneProject: 'Wearable Pulse Oximeter & Heart Rate Variability Monitor'
+      },
+      {
+        step: 2,
+        title: 'Medical Image Informatics & Telehealth Tech',
+        subtitle: 'DICOM Processing & Smart Health Telemetry',
+        keySkills: ['3D Slicer DICOM', 'Machine Learning for Bio-Signals', 'ISO 13485 Quality Standards'],
+        recommendedTools: ['3D Slicer', 'PhysioNet', 'Python'],
+        milestoneProject: 'Non-invasive Blood Glucose & Arrhythmia Detection Telehealth Platform'
+      }
+    ]
+  },
+
+  // CSE - Software Engineering & Cloud
+  {
+    id: 'role-cse-fullstack-cloud',
+    branch: 'CSE',
+    domain: 'Software Engineering & Cloud Computing',
+    title: 'Full Stack Cloud & Distributed Systems Engineer',
+    description: 'Architects robust microservice backends, high-performance web applications, cloud-native storage infrastructure, and automated CI/CD pipelines.',
+    averageSalary: '₹8 LPA - ₹30 LPA',
+    topCompanies: ['Google', 'Microsoft', 'Amazon', 'Atlassian', 'Salesforce', 'Goldman Sachs', 'Flipkart'],
+    requiredSkills: [
+      'Data Structures & Algorithms',
+      'TypeScript / Node.js / Java',
+      'React / Modern Web Architecture',
+      'System Design & Microservices',
+      'PostgreSQL / MongoDB / Redis',
+      'Docker / Kubernetes / Cloud Services'
+    ],
+    recommendedTools: ['Docker', 'Kubernetes', 'Postman', 'VS Code', 'Git', 'Redis', 'AWS'],
+    skillProgression: [
+      {
+        levelNumber: 1,
+        levelName: 'Level 1: Object-Oriented Software & Modern Web Stack',
+        topics: ['Data Structures & Complexity Analysis', 'RESTful API Architecture', 'React State Management & Hooks', 'Relational Database Schema Design'],
+        recommendedTools: ['VS Code', 'Postman', 'PostgreSQL'],
+        projectIdea: 'Full-Stack Smart Campus Resource Allocation & Management Portal',
+        expectedOutcome: 'Proficiency in writing clean, well-typed full-stack web applications.'
+      },
+      {
+        levelNumber: 2,
+        levelName: 'Level 2: Distributed Systems & Cloud Microservices',
+        topics: ['Microservice Decoupling', 'Redis Caching & Pub/Sub', 'Kafka Event Streaming', 'Docker Containerization & Kubernetes'],
+        recommendedTools: ['Docker', 'Kubernetes', 'Redis', 'Postman'],
+        projectIdea: 'Distributed Real-time Messaging & Notification Engine for 100k Active Users',
+        expectedOutcome: 'Readiness for tier-1 tech product companies and high-scale cloud platforms.'
+      }
+    ],
+    roadmap: [
+      {
+        step: 1,
+        title: 'Algorithms & Full-Stack Core Mastery',
+        subtitle: 'Data Structures, React & Backend APIs',
+        keySkills: ['Data Structures (Trees/Graphs)', 'TypeScript', 'Node.js Express', 'SQL Databases'],
+        recommendedTools: ['VS Code', 'Postman'],
+        milestoneProject: 'Real-time Collaborative Engineering Task Engine with Auth'
+      },
+      {
+        step: 2,
+        title: 'Distributed System Design & Cloud DevOps',
+        subtitle: 'Scalable Microservices & Container Orchestration',
+        keySkills: ['Distributed System Design', 'Microservices', 'Docker & Kubernetes', 'CI/CD Pipelines'],
+        recommendedTools: ['Docker', 'Kubernetes', 'Redis', 'AWS'],
+        milestoneProject: 'High-Throughput Microservice Architecture with Redis Cache & Docker CI/CD'
       }
     ]
   }

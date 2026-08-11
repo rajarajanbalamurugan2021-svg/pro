@@ -172,9 +172,13 @@ export const INITIAL_USERS: User[] = [
 
 export const INITIAL_DEPARTMENTS: Department[] = [
   { id: 'dept-1', code: 'CSE', name: 'Computer Science & Engineering', headOfDepartment: 'Dr. Robert Thorne', totalStudents: 480, totalFaculty: 28 },
-  { id: 'dept-2', code: 'ECE', name: 'Electronics & Communication', headOfDepartment: 'Dr. Anita Desai', totalStudents: 360, totalFaculty: 22 },
-  { id: 'dept-3', code: 'ME', name: 'Mechanical Engineering', headOfDepartment: 'Prof. David Vance', totalStudents: 290, totalFaculty: 18 },
-  { id: 'dept-4', code: 'IT', name: 'Information Technology', headOfDepartment: 'Dr. Sarah Lin', totalStudents: 320, totalFaculty: 20 }
+  { id: 'dept-2', code: 'AI&DS', name: 'Artificial Intelligence & Data Science', headOfDepartment: 'Dr. K. Swaminathan', totalStudents: 300, totalFaculty: 20 },
+  { id: 'dept-3', code: 'BIO', name: 'Biomedical Engineering', headOfDepartment: 'Dr. Meena Ramesh', totalStudents: 240, totalFaculty: 16 },
+  { id: 'dept-4', code: 'ECE', name: 'Electronics & Communication', headOfDepartment: 'Dr. Anita Desai', totalStudents: 360, totalFaculty: 22 },
+  { id: 'dept-5', code: 'EEE', name: 'Electrical & Electronics', headOfDepartment: 'Dr. P. Sundaram', totalStudents: 280, totalFaculty: 18 },
+  { id: 'dept-6', code: 'ME', name: 'Mechanical Engineering', headOfDepartment: 'Prof. David Vance', totalStudents: 290, totalFaculty: 18 },
+  { id: 'dept-7', code: 'CIVIL', name: 'Civil Engineering', headOfDepartment: 'Dr. R. Ramanujam', totalStudents: 220, totalFaculty: 15 },
+  { id: 'dept-8', code: 'IT', name: 'Information Technology', headOfDepartment: 'Dr. Sarah Lin', totalStudents: 320, totalFaculty: 20 }
 ];
 
 export const INITIAL_RESULTS: StudentResult[] = [
@@ -220,6 +224,72 @@ export const INITIAL_RESULTS: StudentResult[] = [
       { subjectId: 's4', subjectCode: 'CS604', subjectName: 'Compiler Design', credits: 4, internalMarks: 42, externalMarks: 41, totalMarks: 83, grade: 'A+', gradePoint: 9, status: 'PASS' },
       { subjectId: 's5', subjectCode: 'CS605', subjectName: 'Cyber Security & Crypto', credits: 4, internalMarks: 45, externalMarks: 44, totalMarks: 89, grade: 'A+', gradePoint: 9, status: 'PASS' },
       { subjectId: 's6', subjectCode: 'CS606', subjectName: 'Cloud Computing Lab', credits: 4, internalMarks: 49, externalMarks: 48, totalMarks: 97, grade: 'O', gradePoint: 10, status: 'PASS' }
+    ]
+  },
+  {
+    id: 'res-3',
+    studentId: 'u-student-ai-1',
+    studentName: 'Aarav Sharma',
+    rollNumber: 'AI2023001',
+    department: 'Artificial Intelligence & Data Science',
+    semester: 6,
+    batch: '2023-2027',
+    sgpa: 9.15,
+    cgpa: 9.08,
+    totalCredits: 24,
+    rank: 2,
+    publishedDate: '2026-06-15',
+    subjects: [
+      { subjectId: 'ai1', subjectCode: 'AD601', subjectName: 'Vision Transformers & Deep Learning', credits: 4, internalMarks: 47, externalMarks: 46, totalMarks: 93, grade: 'O', gradePoint: 10, status: 'PASS' },
+      { subjectId: 'ai2', subjectCode: 'AD602', subjectName: 'LLM Fine-Tuning & MLOps Architecture', credits: 4, internalMarks: 46, externalMarks: 44, totalMarks: 90, grade: 'O', gradePoint: 10, status: 'PASS' },
+      { subjectId: 'ai3', subjectCode: 'AD603', subjectName: 'Big Data Analytics & Spark Processing', credits: 4, internalMarks: 43, externalMarks: 41, totalMarks: 84, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ai4', subjectCode: 'AD604', subjectName: 'Natural Language Processing', credits: 4, internalMarks: 44, externalMarks: 42, totalMarks: 86, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ai5', subjectCode: 'AD605', subjectName: 'Reinforcement Learning', credits: 4, internalMarks: 42, externalMarks: 40, totalMarks: 82, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ai6', subjectCode: 'AD606', subjectName: 'CUDA Deep Learning Lab', credits: 4, internalMarks: 48, externalMarks: 47, totalMarks: 95, grade: 'O', gradePoint: 10, status: 'PASS' }
+    ]
+  },
+  {
+    id: 'res-4',
+    studentId: 'u-student-bio-1',
+    studentName: 'Kavya Subramanian',
+    rollNumber: 'BM2023001',
+    department: 'Biomedical Engineering',
+    semester: 6,
+    batch: '2023-2027',
+    sgpa: 8.92,
+    cgpa: 8.85,
+    totalCredits: 24,
+    rank: 4,
+    publishedDate: '2026-06-15',
+    subjects: [
+      { subjectId: 'bm1', subjectCode: 'BM601', subjectName: 'Medical Image Processing & DICOM', credits: 4, internalMarks: 45, externalMarks: 44, totalMarks: 89, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'bm2', subjectCode: 'BM602', subjectName: 'Physiological Signal Acquisition', credits: 4, internalMarks: 46, externalMarks: 45, totalMarks: 91, grade: 'O', gradePoint: 10, status: 'PASS' },
+      { subjectId: 'bm3', subjectCode: 'BM603', subjectName: 'Biomaterials & Medical Device ISO Standards', credits: 4, internalMarks: 42, externalMarks: 41, totalMarks: 83, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'bm4', subjectCode: 'BM604', subjectName: 'Hospital Telemetry Infrastructure', credits: 4, internalMarks: 43, externalMarks: 42, totalMarks: 85, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'bm5', subjectCode: 'BM605', subjectName: 'Surgical Robotics & Prosthetics', credits: 4, internalMarks: 44, externalMarks: 40, totalMarks: 84, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'bm6', subjectCode: 'BM606', subjectName: 'Bio-Instrumentation Lab', credits: 4, internalMarks: 48, externalMarks: 46, totalMarks: 94, grade: 'O', gradePoint: 10, status: 'PASS' }
+    ]
+  },
+  {
+    id: 'res-5',
+    studentId: 'u-student-ec-1',
+    studentName: 'Rohan Verma',
+    rollNumber: 'EC2023001',
+    department: 'Electronics & Communication',
+    semester: 6,
+    batch: '2023-2027',
+    sgpa: 8.60,
+    cgpa: 8.52,
+    totalCredits: 24,
+    rank: 5,
+    publishedDate: '2026-06-15',
+    subjects: [
+      { subjectId: 'ec1', subjectCode: 'EC601', subjectName: 'VLSI System Design', credits: 4, internalMarks: 43, externalMarks: 42, totalMarks: 85, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ec2', subjectCode: 'EC602', subjectName: 'Digital Signal Processing', credits: 4, internalMarks: 42, externalMarks: 40, totalMarks: 82, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ec3', subjectCode: 'EC603', subjectName: 'Embedded Microcontrollers & RTOS', credits: 4, internalMarks: 45, externalMarks: 43, totalMarks: 88, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ec4', subjectCode: 'EC604', subjectName: 'Wireless Mobile Communication', credits: 4, internalMarks: 40, externalMarks: 38, totalMarks: 78, grade: 'A', gradePoint: 8, status: 'PASS' },
+      { subjectId: 'ec5', subjectCode: 'EC605', subjectName: 'Antenna Wave Propagation', credits: 4, internalMarks: 41, externalMarks: 39, totalMarks: 80, grade: 'A+', gradePoint: 9, status: 'PASS' },
+      { subjectId: 'ec6', subjectCode: 'EC606', subjectName: 'Embedded Systems Lab', credits: 4, internalMarks: 47, externalMarks: 45, totalMarks: 92, grade: 'O', gradePoint: 10, status: 'PASS' }
     ]
   }
 ];

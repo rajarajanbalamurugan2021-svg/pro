@@ -1,5 +1,5 @@
 export type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'DELETED';
-export type EngineeringBranch = 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
+export type EngineeringBranch = 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
 
 export interface BaseCmsItem {
   id: string;
@@ -14,7 +14,7 @@ export interface BaseCmsItem {
 }
 
 export interface CmsBranch extends BaseCmsItem {
-  code: 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  code: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
   name: string;
   description: string;
   iconName: string;

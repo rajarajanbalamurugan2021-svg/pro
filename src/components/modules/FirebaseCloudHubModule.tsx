@@ -815,6 +815,8 @@ export const FirebaseCloudHubModule: React.FC = () => {
                   className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
                 >
                   <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                  <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science</option>
+                  <option value="Biomedical Engineering">Biomedical Engineering</option>
                   <option value="Information Technology">Information Technology</option>
                   <option value="Electronics & Communication">Electronics & Communication</option>
                   <option value="Electrical & Electronics">Electrical & Electronics</option>
@@ -1020,8 +1022,11 @@ export const FirebaseCloudHubModule: React.FC = () => {
                     className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
                   >
                     <option value="Computer Science & Engineering">CSE</option>
+                    <option value="Artificial Intelligence & Data Science">AI & DS</option>
+                    <option value="Biomedical Engineering">Bio Medical</option>
                     <option value="Information Technology">IT</option>
                     <option value="Electronics & Communication">ECE</option>
+                    <option value="Electrical & Electronics">EEE</option>
                     <option value="Mechanical Engineering">MECH</option>
                     <option value="Civil Engineering">CIVIL</option>
                   </select>

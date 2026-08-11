@@ -101,7 +101,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   }, [initialTab]);
 
   // Branch Selection State
-  const [selectedBranch, setSelectedBranch] = useState<'ECE' | 'EEE' | 'MECH' | 'CIVIL'>('ECE');
+  const [selectedBranch, setSelectedBranch] = useState<'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL'>('AI&DS');
   const [selectedRole, setSelectedRole] = useState<CareerRoleDetail>(CORE_CAREER_ROLES[0]);
 
   // Software Hub Search & Filters
@@ -110,7 +110,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   const [filterSoftwareLicense, setFilterSoftwareLicense] = useState<string>('ALL');
 
   // GATE State
-  const [gateSelectedBranch, setGateSelectedBranch] = useState<'ECE' | 'EEE'>('ECE');
+  const [gateSelectedBranch, setGateSelectedBranch] = useState<string>('ECE');
   const [gateActiveSubTab, setGateActiveSubTab] = useState<'syllabus' | 'pyq' | 'planner'>('syllabus');
   const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
   const [showQuestionExplanation, setShowQuestionExplanation] = useState<Record<string, boolean>>({});
@@ -125,7 +125,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   const [adminToolsList, setAdminToolsList] = useState<CoreTool[]>(CORE_ENGINEERING_TOOLS);
   const [adminQuestionsList, setAdminQuestionsList] = useState<GateQuestion[]>(GATE_SAMPLE_QUESTIONS);
   const [newToolName, setNewToolName] = useState('');
-  const [newToolBranch, setNewToolBranch] = useState<'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL'>('ECE');
+  const [newToolBranch, setNewToolBranch] = useState<'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL'>('AI&DS');
   const [newToolPurpose, setNewToolPurpose] = useState('');
   const [newToolDocs, setNewToolDocs] = useState('');
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -322,8 +322,11 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
         <div className="space-y-6">
           
           {/* Branch Selector */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
             {[
+              { id: 'AI&DS', title: 'AI & DS', name: 'Artificial Intelligence & Data Science', color: 'from-purple-600 to-pink-600', desc: 'Machine Learning, Neural Nets & Big Data' },
+              { id: 'Bio Medical', title: 'BIO MED', name: 'Biomedical Engineering', color: 'from-rose-600 to-red-600', desc: 'Bio-Sensors, DICOM & Health Tech' },
+              { id: 'CSE', title: 'CSE', name: 'Computer Science & Engg.', color: 'from-cyan-600 to-blue-600', desc: 'Algorithms, Cloud, DevOps & Full Stack' },
               { id: 'ECE', title: 'ECE', name: 'Electronics & Comm.', color: 'from-blue-600 to-indigo-600', desc: 'Embedded, VLSI, RF & DSP' },
               { id: 'EEE', title: 'EEE', name: 'Electrical & Electronics', color: 'from-amber-600 to-orange-600', desc: 'Power Systems, EV & Drives' },
               { id: 'MECH', title: 'MECH', name: 'Mechanical Engg.', color: 'from-emerald-600 to-teal-600', desc: 'CAD, CAE, Thermal & Robotics' },
@@ -542,8 +545,8 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
             </div>
 
             {/* Branch Selector for GATE */}
-            <div className="flex items-center gap-2">
-              {['ECE', 'EEE'].map(b => (
+            <div className="flex flex-wrap items-center gap-2">
+              {['AI&DS', 'Bio Medical', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL'].map(b => (
                 <button
                   key={b}
                   onClick={() => setGateSelectedBranch(b as any)}
@@ -898,6 +901,9 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
                   className="py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold"
                 >
                   <option value="ALL">All Branches</option>
+                  <option value="AI&DS">AI & DS</option>
+                  <option value="Bio Medical">Bio Medical</option>
+                  <option value="CSE">CSE</option>
                   <option value="ECE">ECE</option>
                   <option value="EEE">EEE</option>
                   <option value="MECH">MECH</option>
@@ -1176,6 +1182,9 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
                       onChange={e => setNewToolBranch(e.target.value as any)}
                       className="w-full p-2 rounded-xl border text-xs"
                     >
+                      <option value="AI&DS">AI & DS</option>
+                      <option value="Bio Medical">Bio Medical</option>
+                      <option value="CSE">CSE</option>
                       <option value="ECE">ECE</option>
                       <option value="EEE">EEE</option>
                       <option value="MECH">MECH</option>

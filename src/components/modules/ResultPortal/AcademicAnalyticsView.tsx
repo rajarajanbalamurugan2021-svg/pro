@@ -53,10 +53,14 @@ const GRADE_DISTRIBUTION_DATA = [
 
 // Department Performance Comparison
 const DEPARTMENT_PERFORMANCE_DATA = [
+  { name: 'AI&DS', Pass: 96.5, Fail: 3.5, AvgGPA: 8.92 },
+  { name: 'Bio Medical', Pass: 95.0, Fail: 5.0, AvgGPA: 8.85 },
   { name: 'CSE', Pass: 94.2, Fail: 5.8, AvgGPA: 8.72 },
   { name: 'ECE', Pass: 89.5, Fail: 10.5, AvgGPA: 8.35 },
+  { name: 'EEE', Pass: 88.0, Fail: 12.0, AvgGPA: 8.20 },
   { name: 'IT', Pass: 91.8, Fail: 8.2, AvgGPA: 8.50 },
-  { name: 'ME', Pass: 84.0, Fail: 16.0, AvgGPA: 7.95 }
+  { name: 'MECH', Pass: 84.0, Fail: 16.0, AvgGPA: 7.95 },
+  { name: 'CIVIL', Pass: 86.2, Fail: 13.8, AvgGPA: 8.10 }
 ];
 
 export const AcademicAnalyticsView: React.FC<AcademicAnalyticsViewProps> = ({

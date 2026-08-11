@@ -59,20 +59,21 @@ export const AdminResultControl: React.FC<AdminResultControlProps> = ({
     6: isResultLocked
   });
 
-  const [selectedDeptLock, setSelectedDeptLock] = useState('Computer Science & Engineering');
+  const [selectedDeptLock, setSelectedDeptLock] = useState('Artificial Intelligence & Data Science');
   const [successNotice, setSuccessNotice] = useState('');
 
   // Course Management State
   const [courses, setCourses] = useState([
-    { id: 'c1', code: 'CS601', name: 'Distributed Systems & Cloud', dept: 'CSE', semester: 6, credits: 4 },
-    { id: 'c2', code: 'CS602', name: 'Artificial Intelligence & ML', dept: 'CSE', semester: 6, credits: 4 },
-    { id: 'c3', code: 'CS603', name: 'Advanced Web Architecture', dept: 'CSE', semester: 6, credits: 4 },
-    { id: 'c4', code: 'CS604', name: 'Compiler Design', dept: 'CSE', semester: 6, credits: 4 },
+    { id: 'c1', code: 'AD601', name: 'Vision Transformers & Deep Learning', dept: 'AI&DS', semester: 6, credits: 4 },
+    { id: 'c2', code: 'BM601', name: 'Medical Image Processing & DICOM', dept: 'Bio Medical', semester: 6, credits: 4 },
+    { id: 'c3', code: 'CS601', name: 'Distributed Systems & Cloud', dept: 'CSE', semester: 6, credits: 4 },
+    { id: 'c4', code: 'CS602', name: 'Artificial Intelligence & ML', dept: 'CSE', semester: 6, credits: 4 },
     { id: 'c5', code: 'EC401', name: 'Digital Signal Processing', dept: 'ECE', semester: 4, credits: 4 }
   ]);
 
   const [newCode, setNewCode] = useState('');
   const [newName, setNewName] = useState('');
+  const [newDept, setNewDept] = useState('AI&DS');
   const [newCredits, setNewCredits] = useState(4);
   const [newSem, setNewSem] = useState(6);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
@@ -101,7 +102,7 @@ export const AdminResultControl: React.FC<AdminResultControlProps> = ({
         id: `c-${Date.now()}`,
         code: newCode.toUpperCase(),
         name: newName,
-        dept: 'CSE',
+        dept: newDept,
         semester: newSem,
         credits: newCredits
       }
@@ -197,10 +198,14 @@ export const AdminResultControl: React.FC<AdminResultControlProps> = ({
                   onChange={(e) => setSelectedDeptLock(e.target.value)}
                   className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none"
                 >
-                  <option value="Computer Science & Engineering">CSE</option>
-                  <option value="Electronics & Communication">ECE</option>
-                  <option value="Mechanical Engineering">ME</option>
-                  <option value="Information Technology">IT</option>
+                  <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AI&DS)</option>
+                  <option value="Biomedical Engineering">Biomedical Engineering (Bio Medical)</option>
+                  <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                  <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                  <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                  <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                  <option value="Information Technology">Information Technology (IT)</option>
                 </select>
               </div>
             </div>
@@ -438,6 +443,24 @@ export const AdminResultControl: React.FC<AdminResultControlProps> = ({
                   onChange={(e) => setNewCode(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs mt-1 focus:outline-none"
                 />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400">Department</label>
+                <select
+                  value={newDept}
+                  onChange={(e) => setNewDept(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs mt-1 font-bold text-slate-900 dark:text-white focus:outline-none"
+                >
+                  <option value="AI&DS">Artificial Intelligence & Data Science (AI&DS)</option>
+                  <option value="Bio Medical">Biomedical Engineering (Bio Medical)</option>
+                  <option value="CSE">Computer Science & Engineering (CSE)</option>
+                  <option value="ECE">Electronics & Communication (ECE)</option>
+                  <option value="EEE">Electrical & Electronics (EEE)</option>
+                  <option value="MECH">Mechanical Engineering (MECH)</option>
+                  <option value="CIVIL">Civil Engineering (CIVIL)</option>
+                  <option value="IT">Information Technology (IT)</option>
+                </select>
               </div>
 
               <div>

@@ -376,6 +376,9 @@ export function getInitialSeedForCategory(category: CmsCategoryKey): any[] {
   switch (category) {
     case 'branches':
       return [
+        { ...baseAudit, id: 'br-aids', code: 'AI&DS', name: 'Artificial Intelligence & Data Science', description: 'Machine Learning, Deep Learning, Vision Transformers, NLP, MLOps, Big Data, and Predictive Analytics.', iconName: 'Brain', activeDomainsCount: 10, featuredSkillCount: 28 },
+        { ...baseAudit, id: 'br-biomed', code: 'Bio Medical', name: 'Biomedical Engineering', description: 'Bio-Instrumentation, Medical Image Processing, DICOM Informatics, Bio-Sensors, and Healthcare Robotics.', iconName: 'Activity', activeDomainsCount: 10, featuredSkillCount: 20 },
+        { ...baseAudit, id: 'br-cse', code: 'CSE', name: 'Computer Science & Engineering', description: 'Data Structures, Full Stack Architecture, Distributed Systems, Cloud Native, DevOps, and Cybersecurity.', iconName: 'Code', activeDomainsCount: 12, featuredSkillCount: 30 },
         { ...baseAudit, id: 'br-ece', code: 'ECE', name: 'Electronics & Communication Engineering', description: 'Hardware, VLSI, Embedded Systems, Communication, Signal Processing, Microcontrollers, and Robotics.', iconName: 'Cpu', activeDomainsCount: 10, featuredSkillCount: 25 },
         { ...baseAudit, id: 'br-eee', code: 'EEE', name: 'Electrical & Electronics Engineering', description: 'Power Systems, Power Electronics, Electric Vehicles, High Voltage, Drives, and Smart Grid Tech.', iconName: 'Zap', activeDomainsCount: 10, featuredSkillCount: 22 },
         { ...baseAudit, id: 'br-mech', code: 'MECH', name: 'Mechanical Engineering', description: 'CAD, CAE, Manufacturing, Thermal Systems, Automotive, Aerospace, Robotics, and Fluid Mechanics.', iconName: 'Wrench', activeDomainsCount: 10, featuredSkillCount: 20 },

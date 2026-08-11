@@ -30,6 +30,7 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
   onUpdateResults,
   isResultLocked = false
 }) => {
+  const [selectedDept, setSelectedDept] = useState<string>('ALL');
   const [selectedCourse, setSelectedCourse] = useState('CS601');
   const [selectedSemester, setSelectedSemester] = useState<number>(6);
   const [selectedSection, setSelectedSection] = useState('A');
@@ -39,6 +40,20 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
   const [localResults, setLocalResults] = useState<StudentResult[]>(results || []);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState(false);
 
+  // New Student Entry State
+  const [isAddStudentOpen, setIsAddStudentOpen] = useState(false);
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newRollNumber, setNewRollNumber] = useState('');
+  const [newStudentDept, setNewStudentDept] = useState('Computer Science & Engineering');
+  const [newInternal, setNewInternal] = useState(42);
+  const [newExternal, setNewExternal] = useState(40);
+
+  React.useEffect(() => {
+    if (results && results.length > 0) {
+      setLocalResults(results);
+    }
+  }, [results]);
+
   // Helper to compute grade from total marks
   const computeGradeAndPoint = (total: number) => {
     if (total >= 90) return { grade: 'O' as const, point: 10, status: 'PASS' as const };
@@ -47,6 +62,55 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
     if (total >= 60) return { grade: 'B+' as const, point: 7, status: 'PASS' as const };
     if (total >= 50) return { grade: 'B' as const, point: 6, status: 'PASS' as const };
     return { grade: 'F' as const, point: 0, status: 'FAIL' as const };
+  };
+
+  const handleAddNewStudent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newStudentName || !newRollNumber) return;
+
+    const total = newInternal + newExternal;
+    const { grade, point, status } = computeGradeAndPoint(total);
+
+    const newSubject: SubjectResult = {
+      subjectId: `sub_${Date.now()}`,
+      subjectCode: selectedCourse,
+      subjectName: selectedCourse,
+      credits: 4,
+      internalMarks: newInternal,
+      externalMarks: newExternal,
+      totalMarks: total,
+      grade,
+      gradePoint: point,
+      status
+    };
+
+    const newResultDoc: StudentResult = {
+      id: `res_${Date.now()}`,
+      studentId: `u_std_${Date.now()}`,
+      studentName: newStudentName,
+      rollNumber: newRollNumber,
+      department: newStudentDept,
+      semester: selectedSemester,
+      batch: '2023-2027',
+      sgpa: point,
+      cgpa: point,
+      totalCredits: 24,
+      rank: localResults.length + 1,
+      publishedDate: new Date().toISOString().split('T')[0],
+      subjects: [newSubject]
+    };
+
+    const updated = [newResultDoc, ...localResults];
+    setLocalResults(updated);
+    if (onUpdateResults) {
+      onUpdateResults(updated);
+    }
+
+    setNewStudentName('');
+    setNewRollNumber('');
+    setIsAddStudentOpen(false);
+    setSaveSuccessMsg(true);
+    setTimeout(() => setSaveSuccessMsg(false), 4000);
   };
 
   const handleMarksChange = (studentId: string, subjectCode: string, field: 'internal' | 'external', val: number) => {
@@ -108,10 +172,16 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
     const matchesSearch =
       res.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       res.rollNumber.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesDept = selectedDept === 'ALL' || res.department === selectedDept || 
+      (selectedDept.includes('AI') && res.department.includes('AI')) ||
+      (selectedDept.includes('Bio') && res.department.includes('Bio'));
     
     // Check if student has a failing grade in any subject
     const hasFail = res.subjects.some((s) => s.status === 'FAIL' || s.totalMarks < 50);
     const isWeak = hasFail || res.sgpa < 6.5;
+
+    if (!matchesDept) return false;
 
     if (viewFilter === 'weak') return matchesSearch && isWeak;
     if (viewFilter === 'pass') return matchesSearch && !hasFail;
@@ -221,13 +291,55 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
 
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <select
+            value={selectedDept}
+            onChange={(e) => setSelectedDept(e.target.value)}
+            className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-200 focus:outline-none"
+          >
+            <option value="ALL">All Departments</option>
+            <option value="Artificial Intelligence & Data Science">AI & DS</option>
+            <option value="Biomedical Engineering">Bio Medical</option>
+            <option value="Computer Science & Engineering">CSE</option>
+            <option value="Electronics & Communication">ECE</option>
+            <option value="Electrical & Electronics">EEE</option>
+            <option value="Mechanical Engineering">MECH</option>
+            <option value="Civil Engineering">CIVIL</option>
+            <option value="Information Technology">IT</option>
+          </select>
+
+          <select
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
             className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-200 focus:outline-none"
           >
-            <option value="CS601">CS601 - Cloud Computing</option>
-            <option value="CS602">CS602 - AI & ML</option>
-            <option value="CS603">CS603 - Web Architecture</option>
+            <optgroup label="AI & DS">
+              <option value="AD601">AD601 - Vision Transformers & Deep Learning</option>
+              <option value="AD602">AD602 - LLM Fine-Tuning & MLOps</option>
+            </optgroup>
+            <optgroup label="Bio Medical">
+              <option value="BM601">BM601 - Medical Image Processing & DICOM</option>
+              <option value="BM602">BM602 - Physiological Signal Processing</option>
+            </optgroup>
+            <optgroup label="CSE">
+              <option value="CS601">CS601 - Distributed Systems & Cloud</option>
+              <option value="CS602">CS602 - Artificial Intelligence & ML</option>
+              <option value="CS603">CS603 - Advanced Web Architecture</option>
+            </optgroup>
+            <optgroup label="ECE">
+              <option value="EC601">EC601 - VLSI System Design</option>
+              <option value="EC602">EC602 - Digital Signal Processing</option>
+            </optgroup>
+            <optgroup label="EEE">
+              <option value="EE601">EE601 - Power Systems & Smart Grid</option>
+              <option value="EE602">EE602 - Electric Vehicle Drives</option>
+            </optgroup>
+            <optgroup label="MECH">
+              <option value="ME601">ME601 - Finite Element Analysis</option>
+              <option value="ME602">ME602 - CAD & Manufacturing</option>
+            </optgroup>
+            <optgroup label="CIVIL">
+              <option value="CE601">CE601 - Structural Dynamics & BIM</option>
+              <option value="CE602">CE602 - Environmental Engineering</option>
+            </optgroup>
           </select>
 
           <select
@@ -239,6 +351,13 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
             <option value={6}>Semester 6</option>
             <option value={7}>Semester 7</option>
           </select>
+
+          <button
+            onClick={() => setIsAddStudentOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-extrabold text-xs transition shadow"
+          >
+            + Add Student Entry
+          </button>
 
           <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
             <button
@@ -352,6 +471,124 @@ export const FacultyMarksEntry: React.FC<FacultyMarksEntryProps> = ({
           </tbody>
         </table>
       </div>
+
+      {/* Modal: Add Student Marks Entry */}
+      {isAddStudentOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                <FileSpreadsheet className="h-5 w-5 text-blue-600" /> Add New Student Result Record
+              </h3>
+              <button
+                onClick={() => setIsAddStudentOpen(false)}
+                className="text-slate-400 hover:text-slate-600 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleAddNewStudent} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Student Full Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Ananya Sharma"
+                  value={newStudentName}
+                  onChange={(e) => setNewStudentName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Roll / Register Number
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. AI2023010 or BM2023005"
+                  value={newRollNumber}
+                  onChange={(e) => setNewRollNumber(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Department Branch
+                </label>
+                <select
+                  value={newStudentDept}
+                  onChange={(e) => setNewStudentDept(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white"
+                >
+                  <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AI&DS)</option>
+                  <option value="Biomedical Engineering">Biomedical Engineering (Bio Medical)</option>
+                  <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                  <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                  <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                  <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                  <option value="Information Technology">Information Technology (IT)</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Internal Marks (Max 50)
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={50}
+                    value={newInternal}
+                    onChange={(e) => setNewInternal(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    External Marks (Max 50)
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={50}
+                    value={newExternal}
+                    onChange={(e) => setNewExternal(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/50 rounded-xl text-[11px] font-bold text-blue-800 dark:text-blue-300">
+                Course: {selectedCourse} • Semester: {selectedSemester} • Total Score: {newInternal + newExternal} / 100
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddStudentOpen(false)}
+                  className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-extrabold shadow"
+                >
+                  Create & Save Record
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   );

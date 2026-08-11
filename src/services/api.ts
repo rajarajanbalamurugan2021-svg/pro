@@ -102,6 +102,7 @@ export const FIRESTORE_COLLECTIONS = {
   NOTIFICATIONS: 'notifications',
   DEPARTMENTS: 'departments',
   RESULTS: 'student_results',
+  STUDENT_RESULTS: 'student_results',
   POSTS: 'communityPosts',
   TEAMS: 'teams',
   PLACEMENTS: 'placements',
@@ -255,6 +256,18 @@ export function subscribeToNotifications(callback: (notifications: NotificationI
     callback(notifs);
   });
   const unsubDoc = subscribeToRealtimeCollection<NotificationItem[]>(STORAGE_KEYS.NOTIFICATIONS, callback);
+  return () => {
+    unsubCol();
+    unsubDoc();
+  };
+}
+
+export function subscribeToResults(callback: (results: StudentResult[]) => void) {
+  const unsubCol = subscribeToFirestoreCollection<StudentResult>(FIRESTORE_COLLECTIONS.STUDENT_RESULTS, (results) => {
+    localStorage.setItem(STORAGE_KEYS.RESULTS, JSON.stringify(results));
+    callback(results);
+  });
+  const unsubDoc = subscribeToRealtimeCollection<StudentResult[]>(STORAGE_KEYS.RESULTS, callback);
   return () => {
     unsubCol();
     unsubDoc();
@@ -704,7 +717,7 @@ export class CampusStorage {
   }
 }
 
-// AI API Client
+export const ApiService = CampusStorage;
 export async function callAIChatbot(messages: { role: string; content: string }[], userContext?: any) {
   try {
     const response = await fetch('/api/ai/chat', {
