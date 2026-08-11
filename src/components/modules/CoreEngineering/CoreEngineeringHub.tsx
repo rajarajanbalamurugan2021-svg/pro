@@ -11,6 +11,8 @@ import {
   RESEARCH_OPPORTUNITIES,
   CORE_COMPANIES_DIRECTORY,
   TECHNICAL_INTERVIEW_QA,
+  CROSS_DEPARTMENT_MAPPINGS,
+  DEPARTMENT_COMPARISONS,
   CoreTool,
   CareerRoleDetail,
   GateQuestion,
@@ -101,7 +103,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
   }, [initialTab]);
 
   // Branch Selection State
-  const [selectedBranch, setSelectedBranch] = useState<'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL'>('AI&DS');
+  const [selectedBranch, setSelectedBranch] = useState<'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics'>('AI&DS');
   const [selectedRole, setSelectedRole] = useState<CareerRoleDetail>(CORE_CAREER_ROLES[0]);
 
   // Software Hub Search & Filters
@@ -322,15 +324,16 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
         <div className="space-y-6">
           
           {/* Branch Selector */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
             {[
-              { id: 'AI&DS', title: 'AI & DS', name: 'Artificial Intelligence & Data Science', color: 'from-purple-600 to-pink-600', desc: 'Machine Learning, Neural Nets & Big Data' },
-              { id: 'Bio Medical', title: 'BIO MED', name: 'Biomedical Engineering', color: 'from-rose-600 to-red-600', desc: 'Bio-Sensors, DICOM & Health Tech' },
-              { id: 'CSE', title: 'CSE', name: 'Computer Science & Engg.', color: 'from-cyan-600 to-blue-600', desc: 'Algorithms, Cloud, DevOps & Full Stack' },
-              { id: 'ECE', title: 'ECE', name: 'Electronics & Comm.', color: 'from-blue-600 to-indigo-600', desc: 'Embedded, VLSI, RF & DSP' },
-              { id: 'EEE', title: 'EEE', name: 'Electrical & Electronics', color: 'from-amber-600 to-orange-600', desc: 'Power Systems, EV & Drives' },
-              { id: 'MECH', title: 'MECH', name: 'Mechanical Engg.', color: 'from-emerald-600 to-teal-600', desc: 'CAD, CAE, Thermal & Robotics' },
-              { id: 'CIVIL', title: 'CIVIL', name: 'Civil Engineering', color: 'from-sky-600 to-blue-700', desc: 'Structural, BIM & Transport' }
+              { id: 'AI&DS', title: 'AI & DS', name: 'Artificial Intelligence', color: 'from-purple-600 to-pink-600', desc: 'ML, Deep Learning & Big Data' },
+              { id: 'Bio Medical', title: 'BIO MED', name: 'Biomedical Engg.', color: 'from-rose-600 to-red-600', desc: 'Bio-Sensors & Medical Tech' },
+              { id: 'CSE', title: 'CSE', name: 'Computer Science', color: 'from-cyan-600 to-blue-600', desc: 'Algorithms, Cloud & Web' },
+              { id: 'ECE', title: 'ECE', name: 'Electronics & Comm.', color: 'from-blue-600 to-indigo-600', desc: 'Embedded, VLSI & Signals' },
+              { id: 'EEE', title: 'EEE', name: 'Electrical Engg.', color: 'from-amber-600 to-orange-600', desc: 'Power Systems & EV Drives' },
+              { id: 'MECH', title: 'MECH', name: 'Mechanical Engg.', color: 'from-emerald-600 to-teal-600', desc: 'CAD, CAE & Thermal' },
+              { id: 'CIVIL', title: 'CIVIL', name: 'Civil Engineering', color: 'from-sky-600 to-blue-700', desc: 'Structural & BIM Systems' },
+              { id: 'Robotics', title: 'ROBOTICS', name: 'Robotics & Automation', color: 'from-orange-500 to-amber-600', desc: 'ROS 2, AMRs & Kinematics' }
             ].map(b => (
               <button
                 key={b.id}
@@ -536,7 +539,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
                   Exam Intelligence
                 </span>
                 <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                  GATE Preparation Hub (ECE / EEE / ME / CE)
+                  GATE Preparation Hub (All 8 Core Branches)
                 </h2>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -546,7 +549,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
 
             {/* Branch Selector for GATE */}
             <div className="flex flex-wrap items-center gap-2">
-              {['AI&DS', 'Bio Medical', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL'].map(b => (
+              {['AI&DS', 'Bio Medical', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'Robotics'].map(b => (
                 <button
                   key={b}
                   onClick={() => setGateSelectedBranch(b as any)}

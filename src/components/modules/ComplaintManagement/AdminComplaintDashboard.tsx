@@ -119,7 +119,7 @@ export const AdminComplaintDashboard: React.FC<AdminComplaintDashboardProps> = (
       <div className="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-            <ShieldAlert className="h-4 w-4" /> Super Admin & Campus System Control
+            <ShieldAlert className="h-4 w-4" /> Admin & Campus System Control
           </span>
           <h2 className="text-2xl sm:text-3xl font-black mt-1">
             Global Complaint System Admin Center

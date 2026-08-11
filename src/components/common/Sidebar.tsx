@@ -117,12 +117,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="mb-4 px-3 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className={`h-2.5 w-2.5 rounded-full ${
-            normRole === 'super_admin' ? 'bg-purple-500 animate-pulse' :
-            normRole === 'admin' ? 'bg-indigo-500' :
+            normRole === 'admin' || normRole === 'super_admin' ? 'bg-purple-500 animate-pulse' :
             normRole === 'faculty' ? 'bg-blue-500' : 'bg-emerald-500'
           }`} />
           <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-            {normRole.replace('_', ' ')} Portal
+            {normRole === 'admin' || normRole === 'super_admin' ? 'Admin' : normRole.replace('_', ' ')} Portal
           </span>
         </div>
         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">

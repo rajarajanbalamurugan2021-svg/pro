@@ -77,7 +77,9 @@ const CATEGORIES_LIST: { key: CmsCategoryKey; label: string; icon: any; color: s
   { key: 'certifications', label: 'Certifications', icon: CheckCircle2, color: 'text-violet-500 bg-violet-500/10' },
   { key: 'blogs', label: 'Technical Blogs', icon: FileText, color: 'text-amber-600 bg-amber-600/10' },
   { key: 'learning_resources', label: 'Learning Resources', icon: BookOpen, color: 'text-teal-600 bg-teal-600/10' },
-  { key: 'installation_guides', label: 'Software Setup Guides', icon: Wrench, color: 'text-blue-700 bg-blue-700/10' }
+  { key: 'installation_guides', label: 'Software Setup Guides', icon: Wrench, color: 'text-blue-700 bg-blue-700/10' },
+  { key: 'cross_department_mapping', label: 'Cross-Dept Synergies', icon: Sparkles, color: 'text-purple-600 bg-purple-600/10' },
+  { key: 'department_comparison', label: 'Dept Role Comparisons', icon: Target, color: 'text-orange-600 bg-orange-600/10' }
 ];
 
 export const CoreEngineeringCMS: React.FC<CoreEngineeringCMSProps> = ({ currentUser, onClose }) => {

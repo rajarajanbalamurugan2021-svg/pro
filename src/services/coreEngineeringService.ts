@@ -72,7 +72,9 @@ import {
   GATE_SYLLABUS_DATA,
   HIGHER_STUDIES_PATHWAYS,
   RESEARCH_OPPORTUNITIES,
-  CORE_COMPANIES_DIRECTORY
+  CORE_COMPANIES_DIRECTORY,
+  CROSS_DEPARTMENT_MAPPINGS,
+  DEPARTMENT_COMPARISONS
 } from '../data/coreEngineeringData';
 
 const COLLECTION_PREFIX = 'core_cms_';
@@ -335,7 +337,9 @@ export async function seedAllCoreCmsDataToFirestore(currentUser: { id: string; n
     'certifications',
     'blogs',
     'learning_resources',
-    'installation_guides'
+    'installation_guides',
+    'cross_department_mapping',
+    'department_comparison'
   ];
 
   for (const cat of categories) {
@@ -382,7 +386,8 @@ export function getInitialSeedForCategory(category: CmsCategoryKey): any[] {
         { ...baseAudit, id: 'br-ece', code: 'ECE', name: 'Electronics & Communication Engineering', description: 'Hardware, VLSI, Embedded Systems, Communication, Signal Processing, Microcontrollers, and Robotics.', iconName: 'Cpu', activeDomainsCount: 10, featuredSkillCount: 25 },
         { ...baseAudit, id: 'br-eee', code: 'EEE', name: 'Electrical & Electronics Engineering', description: 'Power Systems, Power Electronics, Electric Vehicles, High Voltage, Drives, and Smart Grid Tech.', iconName: 'Zap', activeDomainsCount: 10, featuredSkillCount: 22 },
         { ...baseAudit, id: 'br-mech', code: 'MECH', name: 'Mechanical Engineering', description: 'CAD, CAE, Manufacturing, Thermal Systems, Automotive, Aerospace, Robotics, and Fluid Mechanics.', iconName: 'Wrench', activeDomainsCount: 10, featuredSkillCount: 20 },
-        { ...baseAudit, id: 'br-civil', code: 'CIVIL', name: 'Civil Engineering', description: 'Structural Analysis, BIM, Transportation, Geotechnical, GIS, Environmental, and Construction Management.', iconName: 'Building2', activeDomainsCount: 10, featuredSkillCount: 18 }
+        { ...baseAudit, id: 'br-civil', code: 'CIVIL', name: 'Civil Engineering', description: 'Structural Analysis, BIM, Transportation, Geotechnical, GIS, Environmental, and Construction Management.', iconName: 'Building2', activeDomainsCount: 10, featuredSkillCount: 18 },
+        { ...baseAudit, id: 'br-robotics', code: 'Robotics', name: 'Robotics & Automation Engineering', description: 'Autonomous Mobile Robots (AMRs), ROS 2, SLAM Navigation, Manipulators, Mechatronics, Gazebo Physics, and PLC Industrial Control.', iconName: 'Bot', activeDomainsCount: 10, featuredSkillCount: 24 }
       ];
 
     case 'domains':
@@ -684,6 +689,12 @@ export function getInitialSeedForCategory(category: CmsCategoryKey): any[] {
           ]
         }
       ];
+
+    case 'cross_department_mapping':
+      return CROSS_DEPARTMENT_MAPPINGS.map(m => ({ ...baseAudit, ...m }));
+
+    case 'department_comparison':
+      return DEPARTMENT_COMPARISONS.map(c => ({ ...baseAudit, ...c }));
 
     default:
       return [];

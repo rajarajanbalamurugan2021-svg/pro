@@ -561,7 +561,7 @@ export const ProjectInnovationHub: React.FC<ProjectInnovationHubProps> = ({
               Access Restricted
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              Admin Management features are strictly restricted to campus Administrators and Super Admins.
+              Admin Management features are strictly restricted to campus Administrators.
             </p>
           </div>
         )

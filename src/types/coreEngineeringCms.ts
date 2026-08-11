@@ -1,5 +1,5 @@
 export type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'DELETED';
-export type EngineeringBranch = 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
+export type EngineeringBranch = 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics' | 'ALL';
 
 export interface BaseCmsItem {
   id: string;
@@ -14,7 +14,7 @@ export interface BaseCmsItem {
 }
 
 export interface CmsBranch extends BaseCmsItem {
-  code: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  code: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
   name: string;
   description: string;
   iconName: string;
@@ -280,6 +280,31 @@ export interface CmsInstallationGuide extends BaseCmsItem {
   troubleshootingNotes: string[];
 }
 
+export interface CmsCrossDepartmentMapping extends BaseCmsItem {
+  primaryBranch: EngineeringBranch;
+  secondaryBranch: EngineeringBranch;
+  synergyTitle: string;
+  description: string;
+  overlappingSkills: string[];
+  overlappingTools: string[];
+  jointCareerRoles: string[];
+  jointProjectIdeas: string[];
+  interdisciplinaryResearch: string[];
+}
+
+export interface CmsDepartmentComparison extends BaseCmsItem {
+  roleA: string;
+  branchA: EngineeringBranch;
+  roleB: string;
+  branchB: EngineeringBranch;
+  keyDifference: string;
+  salaryComparison: string;
+  skillOverlap: string[];
+  toolComparison: string[];
+  industryDemand: string;
+  recommendedPath: string;
+}
+
 export interface CmsAuditLog {
   id: string;
   userId: string;
@@ -315,4 +340,6 @@ export type CmsCategoryKey =
   | 'certifications'
   | 'blogs'
   | 'learning_resources'
-  | 'installation_guides';
+  | 'installation_guides'
+  | 'cross_department_mapping'
+  | 'department_comparison';

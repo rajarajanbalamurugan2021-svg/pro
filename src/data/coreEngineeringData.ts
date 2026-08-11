@@ -1,7 +1,7 @@
 export interface CoreTool {
   id: string;
   name: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'ALL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics' | 'ALL';
   domain: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Industry Level';
   license: 'Open Source / Free' | 'Commercial (Institutional License)' | 'Freemium / Academic';
@@ -35,7 +35,7 @@ export interface CareerRoadmapNode {
 
 export interface CareerRoleDetail {
   id: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
   domain: string;
   title: string;
   description: string;
@@ -49,7 +49,7 @@ export interface CareerRoleDetail {
 
 export interface GateQuestion {
   id: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'ME' | 'CE' | 'DA' | 'BM';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'ME' | 'CE' | 'DA' | 'BM' | 'CS' | 'EC' | 'EE' | 'Robotics';
   subject: string;
   topic: string;
   year: number;
@@ -84,7 +84,7 @@ export interface HigherStudyPathway {
 
 export interface ResearchOpportunity {
   id: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
   domain: string;
   title: string;
   labName: string;
@@ -100,7 +100,7 @@ export interface ResearchOpportunity {
 export interface CoreCompany {
   id: string;
   name: string;
-  branches: ('AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL')[];
+  branches: ('AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics')[];
   domains: string[];
   companyType: 'MNC' | 'PSU / Govt' | 'R&D / Core Startup';
   rolesHired: string[];
@@ -113,7 +113,7 @@ export interface CoreCompany {
 export interface CoreProjectIdea {
   id: string;
   title: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
   domain: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Industry Level';
   abstract: string;
@@ -124,12 +124,39 @@ export interface CoreProjectIdea {
 
 export interface TechnicalInterviewQA {
   id: string;
-  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL';
+  branch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
   subject: string;
   question: string;
   answer: string;
   codeOrDiagramSnippet?: string;
   difficulty: 'Basic' | 'Intermediate' | 'Advanced';
+}
+
+export interface CrossDepartmentMappingData {
+  id: string;
+  primaryBranch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
+  secondaryBranch: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
+  synergyTitle: string;
+  description: string;
+  overlappingSkills: string[];
+  overlappingTools: string[];
+  jointCareerRoles: string[];
+  jointProjectIdeas: string[];
+  interdisciplinaryResearch: string[];
+}
+
+export interface DepartmentComparisonData {
+  id: string;
+  roleA: string;
+  branchA: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
+  roleB: string;
+  branchB: 'AI&DS' | 'Bio Medical' | 'CSE' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'Robotics';
+  keyDifference: string;
+  salaryComparison: string;
+  skillOverlap: string[];
+  toolComparison: string[];
+  industryDemand: string;
+  recommendedPath: string;
 }
 
 // Master Engineering Tools Database
@@ -484,6 +511,56 @@ export const CORE_ENGINEERING_TOOLS: CoreTool[] = [
     officialDocs: 'https://learning.postman.com/docs/',
     tutorialUrl: 'https://www.postman.com/student-program/',
     exampleProject: 'Secure OAuth2 Microservices Gateway with Automated Postman Test Suites'
+  },
+
+  // Robotics & Automation Tools
+  {
+    id: 'tool-ros2',
+    name: 'ROS 2 (Robot Operating System)',
+    branch: 'Robotics',
+    domain: 'Autonomous Robotics & Middleware',
+    level: 'Industry Level',
+    license: 'Open Source / Free',
+    operatingSystem: 'Ubuntu Linux 22.04 LTS / macOS',
+    systemRequirements: '16GB RAM, Multicore CPU',
+    purpose: 'Flexible open-source framework and middleware set of software libraries for building robot applications (Nodes, Topics, Services, Actions).',
+    industryRelevance: 'De-facto industry standard middleware for autonomous mobile robots (AMRs), self-driving cars, drone swarms, and robotic manipulators.',
+    officialWebsite: 'https://docs.ros.org/en/humble/',
+    officialDocs: 'https://docs.ros.org/en/humble/Tutorials.html',
+    tutorialUrl: 'https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools.html',
+    exampleProject: 'ROS 2 Humble Autonomous Navigation (Nav2) with SLAM on Differential Drive Robot'
+  },
+  {
+    id: 'tool-gazebo',
+    name: 'Gazebo & Ignition Simulator',
+    branch: 'Robotics',
+    domain: '3D Physics Simulation & Robot Validation',
+    level: 'Intermediate',
+    license: 'Open Source / Free',
+    operatingSystem: 'Linux, macOS, Windows',
+    systemRequirements: '16GB RAM, NVIDIA Dedicated GPU for OGRE 3D Rendering',
+    purpose: '3D robot simulator with ODE/Bullet physics engine, high-fidelity sensor simulation (LiDAR, RGB-D Camera, IMU), and ROS 2 integration.',
+    industryRelevance: 'Mandatory tool for virtual prototyping, synthetic dataset generation, and hardware-in-the-loop simulation prior to physical deployment.',
+    officialWebsite: 'https://gazebosim.org/home',
+    officialDocs: 'https://gazebosim.org/docs',
+    tutorialUrl: 'https://gazebosim.org/docs/latest/tutorials',
+    exampleProject: 'Multi-Robot Warehouse AMR Fleet Navigation Simulation in Gazebo'
+  },
+  {
+    id: 'tool-moveit',
+    name: 'MoveIt 2 Motion Planning Framework',
+    branch: 'Robotics',
+    domain: 'Kinematics, Collision Avoidance & Arm Manipulation',
+    level: 'Advanced',
+    license: 'Open Source / Free',
+    operatingSystem: 'Ubuntu Linux',
+    systemRequirements: '16GB RAM',
+    purpose: 'Robotic arm manipulation software providing inverse kinematics (IK), motion planning (OMPL), 3D collision checking, and execution control.',
+    industryRelevance: 'Utilized across industrial pick-and-place cobots, surgical robots, and space exploration robotic arms.',
+    officialWebsite: 'https://moveit.picknik.ai/',
+    officialDocs: 'https://moveit.picknik.ai/humble/index.html',
+    tutorialUrl: 'https://moveit.picknik.ai/humble/doc/tutorials/tutorials.html',
+    exampleProject: '6-DOF Industrial Manipulator Pick-and-Place Trajectory Planning with MoveIt 2'
   }
 ];
 
@@ -985,6 +1062,63 @@ export const CORE_CAREER_ROLES: CareerRoleDetail[] = [
         milestoneProject: 'High-Throughput Microservice Architecture with Redis Cache & Docker CI/CD'
       }
     ]
+  },
+
+  // Robotics & Automation - Autonomous Systems & Control
+  {
+    id: 'role-robotics-ros-amr',
+    branch: 'Robotics',
+    domain: 'Robotics & Autonomous Systems',
+    title: 'Robotics Systems & Autonomous SLAM Engineer',
+    description: 'Designs autonomous mobile robots (AMRs), robotic manipulators, motion planning algorithms, perception pipelines, and simultaneous localization and mapping (SLAM) controllers using ROS 2.',
+    averageSalary: '₹8.5 LPA - ₹28 LPA',
+    topCompanies: ['Boston Dynamics', 'KUKA Robotics', 'ABB Robotics', 'Intuitive Surgical', 'Fanuc', 'Tesla Automation', 'GreyOrange'],
+    requiredSkills: [
+      'C++ / Python',
+      'ROS / ROS 2 Middleware',
+      'Kinematics & Dynamics (Forward/Inverse)',
+      'Simultaneous Localization & Mapping (SLAM)',
+      'LiDAR & Stereo Vision Perception',
+      'Control Systems (PID / MPC)',
+      'Gazebo Physics Simulation'
+    ],
+    recommendedTools: ['ROS 2', 'Gazebo', 'MoveIt 2', 'OpenCV', 'PCL (Point Cloud Library)', 'SolidWorks', 'NVIDIA Jetson'],
+    skillProgression: [
+      {
+        levelNumber: 1,
+        levelName: 'Level 1: Kinematics, C++ & ROS 2 Basics',
+        topics: ['C++ OOP for Robotics', 'Differential Drive Kinematics', 'ROS 2 Nodes, Topics, Services & Actions', 'URDF Robot Description'],
+        recommendedTools: ['VS Code', 'ROS 2 Humble', 'Rviz2'],
+        projectIdea: 'URDF Modeling and Differential Drive Kinematics Simulation in Rviz2',
+        expectedOutcome: 'Understanding coordinate frame transformations (tf2) and ROS publisher/subscriber communication.'
+      },
+      {
+        levelNumber: 2,
+        levelName: 'Level 2: SLAM Navigation & Vision Perception',
+        topics: ['2D/3D LiDAR Mapping (Cartographer / SLAM Toolbox)', 'Nav2 Autonomous Trajectory Planning', 'OpenCV Spatial Object Detection', 'Sensor Fusion (Kalman Filter)'],
+        recommendedTools: ['Gazebo', 'Nav2', 'OpenCV', 'PCL'],
+        projectIdea: 'Autonomous Mobile Warehouse Robot with LiDAR SLAM and Dynamic Obstacle Avoidance',
+        expectedOutcome: 'Job-readiness for autonomous vehicle, AMR, and industrial robotics engineering roles.'
+      }
+    ],
+    roadmap: [
+      {
+        step: 1,
+        title: 'Robotics Mechanics & C++ Hardware Control',
+        subtitle: 'Sensors, Actuators & Motor Drivers',
+        keySkills: ['C++', 'Motor Encoders', 'PID Control', 'Sensors (IMU/LiDAR)'],
+        recommendedTools: ['Arduino', 'STM32', 'C++'],
+        milestoneProject: 'Hardware Differential Drive Robot with PID Speed Control Encoders'
+      },
+      {
+        step: 2,
+        title: 'ROS 2, Gazebo Simulation & Autonomous Navigation',
+        subtitle: 'SLAM & Path Planning Middleware',
+        keySkills: ['ROS 2', 'Gazebo', 'SLAM Cartographer', 'Nav2 Stack', 'MoveIt 2'],
+        recommendedTools: ['ROS 2', 'Gazebo', 'Rviz2'],
+        milestoneProject: 'ROS 2 Autonomous Inspection Drone / Rover with 3D LiDAR SLAM'
+      }
+    ]
   }
 ];
 
@@ -1024,6 +1158,55 @@ export const GATE_SYLLABUS_DATA = [
       { subject: 'Power Electronics', weightageRange: '9 - 12 Marks', importance: 'High' as const, keyTopics: ['Thyristors & SCR Phase Control', 'Buck, Boost & Buck-Boost Converters', 'Single & 3-Phase Inverters', 'Harmonic Reduction'] },
       { subject: 'Control Systems', weightageRange: '8 - 10 Marks', importance: 'Medium' as const, keyTopics: ['Root Locus', 'Frequency Response Analysis', 'PID Controller Tuning', 'State Space Modeling'] },
       { subject: 'Electrical & Electronic Measurements', weightageRange: '5 - 7 Marks', importance: 'Medium' as const, keyTopics: ['PMMC & Moving Iron Instruments', 'Bridges for R, L, C', 'Digital Energy Meters', 'Digital Storage Oscilloscope'] }
+    ]
+  },
+  {
+    branch: 'AI&DS' as const,
+    branchTitle: 'Data Science & Artificial Intelligence (GATE DA)',
+    totalMarks: 100,
+    sections: [
+      { name: 'General Aptitude', weightage: '15 Marks', subjectsCount: 1 },
+      { name: 'Probability & Statistics', weightage: '15 Marks', subjectsCount: 1 },
+      { name: 'Core AI & Data Science', weightage: '70 Marks', subjectsCount: 6 }
+    ],
+    subjectWeightage: [
+      { subject: 'Probability & Statistics', weightageRange: '12 - 15 Marks', importance: 'High' as const, keyTopics: ['Random Variables', 'Probability Distributions', 'Expectation & Variance', 'Hypothesis Testing', 'Central Limit Theorem'] },
+      { subject: 'Linear Algebra & Calculus', weightageRange: '10 - 12 Marks', importance: 'High' as const, keyTopics: ['Eigenvalues & Eigenvectors', 'SVD Matrix Decomposition', 'Vector Spaces', 'Gradient Descent'] },
+      { subject: 'Machine Learning', weightageRange: '18 - 22 Marks', importance: 'High' as const, keyTopics: ['Supervised & Unsupervised Learning', 'Decision Trees & Random Forests', 'SVM', 'Clustering (K-Means)', 'Dimensionality Reduction (PCA)'] },
+      { subject: 'AI & Neural Networks', weightageRange: '12 - 15 Marks', importance: 'High' as const, keyTopics: ['Search Algorithms (A*, Minimax)', 'Feedforward Neural Networks', 'Backpropagation', 'Activation Functions'] },
+      { subject: 'Database Management & Data Warehousing', weightageRange: '10 - 12 Marks', importance: 'Medium' as const, keyTopics: ['ER Modeling', 'Relational Algebra', 'SQL Queries', 'Indexing & B-Trees'] }
+    ]
+  },
+  {
+    branch: 'CSE' as const,
+    branchTitle: 'Computer Science and Information Technology (GATE CS)',
+    totalMarks: 100,
+    sections: [
+      { name: 'General Aptitude', weightage: '15 Marks', subjectsCount: 1 },
+      { name: 'Engineering Mathematics & Discrete Math', weightage: '13 Marks', subjectsCount: 2 },
+      { name: 'Core CS Subjects', weightage: '72 Marks', subjectsCount: 8 }
+    ],
+    subjectWeightage: [
+      { subject: 'Data Structures & Algorithms', weightageRange: '15 - 18 Marks', importance: 'High' as const, keyTopics: ['Arrays, Stacks & Queues', 'Binary Trees & Heaps', 'Graph Algorithms (Dijkstra, BFS/DFS)', 'Dynamic Programming', 'Asymptotic Complexity'] },
+      { subject: 'Operating Systems', weightageRange: '8 - 10 Marks', importance: 'High' as const, keyTopics: ['Process & Thread Management', 'CPU Scheduling', 'Deadlocks & Prevention', 'Virtual Memory & Paging'] },
+      { subject: 'Computer Networks', weightageRange: '8 - 10 Marks', importance: 'High' as const, keyTopics: ['OSI & TCP/IP Model', 'IP Addressing & Subnetting', 'Routing Algorithms', 'TCP Flow Control & Congestion'] },
+      { subject: 'Database Management Systems', weightageRange: '7 - 9 Marks', importance: 'Medium' as const, keyTopics: ['Relational Model & Normalization (3NF/BCNF)', 'Transactions & ACID Properties', 'Concurrency Control'] },
+      { subject: 'Theory of Computation & Compiler Design', weightageRange: '10 - 12 Marks', importance: 'High' as const, keyTopics: ['DFA / NFA Automata', 'Context-Free Grammars', 'Turing Machines', 'Parsing Techniques'] }
+    ]
+  },
+  {
+    branch: 'Bio Medical' as const,
+    branchTitle: 'Biomedical Engineering (GATE BM)',
+    totalMarks: 100,
+    sections: [
+      { name: 'General Aptitude', weightage: '15 Marks', subjectsCount: 1 },
+      { name: 'Engineering Mathematics', weightage: '13 Marks', subjectsCount: 1 },
+      { name: 'Core Biomedical Subjects', weightage: '72 Marks', subjectsCount: 6 }
+    ],
+    subjectWeightage: [
+      { subject: 'Biomedical Instrumentation', weightageRange: '18 - 22 Marks', importance: 'High' as const, keyTopics: ['Bio-Sensors & Transducers', 'ECG, EEG, EMG Electrodes', 'Safety Regulations & Leakage Currents'] },
+      { subject: 'Biomedical Signal & Image Processing', weightageRange: '15 - 18 Marks', importance: 'High' as const, keyTopics: ['Filtering Bio-Signals', 'X-Ray, CT Scan, MRI Physics', 'Ultrasound Doppler Imaging'] },
+      { subject: 'Medical Devices & Biomechanics', weightageRange: '12 - 15 Marks', importance: 'Medium' as const, keyTopics: ['Cardiovascular Mechanics', 'Prosthetics & Biomaterial Compatibility'] }
     ]
   }
 ];
@@ -1195,13 +1378,49 @@ export const CORE_COMPANIES_DIRECTORY: CoreCompany[] = [
   {
     id: 'company-isro',
     name: 'ISRO (Indian Space Research Organisation)',
-    branches: ['ECE', 'EEE', 'MECH', 'CIVIL'],
-    domains: ['Satellite Payload', 'RF Communications', 'Rocket Propulsion', 'Launchpad Civil Infrastructure'],
+    branches: ['ECE', 'EEE', 'MECH', 'CIVIL', 'Robotics'],
+    domains: ['Satellite Payload', 'RF Communications', 'Rocket Propulsion', 'Launchpad Civil Infrastructure', 'Space Robotics'],
     companyType: 'PSU / Govt',
     rolesHired: ['Scientist / Engineer - SD', 'Technical Officer'],
     skillsRequired: ['Electromagnetics & Antennas', 'Rocket Thermal Dynamics', 'Structural Mechanics', 'Control Systems'],
     recruitmentProcess: ['ISRO Centralised Recruitment Board (ICRB) Written Exam', 'In-Person Expert Panel Technical Interview'],
     officialCareerUrl: 'https://www.isro.gov.in/Careers.html',
+    internshipOffered: true
+  },
+  {
+    id: 'company-kuka',
+    name: 'KUKA & ABB Robotics',
+    branches: ['Robotics', 'ECE', 'EEE', 'MECH', 'CSE'],
+    domains: ['Industrial Robotics', 'Cobots', 'PLC & Factory Automation', 'Motion Control'],
+    companyType: 'MNC',
+    rolesHired: ['Robotics Application Engineer', 'Automation Systems Specialist', 'Motion Planning Engineer'],
+    skillsRequired: ['C++', 'ROS 2', 'PLC Programming', 'Robot Kinematics', 'Industrial Fieldbus'],
+    recruitmentProcess: ['Technical Screening', 'Robotics Simulation & Kinematics Round', 'HR Round'],
+    officialCareerUrl: 'https://www.kuka.com/en-de/about-kuka/careers',
+    internshipOffered: true
+  },
+  {
+    id: 'company-medtronic',
+    name: 'Medtronic & Intuitive Surgical',
+    branches: ['Bio Medical', 'ECE', 'Robotics', 'CSE', 'AI&DS'],
+    domains: ['Surgical Robotics', 'Pacemakers & Implants', 'DICOM Imaging', 'Healthcare AI'],
+    companyType: 'MNC',
+    rolesHired: ['Biomedical Systems Engineer', 'Surgical Robotics Engineer', 'Medical Firmware Lead'],
+    skillsRequired: ['ISO 13485', 'Bio-Signal Processing', 'Embedded C++', 'Computer Vision', '3D Slicer'],
+    recruitmentProcess: ['Technical Assessment', 'Medical Device System Design Interview', 'Managerial Interview'],
+    officialCareerUrl: 'https://www.medtronic.com/us-en/about/careers.html',
+    internshipOffered: true
+  },
+  {
+    id: 'company-google-ai',
+    name: 'Google AI & AWS Cloud',
+    branches: ['AI&DS', 'CSE', 'Robotics'],
+    domains: ['Generative AI', 'Cloud Infrastructure', 'MLOps', 'Autonomous Research'],
+    companyType: 'MNC',
+    rolesHired: ['AI Research Engineer', 'Machine Learning Engineer', 'Cloud Solutions Architect'],
+    skillsRequired: ['Python', 'PyTorch', 'Distributed Systems', 'Docker', 'Kubernetes', 'Algorithms'],
+    recruitmentProcess: ['Coding & DSA Screen', 'System Design & Machine Learning Rounds (3-4 rounds)', 'Googleyness & Leadership'],
+    officialCareerUrl: 'https://careers.google.com/',
     internshipOffered: true
   }
 ];
@@ -1231,5 +1450,104 @@ export const TECHNICAL_INTERVIEW_QA: TechnicalInterviewQA[] = [
     question: 'Why is a freewheeling diode connected across an inductive load in a converter?',
     answer: 'An inductive load resists sudden changes in current (V = L * di/dt). When the main semiconductor switch (MOSFET/IGBT) turns off, the stored magnetic energy in the inductor creates a high reverse voltage spike that can destroy the switch. The freewheeling diode provides a continuous closed path for the inductive current to decay safely.',
     difficulty: 'Basic'
+  },
+  {
+    id: 'qa-robotics-1',
+    branch: 'Robotics',
+    subject: 'Robotics & Control',
+    question: 'What is the difference between Forward Kinematics (FK) and Inverse Kinematics (IK)?',
+    answer: 'Forward Kinematics calculates the 3D position and orientation of the end-effector given all joint angles. Inverse Kinematics calculates the required joint angles given the target 3D position and orientation of the end-effector. IK is computationally harder because it may have multiple solutions, singularities, or no solution.',
+    difficulty: 'Intermediate'
+  },
+  {
+    id: 'qa-aids-1',
+    branch: 'AI&DS',
+    subject: 'Machine Learning',
+    question: 'Explain the Vanishing Gradient Problem in Deep Neural Networks and how ReLU mitigates it.',
+    answer: 'During backpropagation, gradients are multiplied repeatedly by layer weights. With sigmoid/tanh activations, derivatives are < 0.25, causing gradients to shrink exponentially in deep layers ("vanish"). ReLU (Rectified Linear Unit) has a constant derivative of 1 for positive inputs, preventing gradient degradation across deep layers.',
+    difficulty: 'Intermediate'
+  }
+];
+
+// Cross-Department Interdisciplinary Mapping Dataset
+export const CROSS_DEPARTMENT_MAPPINGS: CrossDepartmentMappingData[] = [
+  {
+    id: 'cd-robotics-ece-mech',
+    primaryBranch: 'Robotics',
+    secondaryBranch: 'ECE',
+    synergyTitle: 'Mechatronics & Embedded Robotics Systems',
+    description: 'Bridges hardware embedded firmware (STM32, CAN, PWM) with mechanical kinematics and motor control to build physical autonomous systems.',
+    overlappingSkills: ['Embedded C++', 'PWM Motor Control', 'CAN Bus Protocols', 'Sensor Fusion', 'PID Controllers'],
+    overlappingTools: ['STM32CubeIDE', 'ROS 2', 'Proteus', 'SolidWorks', 'Logic Analyzer'],
+    jointCareerRoles: ['Embedded Robotics Engineer', 'Automotive ECU & Controls Engineer', 'Mechatronics Specialist'],
+    jointProjectIdeas: ['CAN-connected Quadruped Robot with STM32 Motor Driver Shield', 'Haptic Teleoperated Robotic Surgery Controller'],
+    interdisciplinaryResearch: ['Energy-Efficient Dynamic Walking Controllers for Bipedal Robots', 'Micro-Actuator Hardware Inversion']
+  },
+  {
+    id: 'cd-aids-cse-biomed',
+    primaryBranch: 'AI&DS',
+    secondaryBranch: 'Bio Medical',
+    synergyTitle: 'Healthcare AI & Digital Health Analytics',
+    description: 'Combines computer vision, natural language processing, and medical device signal informatics for automated diagnostics and ICU monitoring.',
+    overlappingSkills: ['Python', 'PyTorch / TensorFlow', 'OpenCV', 'Bio-Signal Processing', 'DICOM Processing'],
+    overlappingTools: ['3D Slicer', 'PhysioNet', 'PyTorch', 'Jupyter Lab', 'Docker'],
+    jointCareerRoles: ['Healthcare AI Engineer', 'Medical Image Computing Specialist', 'Bio-Data Scientist'],
+    jointProjectIdeas: ['Multimodal Vision Transformer for Automated Brain MRI Tumor Segmentation', 'Real-time Arrhythmia Alert Telehealth Engine'],
+    interdisciplinaryResearch: ['Federated Learning for Privacy-Preserving Multi-Hospital Clinical Research', 'Generative Diffusion Models for Synthetic Medical Imaging']
+  },
+  {
+    id: 'cd-eee-mech-ev',
+    primaryBranch: 'EEE',
+    secondaryBranch: 'MECH',
+    synergyTitle: 'Electric Vehicle Powertrain & Battery Thermal Systems',
+    description: 'Integrates high-voltage electrical power electronics and motor drives with mechanical structural chassis, gearboxes, and thermal liquid cooling.',
+    overlappingSkills: ['Power Electronics', '3D CAD', 'Thermal Analysis', 'Motor Torque Control', 'FEA Structural Dynamics'],
+    overlappingTools: ['MATLAB/Simulink', 'SolidWorks', 'ANSYS Workbench / Fluent', 'PLECS'],
+    jointCareerRoles: ['EV Powertrain Design Engineer', 'Battery Module Thermal Engineer', 'Motor Drive Specialist'],
+    jointProjectIdeas: ['Liquid-Cooled 400V Lithium Battery Pack with Structural Chassis Integration', 'Direct-Drive In-Wheel Hub Motor Design'],
+    interdisciplinaryResearch: ['Phase-Change Material (PCM) Passive Thermal Management for EV Cells', 'High-Speed Permanent Magnet Rotor Centrifugal Stress Minimization']
+  }
+];
+
+// Department Career Comparisons Dataset
+export const DEPARTMENT_COMPARISONS: DepartmentComparisonData[] = [
+  {
+    id: 'comp-ai-vs-swe',
+    roleA: 'AI / Machine Learning Engineer',
+    branchA: 'AI&DS',
+    roleB: 'Full Stack Cloud Software Engineer',
+    branchB: 'CSE',
+    keyDifference: 'AI Engineers focus on mathematical neural networks, feature engineering, and model training/fine-tuning. Full Stack Engineers focus on system architecture, database design, REST APIs, and microservice scalability.',
+    salaryComparison: 'AI Engineer: ₹8.5L - ₹32L | Software Engineer: ₹8L - ₹30L',
+    skillOverlap: ['Python', 'Data Structures & Algorithms', 'Git', 'Linux', 'SQL Databases', 'Docker'],
+    toolComparison: ['PyTorch, TensorFlow, Hugging Face, Jupyter' , 'React, Node.js, PostgreSQL, Redis, Kubernetes'],
+    industryDemand: 'Extremely High in AI Startups & R&D | Universal Demand across all Tech Enterprises',
+    recommendedPath: 'Start with Data Structures & Python, then specialize into PyTorch for AI or Node/React/Go for Software Engineering.'
+  },
+  {
+    id: 'comp-embedded-vs-robotics',
+    roleA: 'Embedded Firmware / RTOS Engineer',
+    branchA: 'ECE',
+    roleB: 'Robotics Systems & SLAM Engineer',
+    branchB: 'Robotics',
+    keyDifference: 'Embedded Engineers focus on register-level MCU programming, interrupts, DMA, and CAN/SPI protocols. Robotics Engineers build higher-level spatial perception, 3D kinematics, ROS 2 nodes, and autonomous navigation.',
+    salaryComparison: 'Embedded Engineer: ₹7.5L - ₹24L | Robotics Engineer: ₹8.5L - ₹28L',
+    skillOverlap: ['C / C++', 'Control Theory (PID)', 'Sensors & Actuators', 'Linux', 'Microcontrollers'],
+    toolComparison: ['STM32CubeIDE, FreeRTOS, LTspice, Logic Analyzer' , 'ROS 2, Gazebo, MoveIt 2, OpenCV, Rviz2'],
+    industryDemand: 'High in Semiconductor, Automotive & Consumer Hardware | Rapid Growth in Autonomous Logistics, Drones & Manufacturing',
+    recommendedPath: 'Master C/C++ and Microcontrollers first (ECE core), then layer ROS 2 and Gazebo simulation (Robotics).'
+  },
+  {
+    id: 'comp-biomed-vs-device',
+    roleA: 'Biomedical Equipment Engineer',
+    branchA: 'Bio Medical',
+    roleB: 'Medical Device Embedded Software Engineer',
+    branchB: 'Bio Medical',
+    keyDifference: 'Biomedical Equipment Engineers manage clinical installation, hospital calibration, and sensor integration. Device Software Engineers write embedded firmware compliant with ISO 13485 for diagnostic scanners and ventilators.',
+    salaryComparison: 'Equipment Engineer: ₹6L - ₹18L | Device Software Engineer: ₹7.5L - ₹25L',
+    skillOverlap: ['Bio-Signal Processing', 'Sensors & Transducers', 'ISO 13485 Standards', 'Patient Safety Rules'],
+    toolComparison: ['LabVIEW, MATLAB, Oscilloscopes, Bio-Simulators' , 'Embedded C++, FreeRTOS, Proteus, 3D Slicer'],
+    industryDemand: 'Steady in Hospitals & Field Service | High in Medical R&D & Global Health Tech',
+    recommendedPath: 'Combine physiological bio-sensor understanding with C++ and ISO 13485 software verification.'
   }
 ];

@@ -834,7 +834,7 @@ export function CrudManager<T extends { id: string; status?: string; isDeleted?:
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Are you sure you want to {isPermanentDelete ? 'permanently delete' : 'move to trash'} {deleteTargetIds.length} {entityName}(s)?
-              {!isPermanentDelete && ' Items in trash can be restored by a Super Admin.'}
+              {!isPermanentDelete && ' Items in trash can be restored by an Admin.'}
             </p>
             <div className="flex items-center justify-center gap-3 pt-2">
               <button

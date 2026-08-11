@@ -570,30 +570,21 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                 <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                 <span>Select Role for Instant Authenticated Access</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                <button
-                  type="button"
-                  disabled={lockoutTimer > 0}
-                  onClick={() => handleDemoLogin('super_admin')}
-                  className="py-2 px-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
-                >
-                  <Crown className="h-4 w-4 text-purple-400" />
-                  <span>SuperAdmin</span>
-                </button>
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
                   disabled={lockoutTimer > 0}
                   onClick={() => handleDemoLogin('admin')}
-                  className="py-2 px-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
+                  className="py-2.5 px-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
                 >
-                  <ShieldCheck className="h-4 w-4 text-indigo-400" />
+                  <ShieldCheck className="h-4 w-4 text-purple-400" />
                   <span>Admin</span>
                 </button>
                 <button
                   type="button"
                   disabled={lockoutTimer > 0}
                   onClick={() => handleDemoLogin('faculty')}
-                  className="py-2 px-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
+                  className="py-2.5 px-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
                 >
                   <UserIcon className="h-4 w-4 text-blue-400" />
                   <span>Faculty</span>
@@ -602,7 +593,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                   type="button"
                   disabled={lockoutTimer > 0}
                   onClick={() => handleDemoLogin('student')}
-                  className="py-2 px-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
+                  className="py-2.5 px-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex flex-col items-center justify-center gap-1 disabled:opacity-50"
                 >
                   <GraduationCap className="h-4 w-4 text-emerald-400" />
                   <span>Student</span>
@@ -764,24 +755,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                   <label className="block text-xs font-semibold text-slate-300 mb-1">
                     Select User Role Level
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedRole('super_admin')}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition ${
-                        selectedRole === 'super_admin'
-                          ? 'bg-purple-500/20 border-purple-500 text-purple-300'
-                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      SuperAdmin
-                    </button>
+                  <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={() => setSelectedRole('admin')}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition ${
-                        selectedRole === 'admin'
-                          ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300'
+                      className={`py-2 px-2 rounded-xl text-xs font-bold border transition ${
+                        selectedRole === 'admin' || selectedRole === 'super_admin'
+                          ? 'bg-purple-500/20 border-purple-500 text-purple-300'
                           : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
                       }`}
                     >
@@ -790,7 +770,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                     <button
                       type="button"
                       onClick={() => setSelectedRole('faculty')}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition ${
+                      className={`py-2 px-2 rounded-xl text-xs font-bold border transition ${
                         selectedRole === 'faculty'
                           ? 'bg-blue-500/20 border-blue-500 text-blue-300'
                           : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
@@ -801,7 +781,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
                     <button
                       type="button"
                       onClick={() => setSelectedRole('student')}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition ${
+                      className={`py-2 px-2 rounded-xl text-xs font-bold border transition ${
                         selectedRole === 'student'
                           ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300'
                           : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'

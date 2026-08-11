@@ -649,7 +649,7 @@ export default function App() {
                 <Shield className="w-12 h-12 mx-auto text-red-400 mb-3" />
                 <h3 className="text-xl font-black">Access Restricted</h3>
                 <p className="text-xs text-slate-300 mt-2">
-                  Cloud Database administration and Firestore synchronization are strictly restricted to Administrators and Super Admins.
+                  Cloud Database administration and Firestore synchronization are strictly restricted to Administrators.
                 </p>
                 <button
                   onClick={() => setActiveModule('dashboard')}
@@ -704,7 +704,7 @@ export default function App() {
                   Access Restricted: Campus Admin Control
                 </h2>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Campus Admin Control is strictly restricted to <span className="font-bold text-purple-600 dark:text-purple-400">Admins</span> and <span className="font-bold text-purple-600 dark:text-purple-400">Super Admins</span>. Your current account role (<span className="font-semibold text-slate-900 dark:text-white capitalize">{userRole.replace('_', ' ')}</span>) does not have authorization to access system administrative settings.
+                  Campus Admin Control is strictly restricted to <span className="font-bold text-purple-600 dark:text-purple-400">Admins</span>. Your current account role (<span className="font-semibold text-slate-900 dark:text-white capitalize">{userRole.replace('_', ' ')}</span>) does not have authorization to access system administrative settings.
                 </p>
                 <div className="pt-3">
                   <button
