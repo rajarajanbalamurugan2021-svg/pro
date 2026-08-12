@@ -217,6 +217,118 @@
         "timestamp": { "type": "string", "description": "ISO or formatted timestamp string" }
       },
       "required": ["action", "performedBy", "target"]
+    },
+    "conversations": {
+      "title": "Student-Faculty Conversations",
+      "description": "Direct communication threads between students and authorized faculty members",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique conversation ID" },
+        "studentId": { "type": "string", "description": "Student user ID" },
+        "studentName": { "type": "string", "description": "Student full name" },
+        "studentDepartment": { "type": "string", "description": "Student department name" },
+        "studentRoll": { "type": "string", "description": "Student roll/register number" },
+        "facultyId": { "type": "string", "description": "Faculty user ID" },
+        "facultyName": { "type": "string", "description": "Faculty full name" },
+        "facultyDepartment": { "type": "string", "description": "Faculty department name" },
+        "subjectId": { "type": "string", "description": "Associated course or subject ID" },
+        "subjectName": { "type": "string", "description": "Associated course or subject title" },
+        "category": { "type": "string", "description": "Communication category e.g. Academic Doubt, Attendance, Internship" },
+        "lastMessage": { "type": "string", "description": "Preview snippet of last message" },
+        "lastMessageAt": { "type": "number", "description": "Epoch timestamp of last activity" },
+        "unreadStudent": { "type": "number", "description": "Unread message count for student" },
+        "unreadFaculty": { "type": "number", "description": "Unread message count for faculty" },
+        "status": { "type": "string", "description": "Status: OPEN, RESOLVED, CLOSED, ARCHIVED" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" },
+        "updatedAt": { "type": "number", "description": "Updated timestamp epoch ms" }
+      },
+      "required": ["studentId", "facultyId", "category", "status"]
+    },
+    "messages": {
+      "title": "Conversation Chat Messages",
+      "description": "Individual chat messages within a direct conversation thread",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Message ID" },
+        "conversationId": { "type": "string", "description": "Parent conversation ID" },
+        "senderId": { "type": "string", "description": "Sender user ID" },
+        "senderName": { "type": "string", "description": "Sender display name" },
+        "senderRole": { "type": "string", "description": "Sender role: student or faculty" },
+        "receiverId": { "type": "string", "description": "Recipient user ID" },
+        "message": { "type": "string", "description": "Message text content" },
+        "attachmentUrl": { "type": "string", "description": "URL of attached file" },
+        "attachmentName": { "type": "string", "description": "File name of attachment" },
+        "attachmentType": { "type": "string", "description": "MIME type or file extension" },
+        "isRead": { "type": "boolean", "description": "Read status" },
+        "isStarred": { "type": "boolean", "description": "Starred or pinned status" },
+        "isEdited": { "type": "boolean", "description": "Edited status" },
+        "createdAt": { "type": "number", "description": "Sent timestamp epoch ms" },
+        "updatedAt": { "type": "number", "description": "Updated timestamp epoch ms" }
+      },
+      "required": ["conversationId", "senderId", "message"]
+    },
+    "academic_requests": {
+      "title": "Structured Academic Requests",
+      "description": "Formal requests submitted by students to faculty (doubt, attendance, GATE, career)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Request ID" },
+        "studentId": { "type": "string", "description": "Student user ID" },
+        "studentName": { "type": "string", "description": "Student full name" },
+        "facultyId": { "type": "string", "description": "Faculty user ID" },
+        "facultyName": { "type": "string", "description": "Faculty full name" },
+        "category": { "type": "string", "description": "Request category" },
+        "subject": { "type": "string", "description": "Subject title" },
+        "topic": { "type": "string", "description": "Specific topic or question title" },
+        "message": { "type": "string", "description": "Detailed question or query body" },
+        "attachmentUrl": { "type": "string", "description": "Attachment URL" },
+        "priority": { "type": "string", "description": "Priority: LOW, MEDIUM, HIGH, URGENT" },
+        "status": { "type": "string", "description": "Status: OPEN, IN_PROGRESS, RESOLVED, CLOSED" },
+        "createdAt": { "type": "number", "description": "Creation timestamp epoch ms" },
+        "updatedAt": { "type": "number", "description": "Update timestamp epoch ms" }
+      },
+      "required": ["studentId", "facultyId", "category", "subject", "message", "status"]
+    },
+    "announcements": {
+      "title": "Faculty Announcements",
+      "description": "Faculty-to-student official announcements with class, subject, and department filtering",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Announcement ID" },
+        "title": { "type": "string", "description": "Announcement title" },
+        "message": { "type": "string", "description": "Announcement body content" },
+        "facultyId": { "type": "string", "description": "Author faculty user ID" },
+        "facultyName": { "type": "string", "description": "Author faculty name" },
+        "department": { "type": "string", "description": "Target department name" },
+        "year": { "type": "string", "description": "Target year e.g. 1st Year, 2nd Year, All" },
+        "section": { "type": "string", "description": "Target section e.g. A, B, All" },
+        "subject": { "type": "string", "description": "Target course/subject" },
+        "priority": { "type": "string", "description": "Priority: Low, Medium, High, Urgent" },
+        "attachmentUrl": { "type": "string", "description": "Attached file URL" },
+        "attachmentName": { "type": "string", "description": "Attached file display name" },
+        "publishDate": { "type": "string", "description": "Publication date string YYYY-MM-DD" },
+        "expiryDate": { "type": "string", "description": "Expiry date string YYYY-MM-DD" },
+        "createdAt": { "type": "number", "description": "Created timestamp epoch ms" }
+      },
+      "required": ["title", "message", "facultyId", "department", "publishDate"]
+    },
+    "communication_reports": {
+      "title": "Communication Safety Reports",
+      "description": "User reports for inappropriate content, spam, or misconduct in communication hub",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Report ID" },
+        "conversationId": { "type": "string", "description": "Reported conversation ID" },
+        "reportedBy": { "type": "string", "description": "User ID filing report" },
+        "reporterName": { "type": "string", "description": "Name of user filing report" },
+        "reportedUserId": { "type": "string", "description": "User ID being reported" },
+        "reportedUserName": { "type": "string", "description": "Name of reported user" },
+        "reason": { "type": "string", "description": "Reason category e.g. Inappropriate Language, Spam, Harassment" },
+        "description": { "type": "string", "description": "Detailed explanation" },
+        "status": { "type": "string", "description": "Status: OPEN, UNDER_REVIEW, RESOLVED, DISMISSED" },
+        "createdAt": { "type": "number", "description": "Timestamp epoch ms" }
+      },
+      "required": ["conversationId", "reportedBy", "reportedUserId", "reason", "status"]
     }
   },
   "firestore": {
@@ -267,6 +379,26 @@
     "/audit_logs/{logId}": {
       "schema": { "$ref": "#/entities/audit_logs" },
       "description": "System operational audit log records"
+    },
+    "/conversations/{convId}": {
+      "schema": { "$ref": "#/entities/conversations" },
+      "description": "Student-Faculty direct chat threads"
+    },
+    "/messages/{msgId}": {
+      "schema": { "$ref": "#/entities/messages" },
+      "description": "Individual chat messages within conversations"
+    },
+    "/academic_requests/{reqId}": {
+      "schema": { "$ref": "#/entities/academic_requests" },
+      "description": "Structured academic requests submitted by students to faculty"
+    },
+    "/announcements/{annId}": {
+      "schema": { "$ref": "#/entities/announcements" },
+      "description": "Faculty announcements targeting departments, classes, or subjects"
+    },
+    "/communication_reports/{repId}": {
+      "schema": { "$ref": "#/entities/communication_reports" },
+      "description": "Safety and misconduct reports filed for direct communications"
     }
   }
 }

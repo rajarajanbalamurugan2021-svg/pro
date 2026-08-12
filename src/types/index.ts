@@ -44,6 +44,8 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  roles?: UserRole[];
+  allowedPortals?: UserRole[];
   avatar: string;
   department: string;
   rollNumber?: string;
@@ -345,14 +347,21 @@ export interface MentorAssignment {
   id: string;
   mentorId: string;
   mentorName: string;
+  mentorDepartment?: string;
+  mentorDesignation?: string;
+  mentorEmail?: string;
   studentId: string;
   studentName: string;
   rollNumber: string;
   department: string;
+  year?: string;
   semester: number;
   cgpa: number;
   attendancePercentage: number;
   lastMeetingDate: string;
+  assignedAt?: string;
+  academicStatus?: 'GOOD STANDING' | 'NEEDS ATTENTION' | 'AT RISK' | 'IMPROVING';
+  mentoringStatus?: 'ACTIVE' | 'ON_HOLD' | 'COMPLETED';
 }
 
 export interface MeetingSchedule {
@@ -366,9 +375,175 @@ export interface MeetingSchedule {
   time: string;
   location: string;
   agenda: string;
-  status: 'Scheduled' | 'Completed' | 'Cancelled';
+  status: 'Scheduled' | 'Completed' | 'Cancelled' | 'CONFIRMED' | 'RESCHEDULED';
+  meetingType?: 'ONE_TO_ONE' | 'GROUP' | 'ACADEMIC_REVIEW' | 'CAREER_GUIDANCE' | 'GATE_GUIDANCE' | 'PROJECT_REVIEW' | 'HIGHER_STUDIES' | 'RESEARCH';
+  isOnline?: boolean;
+  meetingLink?: string;
+  attendance?: 'PRESENT' | 'ABSENT' | 'PENDING';
+  summary?: string;
+  actionItems?: string[];
+  nextMeetingDate?: string;
   notes?: string;
   feedback?: string;
+  createdAt?: string;
+}
+
+export type MentoringRequestType = 
+  | 'Academic Guidance'
+  | 'Attendance Issue'
+  | 'GATE Guidance'
+  | 'Core Engineering Guidance'
+  | 'Project Guidance'
+  | 'Internship Guidance'
+  | 'Career Guidance'
+  | 'Higher Studies'
+  | 'Research Guidance'
+  | 'Personal Academic Concern'
+  | 'Other';
+
+export interface MentoringSessionRequest {
+  id: string;
+  studentId: string;
+  studentName: string;
+  mentorId: string;
+  mentorName: string;
+  requestType: MentoringRequestType;
+  subject: string;
+  preferredDate: string;
+  preferredTime: string;
+  reason: string;
+  description: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  status: 'PENDING' | 'ACCEPTED' | 'RESCHEDULED' | 'COMPLETED' | 'CANCELLED';
+  createdAt: string;
+  responseNote?: string;
+}
+
+export type MentoringCategory = 
+  | 'ACADEMIC' 
+  | 'CORE SKILL' 
+  | 'GATE' 
+  | 'PROJECT' 
+  | 'CAREER' 
+  | 'INTERNSHIP' 
+  | 'HIGHER STUDIES' 
+  | 'RESEARCH';
+
+export interface MentoringGoal {
+  id: string;
+  mentorId: string;
+  studentId: string;
+  studentName?: string;
+  title: string;
+  description: string;
+  category: MentoringCategory;
+  targetDate: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  progressPercentage: number;
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED' | 'ON_HOLD';
+  mentorRemarks?: string;
+  createdAt: string;
+}
+
+export interface MentoringTask {
+  id: string;
+  goalId?: string;
+  mentorId: string;
+  studentId: string;
+  task: string;
+  dueDate: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+  mentorComment?: string;
+  studentCompletion: boolean;
+  completedAt?: string;
+  createdAt: string;
+}
+
+export interface MentoringPrivateNote {
+  id: string;
+  mentorId: string;
+  studentId: string;
+  date: string;
+  category: 'Academic' | 'Attendance' | 'Career' | 'GATE' | 'Project' | 'Internship' | 'Higher Studies' | 'Research' | 'General';
+  note: string;
+  followUpRequired: boolean;
+  followUpDate?: string;
+  isShareable?: boolean; // Default false - NEVER show to student unless explicitly marked true
+  createdAt: string;
+}
+
+export interface MentoringFeedback {
+  id: string;
+  mentorId: string;
+  studentId: string;
+  feedback: string;
+  strengths: string[];
+  areasForImprovement: string[];
+  recommendedAction: string;
+  reviewDate: string;
+  acknowledgedByStudent: boolean;
+  acknowledgedAt?: string;
+  createdAt: string;
+}
+
+export interface MentoringAlert {
+  id: string;
+  studentId: string;
+  studentName: string;
+  mentorId: string;
+  reason: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  lastReview: string;
+  recommendedAction: string;
+  status: 'OPEN' | 'REVIEWED' | 'RESOLVED';
+  createdAt: string;
+}
+
+export interface MentorCoreSkillTracking {
+  id: string;
+  studentId: string;
+  department: string;
+  skillName: string;
+  category: 'Core Skill' | 'Software Tool' | 'Simulation Tool';
+  level: 'NOT_STARTED' | 'LEARNING' | 'PRACTICING' | 'COMPETENT';
+  recommendedByMentor?: string;
+  targetDate?: string;
+  resourceLink?: string;
+  updatedAt: string;
+}
+
+export interface MentorGATETracking {
+  id: string;
+  studentId: string;
+  gatePaper: string;
+  subjectProgress: { subject: string; progressPercentage: number; status: string }[];
+  pyqsAttempted: number;
+  mockTestScore?: number;
+  weakAreas: string[];
+  targetScore: number;
+  studyPlan: string;
+  updatedAt: string;
+}
+
+export interface MentorHigherStudiesTracking {
+  id: string;
+  studentId: string;
+  degreeInterest: 'M.Tech / M.E' | 'MS' | 'PhD' | 'MBA' | 'Other';
+  researchArea: string;
+  targetInstitutions: string[];
+  gateRequired: boolean;
+  entranceExamStatus: string;
+  recommendedSkills: string[];
+  updatedAt: string;
+}
+
+export interface MentoringSystemConfig {
+  lowCgpaThreshold: number; // default 7.0
+  lowAttendanceThreshold: number; // default 75
+  enableAutoAlerts: boolean; // default true
+  requireMeetingSummary: boolean; // default true
+  maxMenteesPerFaculty: number; // default 20
 }
 
 export interface SupportingDocument {
@@ -813,6 +988,127 @@ export interface AttendanceSubjectRecord {
   status: 'Eligible' | 'Shortage';
   lastUpdated: string;
 }
+
+export type CommunicationCategory =
+  | 'Academic Doubt'
+  | 'Attendance Query'
+  | 'Assignment Query'
+  | 'Project Guidance'
+  | 'Leave Clarification'
+  | 'GATE Guidance'
+  | 'Career Guidance'
+  | 'Internship Guidance'
+  | 'Mentoring'
+  | 'Department Matters'
+  | 'General Academic';
+
+export interface Conversation {
+  id: string;
+  studentId: string;
+  studentName: string;
+  studentAvatar?: string;
+  studentDepartment: string;
+  studentRoll?: string;
+  facultyId: string;
+  facultyName: string;
+  facultyAvatar?: string;
+  facultyDepartment: string;
+  facultyDesignation?: string;
+  subjectId?: string;
+  subjectName?: string;
+  category: CommunicationCategory;
+  lastMessage: string;
+  lastMessageAt: number;
+  unreadStudent: number;
+  unreadFaculty: number;
+  isPinnedStudent?: boolean;
+  isPinnedFaculty?: boolean;
+  isStarred?: boolean;
+  status: 'OPEN' | 'RESOLVED' | 'CLOSED' | 'ARCHIVED';
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  senderName: string;
+  senderRole: 'student' | 'faculty' | 'admin' | 'super_admin';
+  senderAvatar?: string;
+  receiverId: string;
+  message: string;
+  attachmentUrl?: string;
+  attachmentName?: string;
+  attachmentType?: string;
+  isRead: boolean;
+  isStarred?: boolean;
+  isEdited?: boolean;
+  createdAt: number;
+  updatedAt?: number;
+}
+
+export type RequestPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+export type RequestStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface AcademicRequest {
+  id: string;
+  studentId: string;
+  studentName: string;
+  studentDepartment?: string;
+  studentRoll?: string;
+  facultyId: string;
+  facultyName: string;
+  facultyDepartment?: string;
+  category: CommunicationCategory;
+  subject: string;
+  topic?: string;
+  message: string;
+  attachmentUrl?: string;
+  attachmentName?: string;
+  priority: RequestPriority;
+  status: RequestStatus;
+  responseNote?: string;
+  resolvedAt?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface FacultyAnnouncement {
+  id: string;
+  title: string;
+  message: string;
+  facultyId: string;
+  facultyName: string;
+  facultyAvatar?: string;
+  department: string; // e.g. 'All' or 'ECE', 'CSE', etc.
+  year?: string;       // e.g. 'All' or '1st Year', '2nd Year', '3rd Year', '4th Year'
+  section?: string;    // e.g. 'All' or 'A', 'B', 'C'
+  subject?: string;
+  priority: 'Low' | 'Medium' | 'High' | 'Urgent';
+  attachmentUrl?: string;
+  attachmentName?: string;
+  publishDate: string;
+  expiryDate?: string;
+  createdAt: number;
+  viewsCount?: number;
+}
+
+export interface CommunicationReport {
+  id: string;
+  conversationId: string;
+  reportedBy: string;
+  reporterName: string;
+  reporterRole: string;
+  reportedUserId: string;
+  reportedUserName: string;
+  reason: 'Inappropriate Language' | 'Spam / Flooding' | 'Harassment' | 'Unprofessional Behavior' | 'Security Concern' | 'Other';
+  description: string;
+  status: 'OPEN' | 'UNDER_REVIEW' | 'RESOLVED' | 'DISMISSED';
+  actionTaken?: string;
+  createdAt: number;
+}
+
 
 
 

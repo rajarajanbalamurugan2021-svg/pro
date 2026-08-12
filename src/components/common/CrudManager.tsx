@@ -307,25 +307,32 @@ export function CrudManager<T extends { id: string; status?: string; isDeleted?:
         .join(',')
     );
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvContent = '\uFEFF' + [headers, ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.href = url;
     link.setAttribute('download', fileName);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 
     showToast(`Exported ${processedItems.length} records to CSV.`);
   };
 
-  // Export JSON/Excel Simulation
+  // Export JSON
   const handleExportJSON = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(processedItems, null, 2));
+    const blob = new Blob([JSON.stringify(processedItems, null, 2)], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute('href', dataStr);
+    dlAnchorElem.href = url;
     dlAnchorElem.setAttribute('download', `${entityName}_Data_${Date.now()}.json`);
+    document.body.appendChild(dlAnchorElem);
     dlAnchorElem.click();
+    document.body.removeChild(dlAnchorElem);
+    URL.revokeObjectURL(url);
+
     showToast(`Exported ${processedItems.length} records to JSON.`);
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, UserRole } from '../../types';
-import { normalizeRole, ROLE_SIDEBAR_MENUS, MenuItem } from '../../lib/rbac';
+import { normalizeRole, NormalizedRole, getPortalDisplayName, getUserAuthorizedPortals, ROLE_SIDEBAR_MENUS, MenuItem } from '../../lib/rbac';
 import { Logo } from './Logo';
 import { OfflineSyncIndicator } from './OfflineSyncIndicator';
 import {
@@ -33,7 +33,9 @@ import {
   RotateCcw,
   Globe,
   ExternalLink,
-  Mail
+  Mail,
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 
 interface MobileDrawerProps {
@@ -41,7 +43,10 @@ interface MobileDrawerProps {
   onClose: () => void;
   currentUser: User;
   userRole: UserRole;
-  onRoleChange: (role: UserRole) => void;
+  activePortal?: NormalizedRole;
+  authorizedPortals?: NormalizedRole[];
+  onRoleChange?: (role: UserRole) => void;
+  onPortalChange?: (portal: NormalizedRole) => void;
   activeModule: string;
   onSelectModule: (mod: string) => void;
   onLogout: () => void;
@@ -77,7 +82,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onClose,
   currentUser,
   userRole,
+  activePortal,
+  authorizedPortals: propsAuthorizedPortals,
   onRoleChange,
+  onPortalChange,
   activeModule,
   onSelectModule,
   onLogout,
@@ -86,8 +94,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const normRole = normalizeRole(userRole);
-  const menuItems: MenuItem[] = ROLE_SIDEBAR_MENUS[normRole] || ROLE_SIDEBAR_MENUS.student;
+  const currentPortal: NormalizedRole = activePortal || normalizeRole(userRole);
+  const authorizedPortals: NormalizedRole[] = propsAuthorizedPortals || getUserAuthorizedPortals(currentUser);
+  const menuItems: MenuItem[] = ROLE_SIDEBAR_MENUS[currentPortal] || ROLE_SIDEBAR_MENUS.student;
 
   const handleItemClick = (item: MenuItem) => {
     if (item.module === 'ai_chatbot') {
@@ -140,12 +149,48 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               <div className="text-xs text-slate-400 truncate">{currentUser.email}</div>
               <div className="mt-1 flex items-center gap-1.5">
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                  {userRole.replace('_', ' ')}
+                  {getPortalDisplayName(currentPortal)}
                 </span>
                 <span className="text-[10px] text-slate-400">{currentUser.department || 'CSE'}</span>
               </div>
             </div>
           </div>
+
+          {/* Portal Switcher for Mobile */}
+          {authorizedPortals.length > 1 && (
+            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                <span>Switch Portal</span>
+                <span className="text-blue-400 font-extrabold">{authorizedPortals.length} Authorized</span>
+              </div>
+              <div className="grid grid-cols-1 gap-1">
+                {authorizedPortals.map((p) => {
+                  const isActive = p === currentPortal;
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => {
+                        if (!isActive && onPortalChange) {
+                          onPortalChange(p);
+                        }
+                      }}
+                      className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                        isActive
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-blue-400'}`} />
+                        <span>{getPortalDisplayName(p)}</span>
+                      </div>
+                      {isActive && <Check className="w-3.5 h-3.5 text-white" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
 
           {/* Network Sync Status */}

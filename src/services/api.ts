@@ -589,6 +589,174 @@ export class CampusStorage {
     return getStored('smart_campus_mentor_assignments', INITIAL_MENTOR_ASSIGNMENTS);
   }
 
+  static saveMentorAssignments(assignments: MentorAssignment[]) {
+    setStored('smart_campus_mentor_assignments', assignments);
+  }
+
+  static getMentoringRequests(): any[] {
+    return getStored('smart_campus_mentoring_requests', [
+      {
+        id: 'req-1',
+        studentId: 'u-student-1',
+        studentName: 'Alex Rivera',
+        mentorId: 'u-faculty-1',
+        mentorName: 'Prof. Robert Thorne',
+        requestType: 'Academic Guidance',
+        subject: '6th Semester Elective Selection & Research Paper Guidance',
+        preferredDate: '2026-08-15',
+        preferredTime: '11:00 AM',
+        reason: 'Need advice on choosing between Cloud Architecture and Quantum Computing electives.',
+        description: 'I would like 20 minutes to review my GPA trajectory and elective choices.',
+        priority: 'HIGH',
+        status: 'PENDING',
+        createdAt: new Date().toISOString().split('T')[0]
+      }
+    ]);
+  }
+
+  static saveMentoringRequests(requests: any[]) {
+    setStored('smart_campus_mentoring_requests', requests);
+  }
+
+  static getMentoringGoals(): any[] {
+    return getStored('smart_campus_mentoring_goals', [
+      {
+        id: 'goal-1',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        studentName: 'Alex Rivera',
+        title: 'Publish Core Research Paper on Cloud Microservices',
+        description: 'Complete experimental evaluation and submit manuscript to IEEE Student Conference.',
+        category: 'RESEARCH',
+        targetDate: '2026-10-30',
+        priority: 'HIGH',
+        progressPercentage: 65,
+        status: 'IN_PROGRESS',
+        mentorRemarks: 'Strong progress on benchmarking. Focus on latency figures.',
+        createdAt: '2026-07-01'
+      },
+      {
+        id: 'goal-2',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        studentName: 'Alex Rivera',
+        title: 'Master Embedded C++ & Real-time Operating Systems',
+        description: 'Complete hands-on projects using FreeRTOS on STM32 boards.',
+        category: 'CORE SKILL',
+        targetDate: '2026-09-15',
+        priority: 'MEDIUM',
+        progressPercentage: 40,
+        status: 'IN_PROGRESS',
+        mentorRemarks: 'Complete memory management exercises.',
+        createdAt: '2026-07-15'
+      }
+    ]);
+  }
+
+  static saveMentoringGoals(goals: any[]) {
+    setStored('smart_campus_mentoring_goals', goals);
+  }
+
+  static getMentoringTasks(): any[] {
+    return getStored('smart_campus_mentoring_tasks', [
+      {
+        id: 'task-1',
+        goalId: 'goal-2',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        task: 'Implement FreeRTOS Task Scheduler on STM32 Development Board',
+        dueDate: '2026-08-20',
+        priority: 'HIGH',
+        status: 'IN_PROGRESS',
+        mentorComment: 'Verify task stack overflow protection routines.',
+        studentCompletion: false,
+        createdAt: '2026-08-01'
+      },
+      {
+        id: 'task-2',
+        goalId: 'goal-1',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        task: 'Solve GATE 2024 & 2025 Algorithms Previous Year Questions',
+        dueDate: '2026-08-18',
+        priority: 'HIGH',
+        status: 'COMPLETED',
+        mentorComment: 'Good accuracy. Move to Operating Systems PYQs next.',
+        studentCompletion: true,
+        completedAt: '2026-08-10',
+        createdAt: '2026-08-01'
+      }
+    ]);
+  }
+
+  static saveMentoringTasks(tasks: any[]) {
+    setStored('smart_campus_mentoring_tasks', tasks);
+  }
+
+  static getMentoringNotes(): any[] {
+    return getStored('smart_campus_mentoring_notes', [
+      {
+        id: 'note-1',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        date: '2026-08-05',
+        category: 'Career',
+        note: 'Alex demonstrated strong aptitude in systems engineering during mock interview. Advised focusing on distributed systems design for top tier interviews.',
+        followUpRequired: true,
+        followUpDate: '2026-08-25',
+        isShareable: false,
+        createdAt: '2026-08-05'
+      }
+    ]);
+  }
+
+  static saveMentoringNotes(notes: any[]) {
+    setStored('smart_campus_mentoring_notes', notes);
+  }
+
+  static getMentoringFeedback(): any[] {
+    return getStored('smart_campus_mentoring_feedback', [
+      {
+        id: 'fb-1',
+        mentorId: 'u-faculty-1',
+        studentId: 'u-student-1',
+        feedback: 'Alex continues to excel academically and shows exceptional technical initiative in core software engineering.',
+        strengths: ['Algorithmic problem solving', 'System design basics', 'Active participation'],
+        areasForImprovement: ['Time management during semester exam prep', 'Documentation formatting'],
+        recommendedAction: 'Allocate 1 hour daily for GATE mock question practice.',
+        reviewDate: '2026-08-05',
+        acknowledgedByStudent: true,
+        acknowledgedAt: '2026-08-06',
+        createdAt: '2026-08-05'
+      }
+    ]);
+  }
+
+  static saveMentoringFeedback(feedbackList: any[]) {
+    setStored('smart_campus_mentoring_feedback', feedbackList);
+  }
+
+  static getMentoringAlerts(): any[] {
+    return getStored('smart_campus_mentoring_alerts', [
+      {
+        id: 'alt-1',
+        studentId: 'u-student-3',
+        studentName: 'Rohan Sharma',
+        mentorId: 'u-faculty-1',
+        reason: 'Attendance dropped below configured threshold (72%). Missed 3 consecutive lab sessions.',
+        severity: 'HIGH',
+        lastReview: '2026-08-08',
+        recommendedAction: 'Schedule mandatory 1-on-1 counseling session and notify class advisor.',
+        status: 'OPEN',
+        createdAt: '2026-08-08'
+      }
+    ]);
+  }
+
+  static saveMentoringAlerts(alerts: any[]) {
+    setStored('smart_campus_mentoring_alerts', alerts);
+  }
+
   static getLabAttendance() {
     return getStored('smart_campus_lab_attendance', INITIAL_ATTENDANCE);
   }

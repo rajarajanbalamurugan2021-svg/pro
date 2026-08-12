@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { User, UserRole, NotificationItem } from '../../types';
-import { normalizeRole } from '../../lib/rbac';
+import { normalizeRole, NormalizedRole, getPortalDisplayName, getUserAuthorizedPortals } from '../../lib/rbac';
 import { Logo } from './Logo';
 import { AvatarChangeModal } from './AvatarChangeModal';
 import { LogoChangeModal } from './LogoChangeModal';
@@ -34,13 +34,18 @@ import {
   Trash2,
   ExternalLink,
   Menu,
-  Camera
+  Camera,
+  Layers,
+  Crown
 } from 'lucide-react';
 
 interface NavbarProps {
   currentUser?: User;
   userRole?: UserRole;
+  activePortal?: NormalizedRole;
+  authorizedPortals?: NormalizedRole[];
   onRoleChange?: (role: UserRole) => void;
+  onPortalChange?: (portal: NormalizedRole) => void;
   onLogout?: () => void;
   onUpdateAvatar?: (newAvatarUrl: string) => void;
   darkMode?: boolean;
@@ -63,7 +68,10 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   userRole = 'student',
+  activePortal,
+  authorizedPortals: propsAuthorizedPortals,
   onRoleChange = (_role: UserRole) => {},
+  onPortalChange = (_portal: NormalizedRole) => {},
   onLogout = () => {},
   onUpdateAvatar,
   darkMode,
@@ -94,6 +102,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const userMenuRef = useRef<HTMLDivElement>(null);
   const notifMenuRef = useRef<HTMLDivElement>(null);
   const syncMenuRef = useRef<HTMLDivElement>(null);
+
+  const currentPortal: NormalizedRole = activePortal || normalizeRole(userRole);
+  const authorizedPortals: NormalizedRole[] = propsAuthorizedPortals || getUserAuthorizedPortals(currentUser);
 
   // Close dropdown menus when clicking outside
   useEffect(() => {
@@ -528,6 +539,62 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
 
                 <div className="py-2 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                  {/* Active Portal & Portal Switcher Card */}
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 my-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        Active Portal
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${
+                        currentPortal === 'super_admin'
+                          ? 'bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800'
+                          : currentPortal === 'admin'
+                          ? 'bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800'
+                          : currentPortal === 'faculty'
+                          ? 'bg-emerald-100 text-emerald-700 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800'
+                          : 'bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800'
+                      }`}>
+                        {getPortalDisplayName(currentPortal)}
+                      </span>
+                    </div>
+
+                    {authorizedPortals.length > 1 && (
+                      <div className="pt-2 border-t border-slate-200 dark:border-slate-700/80 space-y-1">
+                        <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                          Switch Portal:
+                        </div>
+                        <div className="space-y-1">
+                          {authorizedPortals.map((p) => {
+                            const isActive = p === currentPortal;
+                            return (
+                              <button
+                                key={p}
+                                type="button"
+                                onClick={() => {
+                                  if (!isActive && onPortalChange) {
+                                    onPortalChange(p);
+                                  }
+                                  setShowUserMenu(false);
+                                }}
+                                className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                                  isActive
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <ShieldCheck className={`h-3.5 w-3.5 ${isActive ? 'text-white' : 'text-blue-500'}`} />
+                                  <span>{getPortalDisplayName(p)}</span>
+                                </div>
+                                {isActive && <Check className="h-3.5 w-3.5 text-white" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   <button
                     type="button"
                     onClick={() => {

@@ -34,6 +34,7 @@ export const INITIAL_USERS: User[] = [
     name: 'Dr. Eleanor Vance',
     email: 'chancellor@university.edu',
     role: 'super_admin',
+    roles: ['super_admin', 'admin', 'faculty', 'student'],
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
     department: 'University Executive Board',
     employeeId: 'EMP001',
@@ -45,6 +46,7 @@ export const INITIAL_USERS: User[] = [
     name: 'Marcus Sterling',
     email: 'admin@university.edu',
     role: 'admin',
+    roles: ['admin', 'faculty'],
     avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
     department: 'Academic Registrar',
     employeeId: 'EMP012',
@@ -454,46 +456,82 @@ export const INITIAL_RESOURCES: Resource[] = [
 export const INITIAL_MENTOR_ASSIGNMENTS: MentorAssignment[] = [
   {
     id: 'ma-1',
-    mentorId: 'u-mentor-1',
-    mentorName: 'Dr. James Oakley',
+    mentorId: 'u-faculty-1',
+    mentorName: 'Prof. Robert Thorne',
+    mentorDepartment: 'Computer Science & Engineering',
+    mentorDesignation: 'Professor & Senior Academic Advisory Lead',
+    mentorEmail: 'r.thorne@university.edu',
     studentId: 'u-student-1',
     studentName: 'Alex Rivera',
     rollNumber: 'CS2023001',
     department: 'Computer Science & Engineering',
+    year: '3rd Year',
     semester: 6,
     cgpa: 8.72,
     attendancePercentage: 88.33,
-    lastMeetingDate: '2026-07-22'
+    lastMeetingDate: '2026-07-22',
+    academicStatus: 'GOOD STANDING',
+    mentoringStatus: 'ACTIVE'
   },
   {
     id: 'ma-2',
-    mentorId: 'u-mentor-1',
-    mentorName: 'Dr. James Oakley',
+    mentorId: 'u-faculty-1',
+    mentorName: 'Prof. Robert Thorne',
+    mentorDepartment: 'Computer Science & Engineering',
+    mentorDesignation: 'Professor & Senior Academic Advisory Lead',
+    mentorEmail: 'r.thorne@university.edu',
     studentId: 'u-student-2',
     studentName: 'Sophia Patel',
     rollNumber: 'CS2023002',
     department: 'Computer Science & Engineering',
+    year: '3rd Year',
     semester: 6,
     cgpa: 9.21,
     attendancePercentage: 94.5,
-    lastMeetingDate: '2026-07-25'
+    lastMeetingDate: '2026-07-25',
+    academicStatus: 'GOOD STANDING',
+    mentoringStatus: 'ACTIVE'
+  },
+  {
+    id: 'ma-3',
+    mentorId: 'u-faculty-1',
+    mentorName: 'Prof. Robert Thorne',
+    mentorDepartment: 'Computer Science & Engineering',
+    mentorDesignation: 'Professor & Senior Academic Advisory Lead',
+    mentorEmail: 'r.thorne@university.edu',
+    studentId: 'u-student-3',
+    studentName: 'Rohan Sharma',
+    rollNumber: 'CS2023003',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year',
+    semester: 6,
+    cgpa: 6.85,
+    attendancePercentage: 72.1,
+    lastMeetingDate: '2026-06-12',
+    academicStatus: 'NEEDS ATTENTION',
+    mentoringStatus: 'ACTIVE'
   }
 ];
 
 export const INITIAL_MEETINGS: MeetingSchedule[] = [
   {
     id: 'meet-1',
-    mentorId: 'u-mentor-1',
-    mentorName: 'Dr. James Oakley',
+    mentorId: 'u-faculty-1',
+    mentorName: 'Prof. Robert Thorne',
     studentId: 'u-student-1',
     studentName: 'Alex Rivera',
     title: '6th Semester Career Guidance & Research Internship Review',
-    date: '2026-08-05',
+    date: '2026-08-15',
     time: '03:00 PM',
     location: 'Faculty Cabin 204 / Google Meet',
     agenda: 'Discussion on major capstone project topic selection, higher studies preparation, and academic review.',
     status: 'Scheduled',
-    notes: 'Alex is showing strong interest in distributed cloud storage algorithms.'
+    meetingType: 'ONE_TO_ONE',
+    isOnline: true,
+    meetingLink: 'https://meet.google.com/ckcet-mentor-advisory',
+    attendance: 'PENDING',
+    notes: 'Alex is showing strong interest in distributed cloud storage algorithms.',
+    createdAt: '2026-08-01'
   }
 ];
 

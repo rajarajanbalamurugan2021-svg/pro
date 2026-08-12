@@ -30,31 +30,35 @@ import {
 import { Navbar } from './components/common/Navbar';
 import { Sidebar } from './components/common/Sidebar';
 import { AuthScreen } from './components/common/AuthScreen';
-import { ProjectInnovationHub } from './components/modules/ProjectInnovation/ProjectInnovationHub';
-import { ResultPortal } from './components/modules/ResultPortal/ResultPortal';
-import { ComplaintPortal } from './components/modules/ReportingSystem/ComplaintPortal';
-import { LostFoundSystem } from './components/modules/LostFound/LostFoundSystem';
-import { CollaborationHub } from './components/modules/Collaboration/CollaborationHub';
-import { MentorMenteePortal } from './components/modules/MentorMentee/MentorMenteePortal';
-import { CommunityHub } from './components/modules/Community/CommunityHub';
-import { LeaveManagement } from './components/modules/LeaveManagement/LeaveManagement';
-import { LabAttendance } from './components/modules/LabAttendance/LabAttendance';
-import { PlacementSystem } from './components/modules/PlacementSystem/PlacementSystem';
-import { AdminDashboard } from './components/modules/AdminPanel/AdminDashboard';
-import { normalizeRole } from './lib/rbac';
+import { normalizeRole, NormalizedRole, getUserAuthorizedPortals, canAccessPortal, canAccessModule, getPortalDisplayName } from './lib/rbac';
 import { AIChatbot } from './components/common/AIChatbot';
-import { AIChatbotModule } from './components/modules/AIChatbotModule';
-import { FirebaseCloudHubModule } from './components/modules/FirebaseCloudHubModule';
-import { FacultyAttendancePortal } from './components/modules/FacultyAttendance/FacultyAttendancePortal';
-import { StudentAttendancePortal } from './components/modules/FacultyAttendance/StudentAttendancePortal';
-import { CoreEngineeringHub } from './components/modules/CoreEngineering/CoreEngineeringHub';
 import { ToastContainer, ToastNotification } from './components/common/ToastContainer';
 import { SplashScreen } from './components/common/SplashScreen';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { MobileDrawer } from './components/common/MobileDrawer';
 import { PWAInstallPrompt } from './components/common/PWAInstallPrompt';
 import { useAndroidBackButton } from './hooks/useAndroidBackButton';
-import { Bot, Bell, Shield, Sparkles, Globe, ExternalLink } from 'lucide-react';
+import { Bot, Bell, Shield, Sparkles, Globe, ExternalLink, Loader2 } from 'lucide-react';
+
+// Route-level Code Splitting for Performance
+const ProjectInnovationHub = React.lazy(() => import('./components/modules/ProjectInnovation/ProjectInnovationHub').then(m => ({ default: m.ProjectInnovationHub })));
+const ResultPortal = React.lazy(() => import('./components/modules/ResultPortal/ResultPortal').then(m => ({ default: m.ResultPortal })));
+const ComplaintPortal = React.lazy(() => import('./components/modules/ReportingSystem/ComplaintPortal').then(m => ({ default: m.ComplaintPortal })));
+const LostFoundSystem = React.lazy(() => import('./components/modules/LostFound/LostFoundSystem').then(m => ({ default: m.LostFoundSystem })));
+const CollaborationHub = React.lazy(() => import('./components/modules/Collaboration/CollaborationHub').then(m => ({ default: m.CollaborationHub })));
+const MentorMenteePortal = React.lazy(() => import('./components/modules/MentorMentee/MentorMenteePortal').then(m => ({ default: m.MentorMenteePortal })));
+const CommunityHub = React.lazy(() => import('./components/modules/Community/CommunityHub').then(m => ({ default: m.CommunityHub })));
+const LeaveManagement = React.lazy(() => import('./components/modules/LeaveManagement/LeaveManagement').then(m => ({ default: m.LeaveManagement })));
+const LabAttendance = React.lazy(() => import('./components/modules/LabAttendance/LabAttendance').then(m => ({ default: m.LabAttendance })));
+const PlacementSystem = React.lazy(() => import('./components/modules/PlacementSystem/PlacementSystem').then(m => ({ default: m.PlacementSystem })));
+const AdminDashboard = React.lazy(() => import('./components/modules/AdminPanel/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const AIChatbotModule = React.lazy(() => import('./components/modules/AIChatbotModule').then(m => ({ default: m.AIChatbotModule })));
+const FirebaseCloudHubModule = React.lazy(() => import('./components/modules/FirebaseCloudHubModule').then(m => ({ default: m.FirebaseCloudHubModule })));
+const FacultyAttendancePortal = React.lazy(() => import('./components/modules/FacultyAttendance/FacultyAttendancePortal').then(m => ({ default: m.FacultyAttendancePortal })));
+const StudentAttendancePortal = React.lazy(() => import('./components/modules/FacultyAttendance/StudentAttendancePortal').then(m => ({ default: m.StudentAttendancePortal })));
+const CoreEngineeringHub = React.lazy(() => import('./components/modules/CoreEngineering/CoreEngineeringHub').then(m => ({ default: m.CoreEngineeringHub })));
+const CommunicationHub = React.lazy(() => import('./components/modules/Communication/CommunicationHub').then(m => ({ default: m.CommunicationHub })));
+const GatePrepHub = React.lazy(() => import('./components/modules/GatePrep/GatePrepHub').then(m => ({ default: m.GatePrepHub })));
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -72,6 +76,16 @@ export default function App() {
     const loadedUsers = CampusStorage.getUsers();
     return loadedUsers && loadedUsers.length > 0 ? loadedUsers[0] : INITIAL_USERS[0];
   });
+
+  const [activePortal, setActivePortal] = useState<NormalizedRole>(() => {
+    const saved = localStorage.getItem('ckcet_active_portal') as NormalizedRole;
+    if (saved && ['super_admin', 'admin', 'faculty', 'student'].includes(saved)) {
+      return saved;
+    }
+    return normalizeRole(currentUser?.role || userRole);
+  });
+
+  const authorizedPortals = getUserAuthorizedPortals(currentUser);
   const [projects, setProjects] = useState<Project[]>([]);
   const [invitations, setInvitations] = useState<TeamInvitation[]>([]);
   const [skills] = useState<SkillItem[]>(INITIAL_SKILLS);
@@ -185,6 +199,54 @@ export default function App() {
     localStorage.setItem('ckcet_theme', theme);
   }, [theme]);
 
+  // Sync activePortal when currentUser changes
+  useEffect(() => {
+    if (currentUser) {
+      const authPortals = getUserAuthorizedPortals(currentUser);
+      const saved = localStorage.getItem('ckcet_active_portal') as NormalizedRole;
+      if (saved && authPortals.includes(saved)) {
+        setActivePortal(saved);
+      } else {
+        const topPortal = authPortals[0] || 'student';
+        setActivePortal(topPortal);
+        localStorage.setItem('ckcet_active_portal', topPortal);
+      }
+    }
+  }, [currentUser]);
+
+  // Portal Switcher Handler (NEVER logs out or changes user session)
+  const handlePortalChange = (newPortal: NormalizedRole) => {
+    if (!canAccessPortal(currentUser, newPortal)) {
+      addToast({
+        title: 'Access Restricted',
+        message: `Your account is not authorized to access the ${getPortalDisplayName(newPortal)}.`,
+        type: 'warning'
+      });
+      return;
+    }
+
+    setActivePortal(newPortal);
+    localStorage.setItem('ckcet_active_portal', newPortal);
+    setActiveModule('dashboard');
+
+    const newLog: AuditLog = {
+      id: `log-${Date.now()}`,
+      action: 'PORTAL_SWITCH',
+      performedBy: currentUser?.name || 'User',
+      userRole: currentUser?.role || 'student',
+      target: `Switched active portal view to ${getPortalDisplayName(newPortal)}`,
+      timestamp: new Date().toISOString(),
+      ipAddress: '127.0.0.1'
+    };
+    setAuditLogs((prev) => [newLog, ...prev]);
+
+    addToast({
+      title: 'Portal Switched',
+      message: `Active Portal set to ${getPortalDisplayName(newPortal)}. Session retained.`,
+      type: 'info'
+    });
+  };
+
   // Role switcher handler
   const handleRoleChange = (role: UserRole) => {
     setUserRole(role);
@@ -196,6 +258,10 @@ export default function App() {
   const handleLogin = (user: User, role: UserRole) => {
     setCurrentUser(user);
     setUserRole(role);
+    const authPortals = getUserAuthorizedPortals(user);
+    const initialPortal = authPortals[0] || normalizeRole(role);
+    setActivePortal(initialPortal);
+    localStorage.setItem('ckcet_active_portal', initialPortal);
     setIsAuthenticated(true);
   };
 
@@ -448,6 +514,9 @@ export default function App() {
       <Navbar
         currentUser={currentUser}
         userRole={userRole}
+        activePortal={activePortal}
+        authorizedPortals={authorizedPortals}
+        onPortalChange={handlePortalChange}
         theme={theme}
         notifications={notifications}
         onMarkNotificationRead={handleMarkNotificationRead}
@@ -469,6 +538,7 @@ export default function App() {
         <Sidebar
           activeModule={activeModule}
           activeTab={activeModule}
+          activePortal={activePortal}
           userRole={userRole}
           onSelectModule={(mod) => setActiveModule(mod)}
           onTabChange={(mod) => setActiveModule(mod)}
@@ -479,6 +549,16 @@ export default function App() {
 
         {/* Dynamic Content Body */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden w-full max-w-full min-w-0 p-3 sm:p-6 lg:p-8 space-y-6 pb-24 md:pb-8">
+          <React.Suspense
+            fallback={
+              <div className="flex flex-col items-center justify-center p-12 my-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl text-center">
+                <Loader2 className="w-8 h-8 text-purple-600 animate-spin mb-3" />
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Loading module components...
+                </span>
+              </div>
+            }
+          >
           {(activeModule === 'core_engineering' || activeModule === 'gate_prep' || activeModule === 'higher_studies' || activeModule === 'software_hub' || activeModule === 'core_careers') && (
             <CoreEngineeringHub
               userRole={userRole}
@@ -595,6 +675,7 @@ export default function App() {
               currentUserId={currentUser?.id || 'usr-1'}
               currentUserName={currentUser?.name || 'User'}
               onAddMeeting={handleAddMeeting}
+              onNavigateToModule={(mod) => setActiveModule(mod)}
             />
           )}
 
@@ -637,6 +718,10 @@ export default function App() {
             />
           )}
 
+          {(activeModule === 'communication' || activeModule === 'communication_hub' || activeModule === 'messages') && (
+            <CommunicationHub currentUser={currentUser} />
+          )}
+
           {(activeModule === 'ai_chatbot' || activeModule === 'ai_assistant') && (
             <AIChatbotModule currentUser={currentUser} />
           )}
@@ -671,9 +756,10 @@ export default function App() {
             activeModule === 'my_courses' ||
             activeModule === 'system_settings' ||
             activeModule === 'audit_logs') && (
-            (userRole === 'admin' || userRole === 'super_admin' || userRole === 'faculty') ? (
+            (activePortal === 'admin' || activePortal === 'super_admin' || activePortal === 'faculty' || userRole === 'admin' || userRole === 'super_admin' || userRole === 'faculty') ? (
               <AdminDashboard
                 userRole={userRole}
+                activePortal={activePortal}
                 users={users}
                 complaints={complaints}
                 leaves={leaves}
@@ -743,6 +829,7 @@ export default function App() {
               />
             )
           )}
+          </React.Suspense>
 
           {/* Global Campus Portal Footer with Link to Official Web Page */}
           <footer className="mt-12 pt-6 pb-4 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
@@ -797,7 +884,7 @@ export default function App() {
       {/* Native Mobile Bottom Navigation Bar (Android Touch Optimized) */}
       <MobileBottomNav
         activeModule={activeModule}
-        userRole={userRole}
+        userRole={activePortal}
         onSelectModule={(mod) => setActiveModule(mod)}
         onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
         onOpenAiChat={() => setIsAiOpen(true)}
@@ -810,7 +897,10 @@ export default function App() {
         onClose={() => setIsDrawerOpen(false)}
         currentUser={currentUser}
         userRole={userRole}
+        activePortal={activePortal}
+        authorizedPortals={authorizedPortals}
         onRoleChange={handleRoleChange}
+        onPortalChange={handlePortalChange}
         activeModule={activeModule}
         onSelectModule={(mod) => setActiveModule(mod)}
         onLogout={handleLogout}

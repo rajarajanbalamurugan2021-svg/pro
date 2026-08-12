@@ -29,14 +29,16 @@ import {
   Bot
 } from 'lucide-react';
 import { CampusStorage, saveProfileFirestore, saveRegistrationFirestore, saveFirestoreDoc } from '../../../services/api';
-import { normalizeRole, RBAC } from '../../../lib/rbac';
+import { normalizeRole, NormalizedRole, getPortalDisplayName, RBAC } from '../../../lib/rbac';
 import { AccessDeniedPage } from '../../common/AccessDeniedPage';
 import { CrudManager, CrudColumn, CrudFieldSchema } from '../../common/CrudManager';
 import { FAQManager } from './FAQManager';
 import { LogoChangeModal } from '../../common/LogoChangeModal';
+import { BulkStudentImport } from './BulkStudentImport';
 
 interface AdminDashboardProps {
   userRole?: UserRole;
+  activePortal?: NormalizedRole;
   users: User[];
   complaints: Complaint[];
   leaves: LeaveRequest[];
@@ -49,6 +51,7 @@ interface AdminDashboardProps {
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   userRole,
+  activePortal,
   users,
   complaints,
   leaves,
@@ -58,9 +61,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onResetDatabase,
   initialTab
 }) => {
-  const normRole = normalizeRole(userRole);
+  const normRole: NormalizedRole = activePortal || normalizeRole(userRole);
   const isAdmin = normRole === 'admin' || normRole === 'super_admin';
-  const isSuperAdmin = isAdmin;
+  const isSuperAdmin = normRole === 'super_admin';
   const isFaculty = normRole === 'faculty';
 
   if (!isAdmin && !isFaculty) {
@@ -70,6 +73,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [activeTab, setActiveTab] = useState<
     | 'metrics'
     | 'students'
+    | 'bulk_import'
     | 'faculty'
     | 'admins'
     | 'departments'
@@ -300,6 +304,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </button>
 
         <button
+          onClick={() => setActiveTab('bulk_import')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+            activeTab === 'bulk_import' ? 'bg-purple-600 text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+          }`}
+        >
+          <FileSpreadsheet className="h-4 w-4 text-emerald-400" /> Bulk Import
+        </button>
+
+        <button
           onClick={() => setActiveTab('faculty')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
             activeTab === 'faculty' ? 'bg-purple-600 text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -432,6 +445,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {/* BULK STUDENT IMPORT */}
+      {activeTab === 'bulk_import' && (
+        <BulkStudentImport
+          onImportSuccess={(newUsers) => {
+            const updated = [...newUsers, ...users];
+            onUpdateUsers(updated);
+            CampusStorage.saveUsers(updated);
+          }}
+          onClose={() => setActiveTab('students')}
+        />
       )}
 
       {/* STUDENT MANAGEMENT CRUD */}

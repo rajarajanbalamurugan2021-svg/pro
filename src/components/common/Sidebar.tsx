@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserRole } from '../../types';
-import { normalizeRole, ROLE_SIDEBAR_MENUS, MenuItem } from '../../lib/rbac';
+import { normalizeRole, NormalizedRole, getPortalDisplayName, ROLE_SIDEBAR_MENUS, MenuItem } from '../../lib/rbac';
 import {
   LayoutDashboard,
   Users,
@@ -29,12 +29,17 @@ import {
   Mail,
   Cpu,
   Target,
-  Wrench
+  Wrench,
+  Crown,
+  CalendarDays,
+  CheckCircle2,
+  MessageSquare
 } from 'lucide-react';
 
 interface SidebarProps {
   activeTab?: string;
   activeModule?: string;
+  activePortal?: NormalizedRole;
   onTabChange?: (tab: string) => void;
   onSelectModule?: (mod: string) => void;
   onModuleChange?: (mod: string) => void;
@@ -68,12 +73,17 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Mail,
   Cpu,
   Target,
-  Wrench
+  Wrench,
+  Crown,
+  CalendarDays,
+  CheckCircle2,
+  MessageSquare
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   activeModule,
+  activePortal,
   onTabChange,
   onSelectModule,
   onModuleChange,
@@ -82,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   userRole = 'student',
   pendingComplaintsCount = 0
 }) => {
-  const normRole = normalizeRole(userRole);
+  const normRole: NormalizedRole = activePortal || normalizeRole(userRole);
   const currentTab = activeModule || activeTab || 'dashboard';
 
   const menuItems: MenuItem[] = ROLE_SIDEBAR_MENUS[normRole] || ROLE_SIDEBAR_MENUS.student;
@@ -115,17 +125,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       
       {/* Role Indicator Header */}
       <div className="mb-4 px-3 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className={`h-2.5 w-2.5 rounded-full ${
-            normRole === 'admin' || normRole === 'super_admin' ? 'bg-purple-500 animate-pulse' :
+        <div className="flex items-center gap-2 min-w-0">
+          <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${
+            normRole === 'super_admin' ? 'bg-amber-400 animate-pulse' :
+            normRole === 'admin' ? 'bg-purple-500' :
             normRole === 'faculty' ? 'bg-blue-500' : 'bg-emerald-500'
           }`} />
-          <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-            {normRole === 'admin' || normRole === 'super_admin' ? 'Admin' : normRole.replace('_', ' ')} Portal
+          <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 truncate">
+            {getPortalDisplayName(normRole)}
           </span>
         </div>
-        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-          RBAC Active
+        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shrink-0">
+          RBAC
         </span>
       </div>
 

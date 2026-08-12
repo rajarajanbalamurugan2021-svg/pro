@@ -20,7 +20,8 @@ service cloud.firestore {
         request.auth.token.role == 'super_admin' || 
         request.auth.token.role == 'SuperAdmin' ||
         getUserData().role == 'super_admin' || 
-        getUserData().role == 'SuperAdmin'
+        getUserData().role == 'SuperAdmin' ||
+        ('roles' in getUserData() && ('super_admin' in getUserData().roles || 'SuperAdmin' in getUserData().roles))
       );
     }
 
@@ -30,7 +31,8 @@ service cloud.firestore {
         request.auth.token.role == 'admin' || 
         request.auth.token.role == 'Admin' ||
         getUserData().role == 'admin' || 
-        getUserData().role == 'Admin'
+        getUserData().role == 'Admin' ||
+        ('roles' in getUserData() && ('admin' in getUserData().roles || 'Admin' in getUserData().roles))
       );
     }
 
@@ -40,7 +42,8 @@ service cloud.firestore {
         request.auth.token.role == 'faculty' || 
         request.auth.token.role == 'Faculty' ||
         getUserData().role == 'faculty' || 
-        getUserData().role == 'Faculty'
+        getUserData().role == 'Faculty' ||
+        ('roles' in getUserData() && ('faculty' in getUserData().roles || 'Faculty' in getUserData().roles))
       );
     }
 
@@ -164,7 +167,7 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
-    // 9. Community Forum, Discussions, Messages & Notifications
+    // 9. Community Forum, Discussions, Messages, Communication Hub & Notifications
     match /communityPosts/{postId} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn();
@@ -179,12 +182,92 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow write: if isSignedIn();
     }
+    match /conversations/{convId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
+    }
     match /messages/{messageId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin() || isOwner(resource.data.senderId);
+    }
+    match /academic_requests/{reqId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+    match /announcements/{annId} {
+      allow read: if isSignedIn();
+      allow create, update, write: if isFaculty() || isAdmin();
+      allow delete: if isFaculty() || isAdmin();
+    }
+    match /communication_reports/{repId} {
+      allow read: if isAdmin() || isFaculty();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // 10. Mentoring Hub Module
+    match /mentoring_assignments/{assignmentId} {
+      allow read: if isSignedIn();
+      allow write: if isFaculty() || isAdmin();
+    }
+    match /mentor_assignments/{assignmentId} {
+      allow read: if isSignedIn();
+      allow write: if isFaculty() || isAdmin();
+    }
+    match /mentoring_meetings/{meetingId} {
       allow read: if isSignedIn();
       allow write: if isSignedIn();
     }
+    match /mentor_meetings/{meetingId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_requests/{requestId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_goals/{goalId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_tasks/{taskId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_notes/{noteId} {
+      // Private mentor notes strictly restricted: only faculty/mentor or if explicitly shareable
+      allow read: if isAdmin() || isFaculty() || (resource.data.isShareable == true) || (request.auth != null && resource.data.studentId == request.auth.uid && resource.data.isShareable == true);
+      allow write: if isFaculty() || isAdmin();
+    }
+    match /mentoring_feedback/{feedbackId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_alerts/{alertId} {
+      allow read: if isFaculty() || isAdmin();
+      allow write: if isFaculty() || isAdmin();
+    }
+    match /mentoring_skills/{skillId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_gate/{gateId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_higher_studies/{hsId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    match /mentoring_config/{configId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
 
-    // 10. Placement, Internships & Career Recommendations
+    // 11. Placement, Internships & Career Recommendations
     match /internships/{internshipId} {
       allow read: if isSignedIn();
       allow write: if isSignedIn();
