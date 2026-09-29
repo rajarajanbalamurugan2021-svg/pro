@@ -84,7 +84,7 @@ export function printLeaveLetter(leave: LeaveRequest) {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>CAMPRO - Official Leave Sanction Order (${leave.applicationId || leave.id})</title>
+        <title>CKCET CAMPRO - Official Leave Sanction Order (${leave.applicationId || leave.id})</title>
         <style>
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; color: #1e293b; background: #fff; }
           .header { text-align: center; border-bottom: 2px solid #0284c7; padding-bottom: 16px; margin-bottom: 24px; }
@@ -105,8 +105,8 @@ export function printLeaveLetter(leave: LeaveRequest) {
       </head>
       <body>
         <div class="header">
-          <div class="institution">CAMPRO - ACADEMIC ADMINISTRATION</div>
-          <div class="sub-text">Office of Student Affairs & Academic Leaves</div>
+          <div class="institution">CKCET CAMPRO - ACADEMIC ADMINISTRATION</div>
+          <div class="sub-text">CK College of Engineering & Technology (An Autonomous Institution) • Office of Student Affairs & Academic Leaves</div>
           <div class="badge">OFFICIAL LEAVE SANCTION ORDER</div>
         </div>
 
@@ -117,7 +117,7 @@ export function printLeaveLetter(leave: LeaveRequest) {
 
         <p class="content">
           This is an official sanction order confirming that the leave application submitted by <strong>${leave.studentName}</strong> 
-          from the Department of <strong>${leave.department}</strong> has been formally verified and approved in accordance with Academic Regulations.
+          from the Department of <strong>${leave.department}</strong> has been formally verified and approved in accordance with CKCET Academic Regulations.
         </p>
 
         <table class="meta-table">
@@ -177,7 +177,7 @@ export function printLeaveLetter(leave: LeaveRequest) {
         </div>
 
         <div class="footer">
-          Digitally generated and verified via CAMPRO Enterprise ERP • Valid for attendance exemption & lab rescheduling.<br/>
+          Digitally generated and verified via CKCET CAMPRO Enterprise ERP • Valid for attendance exemption & lab rescheduling.<br/>
           System Verification Hash: ${Math.random().toString(36).substring(2, 12).toUpperCase()}
         </div>
 

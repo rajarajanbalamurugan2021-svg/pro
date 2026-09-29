@@ -25,7 +25,7 @@ export const PWAInstallPrompt: React.FC = () => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       // Show prompt if not previously dismissed in this session
-      if (!sessionStorage.getItem('campro_pwa_dismissed')) {
+      if (!sessionStorage.getItem('ckcet_pwa_dismissed')) {
         setShowBanner(true);
       }
     };
@@ -50,7 +50,7 @@ export const PWAInstallPrompt: React.FC = () => {
 
   const handleDismiss = () => {
     setShowBanner(false);
-    sessionStorage.setItem('campro_pwa_dismissed', 'true');
+    sessionStorage.setItem('ckcet_pwa_dismissed', 'true');
   };
 
   if (isInstalled || !showBanner || !deferredPrompt) return null;
@@ -60,11 +60,11 @@ export const PWAInstallPrompt: React.FC = () => {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 p-2 shadow-lg flex items-center justify-center shrink-0">
-            <img src="/favicon.png" alt="Campus Icon" className="w-full h-full object-contain" />
+            <img src="/favicon.png" alt="CKCET Icon" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-bold">CAMPRO</span>
+              <span className="text-xs font-bold">CKCET CAMPRO</span>
               <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[9px] font-extrabold uppercase border border-amber-500/30">
                 Android App
               </span>

@@ -134,7 +134,7 @@ export const CareerDashboard: React.FC<Props> = ({ user }) => {
                 <DollarSign className="h-4 w-4 text-emerald-600" />
               </div>
               <div className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">{roadmap.predictedSalaryRange}</div>
-              <p className="text-[11px] text-slate-400 mt-1">Based on recent campus placement statistics</p>
+              <p className="text-[11px] text-slate-400 mt-1">Based on recent CKCET campus placement statistics</p>
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">

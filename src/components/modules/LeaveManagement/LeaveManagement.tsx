@@ -36,7 +36,7 @@ export const LeaveManagement: React.FC<LeaveManagementProps> = ({
   const currentUser: User = propUser || {
     id: currentUserId,
     name: currentUserName,
-    email: `${currentUserName.toLowerCase().replace(/\s+/g, '.')}@campus.edu`,
+    email: `${currentUserName.toLowerCase().replace(/\s+/g, '.')}@ckcet.edu`,
     role: userRole,
     department: 'Computer Science & Engineering',
     phone: '+1 (555) 012-3456',
@@ -177,7 +177,7 @@ export const LeaveManagement: React.FC<LeaveManagementProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-sky-400">CAMPRO Enterprise ERP</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-sky-400">CKCET CAMPRO Enterprise ERP</span>
                 <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full">
                   Real-time Firestore Sync
                 </span>

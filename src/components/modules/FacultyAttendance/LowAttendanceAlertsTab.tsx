@@ -95,7 +95,7 @@ export const LowAttendanceAlertsTab: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Low_Attendance_Shortage_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `CKCET_Low_Attendance_Shortage_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -108,7 +108,7 @@ export const LowAttendanceAlertsTab: React.FC = () => {
       <div className="p-6 rounded-3xl bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-200">
-            <ShieldAlert className="w-4 h-4" /> Mandatory 75% Institutional Threshold
+            <ShieldAlert className="w-4 h-4" /> Anna University & CKCET Mandatory 75% Threshold
           </div>
           <h2 className="text-2xl font-black mt-1">Low Attendance Shortage Alerts (&lt; 75%)</h2>
           <p className="text-xs text-amber-100 mt-1 max-w-xl">

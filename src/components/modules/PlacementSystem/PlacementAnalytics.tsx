@@ -80,15 +80,15 @@ export const PlacementAnalytics: React.FC<Props> = ({ user, opportunities, appli
   const handleExportPDF = () => {
     const headers = ['Department', 'Total Eligible', 'Placed Count', 'Placement %', 'Avg Package'];
     const rows = departmentStats.map((d) => [d.name, String(d.total), String(d.placed), `${d.rate}%`, d.avg]);
-    exportToPDF('Campus Placement Analytics 2026', headers, rows);
+    exportToPDF('CKCET Campus Placement Analytics 2026', headers, rows);
   };
 
   const handleExportCSV = () => {
-    exportToCSV('Placement_Analytics', departmentStats);
+    exportToCSV('CKCET_Placement_Analytics', departmentStats);
   };
 
   const handleExportExcel = () => {
-    exportToExcel('Placement_Analytics_Excel', departmentStats);
+    exportToExcel('CKCET_Placement_Analytics_Excel', departmentStats);
   };
 
   return (

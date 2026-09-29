@@ -534,7 +534,7 @@ export const CoreEngineeringHub: React.FC<CoreEngineeringHubProps> = ({
         <GatePrepHub
           currentUser={{
             id: 'user-student-1',
-            name: 'Campus Student',
+            name: 'CKCET Student',
             role: userRole === 'super_admin' || userRole === 'SuperAdmin' ? 'super_admin' : userRole === 'admin' || userRole === 'Admin' ? 'admin' : userRole === 'faculty' || userRole === 'Faculty' ? 'faculty' : 'student'
           }}
         />

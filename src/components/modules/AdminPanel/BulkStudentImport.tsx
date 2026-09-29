@@ -69,15 +69,15 @@ export const BulkStudentImport: React.FC<BulkStudentImportProps> = ({
   const handleDownloadTemplate = () => {
     const csvContent =
       'email,password,name,rollNumber,department,year\n' +
-      'student1@campus.edu.in,Pass123!,Rajesh Kumar,21EC001,ECE,3\n' +
-      'student2@campus.edu.in,Pass123!,Priya Sharma,21CS002,CSE,3\n' +
-      'student3@campus.edu.in,Pass123!,Arun Patel,22AI003,AIDS,2\n';
+      'student1@ckcet.edu.in,Pass123!,Rajesh Kumar,21EC001,ECE,3\n' +
+      'student2@ckcet.edu.in,Pass123!,Priya Sharma,21CS002,CSE,3\n' +
+      'student3@ckcet.edu.in,Pass123!,Arun Patel,22AI003,AIDS,2\n';
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Bulk_Student_Import_Template.csv';
+    a.download = 'CKCET_Bulk_Student_Import_Template.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

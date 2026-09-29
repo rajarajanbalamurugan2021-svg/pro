@@ -34,7 +34,7 @@ const DEFAULT_CATEGORIES: ComplaintCategoryItem[] = [
   { id: 'cat-5', name: 'Smart Classroom Issues', description: 'Projector display issues, audio mic failure, podium connections.' },
   { id: 'cat-6', name: 'Laboratory Equipment Issues', description: 'Hardware fault, CRO, oscilloscope, microprocessor kit malfunction.' },
   { id: 'cat-7', name: 'Hostel Complaints', description: 'Furniture damage, cleanliness, mess food issues, fan noise.' },
-  { id: 'cat-8', name: 'Transportation Issues', description: 'Campus bus delay, AC breakdown, seat repair, route issue.' },
+  { id: 'cat-8', name: 'Transportation Issues', description: 'College bus delay, AC breakdown, seat repair, route issue.' },
   { id: 'cat-9', name: 'Cleanliness Issues', description: 'Dustbin overflow, classroom floor sweeping, restroom sanitation.' },
   { id: 'cat-10', name: 'Security Issues', description: 'CCTV offline, gate security, unauthorized entry, lost key locks.' }
 ];

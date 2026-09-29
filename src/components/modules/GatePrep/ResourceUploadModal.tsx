@@ -76,7 +76,7 @@ export const ResourceUploadModal: React.FC<ResourceUploadModalProps> = ({
   const [tags, setTags] = useState<string>(replaceResourceTarget ? replaceResourceTarget.tags.join(', ') : 'GATE2025, Notes');
   const [externalSourceUrl, setExternalSourceUrl] = useState(replaceResourceTarget?.externalSourceUrl || '');
   const [status, setStatus] = useState<ResourceStatus>('PUBLISHED');
-  const [copyrightNotes, setCopyrightNotes] = useState(replaceResourceTarget?.copyrightNotes || 'Academic Archive');
+  const [copyrightNotes, setCopyrightNotes] = useState(replaceResourceTarget?.copyrightNotes || 'CKCET Academic Archive');
 
   if (!isOpen) return null;
 

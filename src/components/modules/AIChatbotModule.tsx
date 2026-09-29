@@ -50,7 +50,7 @@ interface ChatMessage {
   isError?: boolean;
 }
 
-const STORAGE_KEY = 'campro_campus_ai_chat_history';
+const STORAGE_KEY = 'ckcet_campus_ai_chat_history';
 
 const SUGGESTED_QUICK_PROMPTS = [
   'How do I reset my password?',
@@ -104,7 +104,7 @@ export const AIChatbotModule: React.FC<Props> = ({ currentUser }) => {
       {
         id: 'welcome-1',
         sender: 'ai',
-        text: `Hello ${currentUser.name || 'there'}! 👋 Welcome to the CAMPRO AI Campus Assistant & FAQ Knowledge Engine. Ask me anything about registration, attendance, semester results, leave applications, campus grievances, innovation projects, or placement opportunities. I respond instantly with both local offline FAQs and online Gemini AI!`,
+        text: `Hello ${currentUser.name || 'there'}! 👋 Welcome to the CKCET CAMPRO AI Campus Assistant & FAQ Knowledge Engine. Ask me anything about registration, attendance, semester results, leave applications, campus grievances, innovation projects, or placement opportunities. I respond instantly with both local offline FAQs and online Gemini AI!`,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isOfflineMatch: true,
         confidence: 1.0,
@@ -339,7 +339,7 @@ export const AIChatbotModule: React.FC<Props> = ({ currentUser }) => {
     const blob = new Blob([formattedText], { type: 'text/plain;charset=utf-8' });
     const downloadAnchor = document.createElement('a');
     downloadAnchor.href = URL.createObjectURL(blob);
-    downloadAnchor.download = `campro_ai_chat_${Date.now()}.txt`;
+    downloadAnchor.download = `ckcet_ai_chat_${Date.now()}.txt`;
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();

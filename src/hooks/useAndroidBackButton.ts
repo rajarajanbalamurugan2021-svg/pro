@@ -74,7 +74,7 @@ export function useAndroidBackButton({
         lastExitPressTime.current = now;
         if (addToast) {
           addToast({
-            title: 'CAMPRO Mobile',
+            title: 'CKCET CAMPRO Mobile',
             message: 'Press Back button again to exit application',
             type: 'info'
           });

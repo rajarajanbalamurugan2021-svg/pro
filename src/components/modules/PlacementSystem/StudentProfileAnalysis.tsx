@@ -48,7 +48,7 @@ export const StudentProfileAnalysis: React.FC<Props> = ({ user, onUpdateUser }) 
       'Smart Library QR Attendance System (Node.js, PostgreSQL)'
     ],
     internshipExperience: 'Summer SDE Intern at Kovai.co (3 Months) - Worked on C# & Azure Microservices',
-    resumeUrl: 'https://example.edu/resumes/CS2023001_AlexRivera.pdf',
+    resumeUrl: 'https://ckcet.ac.in/resumes/CS2023001_AlexRivera.pdf',
     portfolio: {
       github: user.githubProfile || 'https://github.com/alexrivera-dev',
       linkedin: 'https://linkedin.com/in/alex-rivera-dev',
@@ -186,7 +186,7 @@ export const StudentProfileAnalysis: React.FC<Props> = ({ user, onUpdateUser }) 
         </div>
       </div>
 
-      {/* Basic Info Section (Academic Profile Standard) */}
+      {/* Basic Info Section (CKCET Academic Profile Standard) */}
       <BasicInfoProfile user={user} onUpdateUser={onUpdateUser} />
 
       {/* Grid Section: Profile Details & AI Skill Gap Analysis */}
@@ -323,7 +323,7 @@ export const StudentProfileAnalysis: React.FC<Props> = ({ user, onUpdateUser }) 
               >
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-blue-600" />
-                  Download Active Resume PDF
+                  Download Active College Resume PDF
                 </div>
                 <ExternalLink className="h-3.5 w-3.5 text-blue-500" />
               </a>

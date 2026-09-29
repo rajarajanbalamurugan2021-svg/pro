@@ -104,7 +104,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   // AI Chatbot Settings State
   const [aiEnabled, setAiEnabled] = useState(true);
   const [aiModel, setAiModel] = useState('gemini-2.5-flash');
-  const [aiSystemPrompt, setAiSystemPrompt] = useState('You are CAMPRO Academic AI Assistant.');
+  const [aiSystemPrompt, setAiSystemPrompt] = useState('You are CKCET CAMPRO Academic AI Assistant.');
   const [showLogoModal, setShowLogoModal] = useState(false);
 
   // Student list
@@ -758,7 +758,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <Settings className="h-5 w-5 text-indigo-600" /> RBAC Permission Matrix & System Configuration
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Configure global access control levels and security policies for CAMPRO.
+                Configure global access control levels and security policies for CKCET CAMPRO.
               </p>
             </div>
             <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-black uppercase tracking-wider border border-purple-500/20">

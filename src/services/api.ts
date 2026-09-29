@@ -126,7 +126,7 @@ function setStored<T>(key: string, value: T): void {
     // Asynchronously push to Cloud Firestore for real-time multi-device sync
     if (db) {
       // 1. Single document store sync
-      setDoc(doc(db, 'campro_data', key), { data: value, updatedAt: Date.now() }, { merge: true })
+      setDoc(doc(db, 'ckcet_campro', key), { data: value, updatedAt: Date.now() }, { merge: true })
         .catch((err) => console.warn(`Firestore sync error for ${key}:`, err));
 
       // 2. Map key to dedicated Firestore collection for granular CRUD
@@ -163,7 +163,7 @@ function setStored<T>(key: string, value: T): void {
 export function subscribeToRealtimeCollection<T>(key: string, callback: (data: T) => void) {
   if (!db) return () => {};
   return onSnapshot(
-    doc(db, 'campro_data', key),
+    doc(db, 'ckcet_campro', key),
     (snapshot) => {
       if (snapshot.exists()) {
         const val = snapshot.data();
@@ -846,8 +846,8 @@ export class CampusStorage {
 
   static getCustomLogo(): CampusLogoConfig {
     return getStored(STORAGE_KEYS.CUSTOM_LOGO, {
-      title: 'CAMPRO',
-      subtitle: 'ERP',
+      title: 'CKCET',
+      subtitle: 'CAMPRO',
       tagline: 'Enterprise Campus ERP',
       logoUrl: '',
       presetIcon: 'modern-shield',

@@ -41,7 +41,7 @@ export async function saveStoredFAQs(faqs: FAQItem[]): Promise<void> {
 
     if (db) {
       // 1. Single document store sync
-      setDoc(doc(db, 'campro_data', STORAGE_KEY), { data: faqs, updatedAt: Date.now() }, { merge: true })
+      setDoc(doc(db, 'ckcet_campro', STORAGE_KEY), { data: faqs, updatedAt: Date.now() }, { merge: true })
         .catch((err) => console.warn('Firestore FAQ single doc sync notice:', err));
 
       // 2. Collection document sync
@@ -85,7 +85,7 @@ export function subscribeToFAQs(callback: (faqs: FAQItem[]) => void) {
 
   // Fallback single document listener
   const unsubDoc = onSnapshot(
-    doc(db, 'campro_data', STORAGE_KEY),
+    doc(db, 'ckcet_campro', STORAGE_KEY),
     (snapshot) => {
       if (snapshot.exists()) {
         const val = snapshot.data();

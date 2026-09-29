@@ -101,7 +101,7 @@ export const StudentAttendancePortal: React.FC<StudentAttendancePortalProps> = (
           <div className="space-y-1">
             <h3 className="text-sm font-black">Low Attendance Alert (&lt; 75%)</h3>
             <p className="text-slate-600 dark:text-slate-300 font-medium">
-              Your current overall attendance is {studentSummary.percentage}%, which is below the mandatory 75% institutional threshold. Please meet your Class Advisor immediately to review your attendance standing.
+              Your current overall attendance is {studentSummary.percentage}%, which is below Anna University / CKCET mandatory 75% threshold. Please meet your Class Advisor immediately to review your attendance standing.
             </p>
           </div>
         </div>

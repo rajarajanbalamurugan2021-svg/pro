@@ -5,12 +5,12 @@ export const INITIAL_FAQS: FAQItem[] = [
   {
     id: 'faq-gen-1',
     category: 'General',
-    question: 'What is CAMPRO?',
-    keywords: ['campro', 'about', 'system', 'portal', 'overview', 'what is'],
-    answer: 'CAMPRO is the comprehensive smart campus management software and enterprise ERP platform. It unifies attendance, internal marks, leave workflows, grievance redressal, project collaboration, lab monitoring, and placement management in a single real-time platform.',
+    question: 'What is CKCET CAMPRO?',
+    keywords: ['ckcet', 'campro', 'about', 'system', 'portal', 'overview', 'what is'],
+    answer: 'CKCET CAMPRO is the comprehensive smart campus management software for Sri Jayaram Educational Trust\'s CK College of Engineering & Technology (An Autonomous Institution). It unifies attendance, internal marks, leave workflows, grievance redressal, project collaboration, lab monitoring, and placement management in a single real-time platform.',
     relatedQuestions: [
-      'What are the key features of CAMPRO?',
-      'Who can use CAMPRO?'
+      'What are the key features of CKCET CAMPRO?',
+      'Who can use CKCET CAMPRO?'
     ],
     language: 'en',
     version: 1,
@@ -20,9 +20,9 @@ export const INITIAL_FAQS: FAQItem[] = [
   {
     id: 'faq-gen-2',
     category: 'General',
-    question: 'What user roles exist in CAMPRO?',
+    question: 'What user roles exist in CKCET CAMPRO?',
     keywords: ['roles', 'permissions', 'user roles', 'student', 'faculty', 'admin', 'superadmin', 'placement officer'],
-    answer: 'CAMPRO supports multiple roles: Students, Faculty, Department Heads (HOD), Mentors, Placement Officers, Recruiters, Maintenance Staff, Administrators, and SuperAdmins. Each role has customized Role-Based Access Control (RBAC) permissions.',
+    answer: 'CKCET CAMPRO supports multiple roles: Students, Faculty, Department Heads (HOD), Mentors, Placement Officers, Recruiters, Maintenance Staff, Administrators, and SuperAdmins. Each role has customized Role-Based Access Control (RBAC) permissions.',
     relatedQuestions: [
       'How do I switch roles or views?',
       'How do I contact admin for role updates?'
@@ -35,7 +35,7 @@ export const INITIAL_FAQS: FAQItem[] = [
   {
     id: 'faq-gen-3',
     category: 'General',
-    question: 'How do I log in to CAMPRO?',
+    question: 'How do I log in to CKCET CAMPRO?',
     keywords: ['login', 'signin', 'account', 'auth', 'credentials', 'access', 'how to login'],
     answer: 'Select your Role (Student, Faculty, Admin, etc.) on the login screen, enter your registered institutional Email or Register/Roll Number, and password. Demo quick-fill accounts are available for instant testing.',
     relatedQuestions: [
@@ -54,7 +54,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     keywords: ['reset', 'password', 'forgot', 'change password', 'recover', 'credentials'],
     answer: 'Click "Forgot Password?" on the login screen, enter your registered institutional email, and follow the password recovery link. Alternatively, submit a ticket or contact your Campus Administrator.',
     relatedQuestions: [
-      'How do I log in to CAMPRO?',
+      'How do I log in to CKCET CAMPRO?',
       'How do I contact admin?'
     ],
     language: 'en',
@@ -69,7 +69,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     keywords: ['register', 'signup', 'new user', 'create account', 'enrollment'],
     answer: 'New students and faculty are enrolled automatically by the Academic Admin department during admission. If your account is not activated, click "Register" on the login screen or contact the administrative office.',
     relatedQuestions: [
-      'How do I log in to CAMPRO?',
+      'How do I log in to CKCET CAMPRO?',
       'How do I contact admin?'
     ],
     language: 'en',
@@ -112,7 +112,7 @@ export const INITIAL_FAQS: FAQItem[] = [
   {
     id: 'faq-stu-3',
     category: 'Student Module',
-    question: 'How is CGPA calculated in CAMPRO?',
+    question: 'How is CGPA calculated in CKCET CAMPRO?',
     keywords: ['cgpa', 'sgpa', 'formula', 'calculation', 'grade point', 'credit', 'calculate'],
     answer: 'CGPA is calculated using the standard credit-weighted grade point average formula: CGPA = Σ(Subject Credits × Grade Points) / Σ(Total Course Credits). Grade O = 10, A+ = 9, A = 8, B+ = 7, B = 6, C = 5, F = 0.',
     relatedQuestions: [
@@ -193,7 +193,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     category: 'Admin Module',
     question: 'How do I contact admin for system support?',
     keywords: ['contact admin', 'support', 'helpdesk', 'system admin', 'admin email'],
-    answer: 'You can contact the Administrative Helpdesk directly via email at admin@campus.edu.in or by submitting a ticket under the "Complaint Management" module with Category set to "System/IT".',
+    answer: 'You can contact the Administrative Helpdesk directly via email at admin@ckcet.edu.in or by submitting a ticket under the "Complaint Management" module with Category set to "System/IT".',
     relatedQuestions: [
       'How do I register a complaint?',
       'How do I reset my password?'
@@ -321,7 +321,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     category: 'Community Hub',
     question: 'What can I do in the Community Hub?',
     keywords: ['community', 'posts', 'comments', 'announcements', 'events', 'discussion', 'polls'],
-    answer: 'The Community Hub is the social learning space of the campus. You can share technical articles, ask questions, create interactive polls, register for campus events, and participate in club discussions.',
+    answer: 'The Community Hub is the social learning space of CKCET. You can share technical articles, ask questions, create interactive polls, register for campus events, and participate in club discussions.',
     relatedQuestions: [
       'How do I view official announcements?',
       'How do I post in the community?'
@@ -336,7 +336,7 @@ export const INITIAL_FAQS: FAQItem[] = [
   {
     id: 'faq-int-1',
     category: 'Internship Module',
-    question: 'How do I apply for internships in CAMPRO?',
+    question: 'How do I apply for internships in CKCET CAMPRO?',
     keywords: ['internship', 'apply internship', 'stipend', 'summer training', 'ppo', 'interview schedule'],
     answer: 'Navigate to "Placement & Internships" -> "Internships". Filter opportunities by role, stipend, and department eligibility, upload your resume, and click "Apply Now".',
     relatedQuestions: [
@@ -357,7 +357,7 @@ export const INITIAL_FAQS: FAQItem[] = [
     keywords: ['placement', 'company', 'eligibility', 'salary package', 'lpa', 'drive date', 'interview results'],
     answer: 'Open the "Placement Portal". You can review upcoming campus placement drives, salary packages (LPA), minimum CGPA cutoff, required tech stack, drive dates, and track your interview rounds.',
     relatedQuestions: [
-      'How do I apply for internships in CAMPRO?',
+      'How do I apply for internships in CKCET CAMPRO?',
       'How do I use the AI Career Module for interview prep?'
     ],
     language: 'en',
