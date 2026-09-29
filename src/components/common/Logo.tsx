@@ -165,10 +165,10 @@ export const Logo: React.FC<LogoProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className={`${dimensions.text} font-black tracking-tight text-slate-900 dark:text-white leading-none`}>
-                {logoConfig.title || 'CKCET'}
+                {logoConfig.title || 'CAMPRO'}
               </span>
               <span className={`${dimensions.text} font-black tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-sky-300 dark:to-indigo-300 bg-clip-text text-transparent leading-none`}>
-                {logoConfig.subtitle || 'CAMPRO'}
+                {logoConfig.subtitle || 'ERP'}
               </span>
             </div>
             <span className={`${dimensions.subtext} font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-tight mt-0.5`}>

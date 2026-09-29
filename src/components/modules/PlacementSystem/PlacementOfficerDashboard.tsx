@@ -92,7 +92,7 @@ export const PlacementOfficerDashboard: React.FC<Props> = ({
       Deadline: o.applicationDeadline,
       Applicants: o.applicantsCount
     }));
-    exportToCSV('CKCET_Placement_Opportunities', data);
+    exportToCSV('Placement_Opportunities', data);
   };
 
   const handleExportExcel = () => {
@@ -107,7 +107,7 @@ export const PlacementOfficerDashboard: React.FC<Props> = ({
       Deadline: o.applicationDeadline,
       Applicants: o.applicantsCount
     }));
-    exportToExcel('CKCET_Placement_Report', data);
+    exportToExcel('Placement_Report', data);
   };
 
   const handleExportPDF = () => {

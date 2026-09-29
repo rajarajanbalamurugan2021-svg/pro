@@ -215,7 +215,7 @@ export const AdminManagementPanel: React.FC<AdminManagementPanelProps> = ({
     else {
       const headers = ['Name', 'Email', 'Department', 'Roll No', 'Status', 'Skills'];
       const pdfRows = students.map((s) => [s.name, s.email, s.department, s.rollNumber || 'N/A', s.status, (s.skills || []).join(', ')]);
-      exportToPDF('CKCET Student Master Database Report', headers, pdfRows);
+      exportToPDF('Student Master Database Report', headers, pdfRows);
     }
   };
 
@@ -235,7 +235,7 @@ export const AdminManagementPanel: React.FC<AdminManagementPanelProps> = ({
     else {
       const headers = ['Name', 'Email', 'Department', 'Employee ID', 'Role', 'Status'];
       const pdfRows = faculty.map((f) => [f.name, f.email, f.department, f.employeeId || 'N/A', f.role, f.status]);
-      exportToPDF('CKCET Faculty Roster & Mentor Directory', headers, pdfRows);
+      exportToPDF('Faculty Roster & Mentor Directory', headers, pdfRows);
     }
   };
 
@@ -257,7 +257,7 @@ export const AdminManagementPanel: React.FC<AdminManagementPanelProps> = ({
     else {
       const headers = ['Title', 'Category', 'Department', 'Project Lead', 'Stage', 'Status', 'Score'];
       const pdfRows = projects.map((p) => [p.title, p.category, p.department, p.ownerName, p.stage, p.status, `${p.innovationScore}/100`]);
-      exportToPDF('CKCET Capstone Innovation Projects Master Audit', headers, pdfRows);
+      exportToPDF('Capstone Innovation Projects Master Audit', headers, pdfRows);
     }
   };
 

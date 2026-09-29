@@ -23,7 +23,7 @@ const STORAGE_KEYS = {
   NOTIFICATIONS: 'smart_campus_notifications'
 };
 
-// Initial Subjects & Classes Data for CKCET CAMPRO
+// Initial Subjects & Classes Data for CAMPRO
 export const INITIAL_FACULTY_SUBJECTS = [
   {
     id: 'sub-ece-301',
@@ -260,7 +260,7 @@ function setStoredData<T>(key: string, value: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
     if (db) {
-      setDoc(doc(db, 'ckcet_campro', key), { data: value, updatedAt: Date.now() }, { merge: true })
+      setDoc(doc(db, 'campro_data', key), { data: value, updatedAt: Date.now() }, { merge: true })
         .catch((e) => console.warn(`Firestore sync error for ${key}:`, e));
     }
   } catch (err) {
@@ -433,7 +433,7 @@ export class AttendanceService {
             id: notifId,
             userId: student.studentId,
             title: '⚠️ Low Attendance Warning (< 75%)',
-            message: `Your overall attendance is currently ${student.percentage}%, which is below Anna University / CKCET mandatory 75% threshold. Please meet your Class Advisor immediately.`,
+            message: `Your overall attendance is currently ${student.percentage}%, which is below the mandatory 75% institutional threshold. Please meet your Class Advisor immediately.`,
             timestamp: new Date().toISOString(),
             read: false,
             type: 'warning',

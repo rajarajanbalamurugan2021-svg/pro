@@ -1,5 +1,5 @@
 {
-  "name": "CKCET CAMPRO",
+  "name": "CAMPRO",
   "description": "Comprehensive Core Engineering Intelligence & University ERP platform featuring Core Engineering Career Hubs (ECE, EEE, MECH, CIVIL), GATE Preparation & Mock Simulator, Higher Studies & Research Pathways, Engineering Software Installation Hub, Faculty Attendance, Placement System, Result Portal, and Campus Management.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

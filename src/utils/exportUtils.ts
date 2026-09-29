@@ -75,7 +75,7 @@ export function exportToPDF(title: string, dataHeaders: string[], dataRows: stri
         </style>
       </head>
       <body>
-        <h1>CKCET CAMPRO - ${title}</h1>
+        <h1>CAMPRO - ${title}</h1>
         <div class="meta">Generated on: ${new Date().toLocaleString()} | Training & Placement Cell</div>
         <table>
           <thead>
@@ -87,7 +87,7 @@ export function exportToPDF(title: string, dataHeaders: string[], dataRows: stri
             ${dataRows.map(row => `<tr>${row.map(cell => `<td>${cell || '-'}</td>`).join('')}</tr>`).join('')}
           </tbody>
         </table>
-        <div class="footer">Confidential Report • CKCET Training & Placement Portal</div>
+        <div class="footer">Confidential Report • Training & Placement Portal</div>
         <script>
           window.onload = function() { window.print(); }
         </script>

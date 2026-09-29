@@ -41,7 +41,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Admin Bulk Student Import - File Parse Endpoint
-app.post('/api/admin/bulk-import/parse', upload.single('file'), async (req: any, res: any) => {
+app.post('/api/admin/bulk-import/parse', upload.single('file') as any, async (req: any, res: any) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
@@ -67,7 +67,7 @@ app.post('/api/admin/bulk-import/parse', upload.single('file'), async (req: any,
       const lines = pdfText.split(/\r?\n/).filter(l => l.includes('@'));
       lines.forEach((line: string, index: number) => {
         const parts = line.trim().split(/\s+/);
-        const emailPart = parts.find(p => p.includes('@')) || `student${index}@ckcet.edu.in`;
+        const emailPart = parts.find(p => p.includes('@')) || `student${index}@campus.edu.in`;
         rawRows.push({
           email: emailPart,
           password: 'Password123!',

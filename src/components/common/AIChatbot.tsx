@@ -58,7 +58,7 @@ interface ChatMessage {
   isError?: boolean;
 }
 
-const STORAGE_KEY = 'ckcet_campus_ai_chat_history';
+const STORAGE_KEY = 'campro_campus_ai_chat_history';
 
 const SUGGESTED_QUICK_PROMPTS = [
   'How do I register?',
@@ -124,7 +124,7 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({
       {
         id: 'welcome-1',
         sender: 'ai',
-        text: `Hello ${currentUser.name || 'there'}! 👋 I am the CKCET CAMPRO Offline AI FAQ Assistant. Ask me anything about registration, attendance, semester results, leave requests, campus grievances, innovation projects, or placements. I work completely offline with zero latency!`,
+        text: `Hello ${currentUser.name || 'there'}! 👋 I am the CAMPRO Offline AI FAQ Assistant. Ask me anything about registration, attendance, semester results, leave requests, campus grievances, innovation projects, or placements. I work completely offline with zero latency!`,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isOfflineMatch: true,
         confidence: 1.0,
@@ -392,7 +392,7 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({
     const blob = new Blob([formattedText], { type: 'text/plain;charset=utf-8' });
     const downloadAnchor = document.createElement('a');
     downloadAnchor.href = URL.createObjectURL(blob);
-    downloadAnchor.download = `ckcet_campro_chat_history_${Date.now()}.txt`;
+    downloadAnchor.download = `campro_chat_history_${Date.now()}.txt`;
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -464,7 +464,7 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({
                 </div>
                 <div>
                   <h3 className="text-sm font-extrabold tracking-tight leading-none flex items-center gap-1.5">
-                    CKCET CAMPRO AI FAQ
+                    CAMPRO AI FAQ
                     <span
                       className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 ${
                         isOnline ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/30' : 'bg-amber-500/20 text-amber-200 border border-amber-400/30'

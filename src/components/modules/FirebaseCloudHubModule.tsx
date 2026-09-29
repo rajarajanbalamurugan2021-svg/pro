@@ -92,7 +92,7 @@ export const FirebaseCloudHubModule: React.FC = () => {
     department: 'Computer Science & Engineering',
     fileType: 'pdf',
     description: '',
-    authorName: 'CKCET Faculty / Admin',
+    authorName: 'Faculty / Admin',
     fileDataUrl: '',
     fileName: ''
   });
@@ -285,7 +285,7 @@ export const FirebaseCloudHubModule: React.FC = () => {
         department: 'Computer Science & Engineering',
         fileType: 'pdf',
         description: '',
-        authorName: 'CKCET Faculty / Admin',
+        authorName: 'Faculty / Admin',
         fileDataUrl: '',
         fileName: ''
       });
@@ -663,7 +663,7 @@ export const FirebaseCloudHubModule: React.FC = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Author:</span>
-                      <span className="font-sans">{file.authorName || 'CKCET Admin'}</span>
+                      <span className="font-sans">{file.authorName || 'Campus Admin'}</span>
                     </div>
                   </div>
 
@@ -775,7 +775,7 @@ export const FirebaseCloudHubModule: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="ananya.r@student.ckcet.edu"
+                  placeholder="ananya.r@student.campus.edu"
                   value={regForm.email}
                   onChange={(e) => setRegForm({ ...regForm, email: e.target.value })}
                   className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
@@ -896,7 +896,7 @@ export const FirebaseCloudHubModule: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="balamurugan@ckcet.edu"
+                  placeholder="balamurugan@campus.edu"
                   value={profileForm.email}
                   onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
                   className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"

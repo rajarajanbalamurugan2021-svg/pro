@@ -228,7 +228,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
 
     if (mode === 'forgot') {
       if (!cleanEmail) {
-        setError('Please enter your registered college email.');
+        setError('Please enter your registered email.');
         return;
       }
       if (!cleanEmail.includes('@')) {
@@ -348,30 +348,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
         <div className="text-center mb-6 flex flex-col items-center">
           <Logo size="xl" showText={true} className="mb-2" allowEdit={false} />
           <p className="text-xs text-slate-400 mt-2 font-medium">
-            CK College of Engineering & Technology <span className="text-blue-400 font-bold">(An Autonomous Institution)</span>
+            Smart Campus Management & Enterprise ERP Portal
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-            <a
-              href="https://ckcet.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 bg-blue-950/70 hover:bg-blue-900/80 border border-blue-800/80 transition"
-            >
-              <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span>ckcet.edu.in</span>
-              <ExternalLink className="w-3 h-3 text-blue-400" />
-            </a>
-
-            <a
-              href="https://zonesynapse-ckcet-obe.pages.dev/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-purple-400 bg-purple-950/70 hover:bg-purple-900/80 border border-purple-800/80 transition"
-            >
-              <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-              <span>ZoneSynapse OBE Login</span>
-            </a>
-          </div>
         </div>
 
         {/* Dispatch Notification Toast Banner */}
@@ -641,7 +619,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1">
-                    Registered College Email
+                    Registered Institutional Email
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -694,7 +672,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ users, onLogin }) => {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1">
-                    College Email
+                    Institutional Email
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />

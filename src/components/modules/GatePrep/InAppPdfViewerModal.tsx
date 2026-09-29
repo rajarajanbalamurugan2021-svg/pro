@@ -209,7 +209,7 @@ export const InAppPdfViewerModal: React.FC<InAppPdfViewerModalProps> = ({
             >
               {/* Simulated Watermark & Header */}
               <div className="flex items-center justify-between border-b pb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                <span>CKCET CAMPRO GATE ARCHIVE</span>
+                <span>CAMPRO GATE ARCHIVE</span>
                 <span>GATE {resource.gatePaper} • PAGE {currentPage}</span>
               </div>
 

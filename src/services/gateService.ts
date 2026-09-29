@@ -146,7 +146,7 @@ const INITIAL_RESOURCES: GateResource[] = [
     downloadCount: 142,
     viewCount: 380,
     authorName: 'IIT IISc GATE Authority',
-    copyrightNotes: 'CKCET Academic Archive'
+    copyrightNotes: 'Academic Archive'
   },
   {
     id: 'res-ece-signals-formula',
@@ -175,7 +175,7 @@ const INITIAL_RESOURCES: GateResource[] = [
     downloadCount: 215,
     viewCount: 520,
     authorName: 'ECE Department',
-    copyrightNotes: 'CKCET Internal Material'
+    copyrightNotes: 'Internal Academic Material'
   },
   {
     id: 'res-eee-power-systems-notes',

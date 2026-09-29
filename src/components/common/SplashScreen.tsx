@@ -46,7 +46,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       <div className="w-full flex items-center justify-between text-slate-400 text-xs font-mono">
         <span className="flex items-center gap-1.5 font-bold text-blue-400">
           <ShieldCheck className="w-4 h-4 text-blue-500" />
-          <span>CKCET CAMPRO</span>
+          <span>CAMPRO</span>
         </span>
         <span className="flex items-center gap-1 text-[10px] bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full text-emerald-400">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
@@ -66,17 +66,17 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         <div className="space-y-1.5">
           <div className="flex items-center justify-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-sans">
-              CKCET <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">CAMPRO</span>
+              <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">CAMPRO</span>
             </h1>
           </div>
           <p className="text-xs font-extrabold uppercase tracking-widest text-blue-400">
             Smart Campus Portal
           </p>
           <p className="text-[11px] text-slate-300 max-w-[280px] mx-auto font-semibold">
-            CK College of Engineering & Technology
+            Unified Academic & Engineering Intelligence
           </p>
           <p className="text-[10px] text-blue-400 font-extrabold uppercase tracking-widest">
-            (An Autonomous Institution)
+            Enterprise Campus ERP
           </p>
         </div>
 

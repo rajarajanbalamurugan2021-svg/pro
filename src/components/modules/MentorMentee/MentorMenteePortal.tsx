@@ -412,7 +412,7 @@ export const MentorMenteePortal: React.FC<MentorMenteePortalProps> = ({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-indigo-700 via-indigo-600 to-purple-700 text-white shadow-xl shadow-indigo-500/10">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-200">
-            <UserCheck2 className="h-4 w-4 text-emerald-300" /> CKCET Institutional Advisory & Mentoring Hub
+            <UserCheck2 className="h-4 w-4 text-emerald-300" /> Institutional Advisory & Mentoring Hub
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 flex items-center gap-3">
             Mentor–Mentee Hub

@@ -23,7 +23,7 @@ export const LeaveReportsExporter: React.FC<LeaveReportsExporterProps> = ({
   const handleExport = () => {
     setDownloadSuccess(false);
 
-    let filename = 'CKCET_Leave_Report';
+    let filename = 'Campus_Leave_Report';
     let dataToExport: Record<string, any>[] = [];
 
     if (reportType === 'STUDENT') {

@@ -482,7 +482,7 @@ export function getInitialSeedForCategory(category: CmsCategoryKey): any[] {
 
     case 'projects':
       return [
-        { ...baseAudit, id: 'proj-bms', title: 'Smart Battery Management System (BMS) with CAN Telemetry', branch: 'ECE', domain: 'Embedded Systems', difficulty: 'Industry Ready', description: 'Design an 8-cell Lithium-ion BMS monitoring voltage, current, and temperature with CAN bus communication.', hardwareRequirements: ['STM32F4 Microcontroller', 'LTC6811 BMS IC', 'CAN Transceiver'], softwareRequirements: ['STM32CubeIDE', 'FreeRTOS', 'CANoe'], expectedOutcome: 'Functional hardware prototype transmitting live telemetry over CAN bus.', industryRelevance: 'Essential skill for Electric Vehicle (EV) and Renewable Energy battery safety.', learningResources: ['TI BMS Reference Designs', 'ST CAN Bus Application Notes'], documentationUrl: 'https://ckcet.edu.in/projects/bms-can' },
+        { ...baseAudit, id: 'proj-bms', title: 'Smart Battery Management System (BMS) with CAN Telemetry', branch: 'ECE', domain: 'Embedded Systems', difficulty: 'Industry Ready', description: 'Design an 8-cell Lithium-ion BMS monitoring voltage, current, and temperature with CAN bus communication.', hardwareRequirements: ['STM32F4 Microcontroller', 'LTC6811 BMS IC', 'CAN Transceiver'], softwareRequirements: ['STM32CubeIDE', 'FreeRTOS', 'CANoe'], expectedOutcome: 'Functional hardware prototype transmitting live telemetry over CAN bus.', industryRelevance: 'Essential skill for Electric Vehicle (EV) and Renewable Energy battery safety.', learningResources: ['TI BMS Reference Designs', 'ST CAN Bus Application Notes'], documentationUrl: 'https://example.edu/projects/bms-can' },
         { ...baseAudit, id: 'proj-solar-inverter', title: 'Pure Sine Wave Grid-Tied Solar Inverter', branch: 'EEE', domain: 'Power Electronics', difficulty: 'Advanced', description: 'Design a 1kW SPWM controlled inverter with Maximum Power Point Tracking (MPPT).', hardwareRequirements: ['MOSFET H-Bridge', 'DSPIC33 Microcontroller', 'Current Sensors'], softwareRequirements: ['MATLAB/Simulink', 'LTspice'], expectedOutcome: 'Low THD (<3%) AC output synchronized with grid voltage.', industryRelevance: 'Widely used in rooftop solar power systems and UPS installations.', learningResources: ['IEEE Power Electronics Transactions', 'NPTEL Power Electronics'] }
       ];
 
@@ -644,7 +644,7 @@ export function getInitialSeedForCategory(category: CmsCategoryKey): any[] {
           domain: 'Embedded Systems',
           category: 'Technical Tutorial',
           contentSnippet: 'Learn how Memory Protection Units isolate tasks and prevent stack overflows in safety-critical FreeRTOS applications.',
-          officialSource: 'CKCET Core Engineering Technical Series',
+          officialSource: 'Core Engineering Technical Series',
           publishedDate: '2026-08-01'
         }
       ];

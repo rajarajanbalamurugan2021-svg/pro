@@ -312,7 +312,7 @@ service cloud.firestore {
     }
 
     // 13. Universal Real-time Single-Document State Sync Fallback
-    match /ckcet_campro/{docKey} {
+    match /campro_data/{docKey} {
       allow read: if true;
       allow write: if isSignedIn();
     }

@@ -32,7 +32,7 @@ export const FacultyAttendancePortal: React.FC<FacultyAttendancePortalProps> = (
       <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-200">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> CKCET CAMPRO Enterprise ERP • Faculty Portal
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> CAMPRO Enterprise ERP • Faculty Portal
           </div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight mt-1">
             Faculty Attendance Management Module

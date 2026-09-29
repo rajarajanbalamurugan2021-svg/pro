@@ -131,7 +131,7 @@ export const AdminComplaintDashboard: React.FC<AdminComplaintDashboardProps> = (
 
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
-            onClick={() => ReportExporter.exportToPDF(complaints, 'CKCET Global Campus Grievance Audit Report')}
+            onClick={() => ReportExporter.exportToPDF(complaints, 'Global Campus Grievance Audit Report')}
             className="px-3.5 py-2 rounded-xl bg-white/10 backdrop-blur-md text-white text-xs font-bold hover:bg-white/20 transition flex items-center gap-1.5"
           >
             <Printer className="h-4 w-4" /> Global PDF

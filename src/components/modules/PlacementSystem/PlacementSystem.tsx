@@ -81,7 +81,7 @@ export const PlacementSystem: React.FC<Props> = ({ user, onUpdateUser, initialTa
       appliedAt: new Date().toISOString().split('T')[0],
       status: 'Applied',
       matchingScore: 88,
-      resumeUrl: user.githubProfile || 'https://ckcet.ac.in/resumes/CS2023001_AlexRivera.pdf'
+      resumeUrl: user.githubProfile || 'https://example.edu/resumes/CS2023001_AlexRivera.pdf'
     };
 
     const updatedApps = [newApp, ...applications];

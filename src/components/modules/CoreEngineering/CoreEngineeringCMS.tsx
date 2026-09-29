@@ -201,7 +201,7 @@ export const CoreEngineeringCMS: React.FC<CoreEngineeringCMSProps> = ({ currentU
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `CKCET_Core_${activeCategory}_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `Core_${activeCategory}_${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     showToast('CSV export downloaded successfully', 'success');
   };

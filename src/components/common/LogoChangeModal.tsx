@@ -71,7 +71,7 @@ const PRESET_EMBLEMS = [
 ];
 
 const GRADIENT_OPTIONS = [
-  { name: 'CKCET Blue & Indigo', value: 'from-blue-700 via-indigo-600 to-sky-500' },
+  { name: 'Campus Blue & Indigo', value: 'from-blue-700 via-indigo-600 to-sky-500' },
   { name: 'Emerald Campus', value: 'from-emerald-700 via-teal-600 to-cyan-500' },
   { name: 'Royal Purple', value: 'from-purple-700 via-indigo-600 to-pink-500' },
   { name: 'Golden Excellence', value: 'from-amber-600 via-orange-500 to-yellow-400' },
@@ -86,8 +86,8 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'preset' | 'upload' | 'url' | 'branding'>('preset');
   const [logoConfig, setLogoConfig] = useState<CampusLogoConfig>({
-    title: 'CKCET',
-    subtitle: 'CAMPRO',
+    title: 'CAMPRO',
+    subtitle: 'ERP',
     tagline: 'Enterprise Campus ERP',
     logoUrl: '',
     presetIcon: 'modern-shield',
@@ -139,8 +139,8 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
 
   const handleResetToDefault = () => {
     const defaultConfig: CampusLogoConfig = {
-      title: 'CKCET',
-      subtitle: 'CAMPRO',
+      title: 'CAMPRO',
+      subtitle: 'ERP',
       tagline: 'Enterprise Campus ERP',
       logoUrl: '',
       presetIcon: 'modern-shield',
@@ -208,10 +208,10 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white leading-none">
-                    {logoConfig.title || 'CKCET'}
+                    {logoConfig.title || 'CAMPRO'}
                   </span>
                   <span className="text-lg font-black tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-sky-300 dark:to-indigo-300 bg-clip-text text-transparent leading-none">
-                    {logoConfig.subtitle || 'CAMPRO'}
+                    {logoConfig.subtitle || 'ERP'}
                   </span>
                 </div>
                 <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-tight mt-1">
@@ -427,9 +427,9 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
                   </label>
                   <input
                     type="text"
-                    value={logoConfig.title || 'CKCET'}
+                    value={logoConfig.title || 'CAMPRO'}
                     onChange={(e) => setLogoConfig(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="e.g. CKCET"
+                    placeholder="e.g. CAMPRO"
                     className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white uppercase focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -440,9 +440,9 @@ export const LogoChangeModal: React.FC<LogoChangeModalProps> = ({
                   </label>
                   <input
                     type="text"
-                    value={logoConfig.subtitle || 'CAMPRO'}
+                    value={logoConfig.subtitle || 'ERP'}
                     onChange={(e) => setLogoConfig(prev => ({ ...prev, subtitle: e.target.value }))}
-                    placeholder="e.g. CAMPRO"
+                    placeholder="e.g. ERP"
                     className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white uppercase focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
